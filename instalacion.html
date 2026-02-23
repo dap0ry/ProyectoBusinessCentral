@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalación - Business Central</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="instalacion.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="instalacion.html" class="active">Instalación</a></li>
+                <li><a href="teoria.html">Teoría</a></li>
+                <li><a href="ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="timeline-section">
+        <div class="section-header">
+            <h1>Proceso de Instalación</h1>
+            <p>Sigue los pasos cronológicamente para configurar tu entorno de desarrollo.</p>
+        </div>
+
+        <div class="timeline-container">
+            <div class="timeline-line"></div>
+
+            <!-- Paso 1: Docker (Derecha) -->
+            <div class="timeline-item right">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content card">
+                    <img src="BCWeb\source\logos\DockerLogo.png" alt="Docker Logo" class="step-icon">
+                    <h2>1. Instalación de Docker</h2>
+                    <p>Para usar el instalador de Business Central, primero necesitas Docker Desktop. Asegúrate de:</p>
+                    <ul>
+                        <li>Habilitar WSL 2 en Windows 11.</li>
+                        <li>Configurar contenedores de Windows si es necesario (o Linux según la imagen).</li>
+                        <li>Tener al menos 8GB de RAM dedicados.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Paso 2: VS Code (Izquierda) -->
+            <div class="timeline-item left">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content card">
+                    <img src="BCWeb\source\logos\VisualStudioCodeLogo.png" alt="VS Code Logo" class="step-icon">
+                    <h2>2. Configuración de VS Code</h2>
+                    <p>Instala las herramientas necesarias para desarrollar en AL:</p>
+                    <ul>
+                        <li>Descarga e instala Visual Studio Code.</li>
+                        <li>Configura el archivo launch.json para conectar con tu contenedor de Docker.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Paso 3: Business Central (Derecha) -->
+            <div class="timeline-item right">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content card">
+                    <img src="BCWeb\source\logos\BusinessCentralLogo.png" alt="BC Logo" class="step-icon">
+                    <h2>3. Despliegue del Contenedor</h2>
+                    <p>Usa scripts de PowerShell o el asistente de BC para levantar la imagen:</p>
+                    <ul>
+                        <li>Descarga la imagen oficial de Microsoft Artifact Registry.</li>
+                        <li>Acepta el EULA y configura las credenciales de administrador.</li>
+                        <li>Verifica el acceso vía Web Client antes de empezar a programar.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Paso 4: AL Language (Izquierda) -->
+            <div class="timeline-item left">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content card">
+                    <img src="BCWeb\source\logos\AlLogo.png" alt="AL Logo" class="step-icon">
+                    <h2>4. Extensión AL</h2>
+                    <p>El núcleo del desarrollo en Business Central:</p>
+                    <ul>
+                        <li>Instala la extensión "AL Language" desde el marketplace.</li>
+                        <li>Crea un nuevo proyecto con `AL: Go!`.</li>
+                        <li>Descarga los símbolos del servidor para habilitar el IntelliSense.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central. Hecho para Windows 11.</p>
+    </footer>
+
+    <script src="instalacion.js"></script>
+</body>
+
+</html>
