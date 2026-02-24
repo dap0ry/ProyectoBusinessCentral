@@ -1,0 +1,85 @@
+/* Reuse theory styles for exercises */
+@import url('teoria.css');
+
+.exercise-section {
+    padding: 120px 0 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 90%;
+}
+
+.exercise-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.exercise-header h1 {
+    font-size: 3rem;
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-white);
+    margin-bottom: 1rem;
+}
+
+.exercise-header p {
+    color: var(--text-gray);
+    font-size: 1.2rem;
+}
+
+.exercise-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+    .exercise-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .exercise-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Exercise Cards inherit from theory-card via sharing classes or similar properties */
+.exercise-card {
+    background: var(--glass-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2.5rem;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.exercise-card:hover {
+    border-color: var(--primary-blue);
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 123, 255, 0.1);
+}
+
+.exercise-card h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    color: var(--text-white);
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+.exercise-card p {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    flex-grow: 1;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.exercise-card .btn {
+    align-self: flex-start;
+}

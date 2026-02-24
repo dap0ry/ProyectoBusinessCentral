@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROYECTO FINAL - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../ejercicios.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .exercise-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .exercise-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .exercise-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .exercise-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .exercise-content .exam-box {
+            background: rgba(0, 123, 255, 0.05);
+            border: 2px solid var(--primary-blue);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+        }
+
+        .step-badge {
+            background: var(--primary-blue);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html">Teoría</a></li>
+                <li><a href="../ejercicios.html" class="active">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="exercise-section" style="padding-top: 100px;">
+        <div class="exercise-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                EXAMEN DE CERTIFICACIÓN INTERNA</p>
+            <h1>PROYECTO: Sistema Gestión Biblioteca</h1>
+            <span class="diff-badge diff-hard"
+                style="position: static; display: inline-block; margin-top: 10px; background: #ff4d4d;">Dificultad:
+                10/10</span>
+        </div>
+
+        <div class="exercise-content">
+            <div class="exam-box">
+                <p>Este es el reto final. Debes construir una extensión completa para Business Central que permita a una
+                    biblioteca gestionar sus libros y préstamos de forma profesional.</p>
+            </div>
+
+            <h2>Requisitos del Sistema</h2>
+
+            <p><span class="step-badge">Paso 1</span> <strong>Modelado de Datos:</strong> Crea las tablas
+                <code>Libro</code>, <code>Autor</code> y <code>Prestamo</code>. Recuerda usar claves primarias adecuadas
+                y tipos de datos correctos.</p>
+
+            <p><span class="step-badge">Paso 2</span> <strong>Relaciones:</strong> Los libros deben estar vinculados a
+                un autor. Los préstamos deben estar vinculados a un libro y a un cliente (Customer).</p>
+
+            <p><span class="step-badge">Paso 3</span> <strong>Lógica de Negocio:</strong> Implementa un FlowField en la
+                ficha del Socio para ver el "Total Libros Prestados". Crea un trigger para que no se pueda prestar un
+                libro si ya está marcado como "Prestado".</p>
+
+            <p><span class="step-badge">Paso 4</span> <strong>Interfaz:</strong> Crea páginas de lista y ficha para
+                Libros y Autores. En la ficha del Libro, añade un FactBox que muestre quién tiene el libro actualmente
+                si está prestado.</p>
+
+            <p><span class="step-badge">Paso 5</span> <strong>Reporting:</strong> Crea un informe de "Libros más
+                populares" usando una Query para agrupar los préstamos por título de libro.</p>
+
+            <div class="ide-code" style="margin-top: 40px;">
+                <div class="ide-header">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                    <span style="margin-left: 10px; color: #888; font-size: 0.8rem;">SolutionArchitecture.md</span>
+                </div>
+                <pre><code><span class="string">// Estructura de carpetas recomendada:</span>
+/src
+  /tables
+    - Book.Table.al
+    - Author.Table.al
+    - Loan.Table.al
+  /pages
+    - BookList.Page.al
+    - BookCard.Page.al
+  /queries
+    - PopularBooks.Query.al
+  /reports
+    - LibraryReport.Report.al</code></pre>
+            </div>
+
+            <a href="../ejercicios.html" class="btn btn-secondary"
+                style="margin-top: 40px; display: inline-block;">&larr; Volver a Ejercicios</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

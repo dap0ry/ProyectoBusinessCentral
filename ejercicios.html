@@ -4,11 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página en Construcción</title>
+    <title>Ejercicios - Business Central</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="ejercicios.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
 </head>
 
-<body style="display: flex; flex-direction: column; min-height: 100vh;">
+<body>
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="nav-logo">BC Guide</a>
@@ -16,19 +19,127 @@
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="instalacion.html">Instalación</a></li>
                 <li><a href="teoria.html">Teoría</a></li>
-                <li><a href="ejercicios.html">Ejercicios</a></li>
+                <li><a href="ejercicios.html" class="active">Ejercicios</a></li>
             </ul>
         </div>
     </nav>
 
-    <main
-        style="flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; padding: 20px;">
-        <div>
-            <h1 style="font-size: 3rem; color: var(--primary-blue); margin-bottom: 1rem;">Próximamente</h1>
-            <p style="color: var(--text-gray); font-size: 1.2rem;">Esta sección de contenido está actualmente en
-                desarrollo.</p>
-            <br>
-            <a href="index.html" class="btn btn-primary">Volver al Inicio</a>
+    <main class="exercise-section">
+        <div class="exercise-header">
+            <h1>Pon a prueba tu conocimiento</h1>
+            <p>12 ejercicios prácticos y un proyecto final para dominar el desarrollo en Business Central.</p>
+        </div>
+
+        <div class="exercise-grid">
+
+            <!-- Card 01 -->
+            <div class="exercise-card">
+                <span class="diff-badge diff-easy">Dif. 2/10</span>
+                <h2>Enum: Estados de Alquiler</h2>
+                <p>Define las opciones de estado para un sistema de alquiler de maquinaria.</p>
+                <a href="ejercicios/01_enum_alquiler.html" class="btn btn-primary">Ver Ejercicio</a>
+            </div>
+
+            <!-- Card 02 -->
+            <div class="exercise-card">
+                <span class="diff-badge diff-easy">Dif. 3/10</span>
+                <h2>Tablas: Ficha de Vehículo</h2>
+                <p>Crea una tabla técnica para almacenar datos de una flota de vehículos.</p>
+                <a href="ejercicios/02_tabla_vehiculo.html" class="btn btn-primary">Ver Ejercicio</a>
+            </div>
+
+            <!-- Card 03 -->
+            <div class="exercise-card">
+                <span class="diff-badge diff-medium">Dif. 4/10</span>
+                <h2>PK: Numeración Automática</h2>
+                <p>Implementa una clave primaria que se incremente sola en cada registro.</p>
+                <a href="ejercicios/03_pk_auto.html" class="btn btn-primary">Ver Ejercicio</a>
+            </div>
+
+            <!-- Card 04 -->
+            <div class="exercise-card">
+                <span class="diff-badge diff-medium">Dif. 5/10</span>
+                <h2>Relations: Socio y Préstamo</h2>
+                <p>Conecta la tabla de préstamos con la base de datos de socios de una biblioteca.</p>
+                <a href="ejercicios/04_relacion_socio.html" class="btn btn-primary">Ver Ejercicio</a>
+            </div>
+
+            <!-- Card 05 -->
+            <div class="exercise-card">
+                <span class="diff-badge diff-medium">Dif. 6/10</span>
+                <h2>FlowFields: Total Prestado</h2>
+                <p>Calcula automáticamente cuántos libros tiene cada socio sin escribir código de suma.</p>
+                <a href="ejercicios/05_flowfield_total.html" class="btn btn-primary">Ver Ejercicio</a>
+            </div>
+
+            <!-- Card 06 -->
+            <div class="exercise-card">
+                <span class="diff-badge diff-hard">Dif. 7/10</span>
+                <h2>FlowFilters: Ventas por Período</h2>
+                <p>Aprende a filtrar estadísticas dinámicas usando rangos de fechas definidos por el usuario.</p>
+                <a href="ejercicios/06_flowfilter_periodo.html" class="btn btn-primary">Ver Ejercicio</a>
+            </div>
+
+            <!-- Card 07 -->
+            <div class="exercise-card">
+                <span class="diff-badge diff-medium">Dif. 6/10</span>
+                <h2>Triggers: Control de Edad</h2>
+                <p>Añade lógica para impedir que se cree un socio si es menor de edad.</p>
+                <a href="ejercicios/07_trigger_edad.html" class="btn btn-primary">Ver Ejercicio</a>
+            </div>
+
+            <!-- Card 08 -->
+            <div class="exercise-card">
+                <span class="diff-badge diff-easy">Dif. 3/10</span>
+                <h2>Pages: Listado de Libros</h2>
+                <p>Diseña la interfaz visual para ver y editar el catálogo de libros.</p>
+                <a href="ejercicios/08_page_libros.html" class="btn btn-primary">Ver Ejercicio</a>
+            </div>
+
+            <!-- Card 09 -->
+            <div class="exercise-card">
+                <span class="diff-badge diff-medium">Dif. 6/10</span>
+                <h2>Parts: Líneas de Factura</h2>
+                <p>Crea un subformulario para introducir múltiples líneas dentro de una factura.</p>
+                <a href="ejercicios/09_part_lineas.html" class="btn btn-primary">Ver Ejercicio</a>
+            </div>
+
+            <!-- Card 10 -->
+            <div class="exercise-card">
+                <span class="diff-badge diff-medium">Dif. 4/10</span>
+                <h2>FactBoxes: Historial Rápido</h2>
+                <p>Muestra los últimos préstamos del socio en un panel lateral informativo.</p>
+                <a href="ejercicios/10_factbox_historial.html" class="btn btn-primary">Ver Ejercicio</a>
+            </div>
+
+            <!-- Card 11 -->
+            <div class="exercise-card">
+                <span class="diff-badge diff-hard">Dif. 7/10</span>
+                <h2>Queries: Top 5 Autores</h2>
+                <p>Utiliza consultas de alto rendimiento para obtener los autores más populares.</p>
+                <a href="ejercicios/11_query_autores.html" class="btn btn-primary">Ver Ejercicio</a>
+            </div>
+
+            <!-- Card 12 -->
+            <div class="exercise-card">
+                <span class="diff-badge diff-hard">Dif. 8/10</span>
+                <h2>Reports: Listado de Morosos</h2>
+                <p>Genera un informe para imprimir con todos los socios que tienen préstamos atrasados.</p>
+                <a href="ejercicios/12_report_morosos.html" class="btn btn-primary">Ver Ejercicio</a>
+            </div>
+
+            <!-- Final Project Card -->
+            <div class="exercise-card"
+                style="grid-column: span 3; border: 2px solid var(--primary-blue); background: rgba(0, 123, 255, 0.05);">
+                <span class="diff-badge diff-hard" style="background: var(--primary-blue); color: white;">EXAMEN
+                    FINAL</span>
+                <h2>PROYECTO INTEGRAL: Sistema de Gestión de Biblioteca</h2>
+                <p>Aplica todos los conceptos aprendidos: crea las tablas, relaciones, lógica de negocio e informes para
+                    una biblioteca completa.</p>
+                <a href="ejercicios/13_proyecto_final.html" class="btn btn-primary"
+                    style="width: 100%; text-align: center;">Comenzar Examen Final</a>
+            </div>
+
         </div>
     </main>
 

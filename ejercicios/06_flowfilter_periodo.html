@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio: FlowFilters - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../ejercicios.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .exercise-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .exercise-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .exercise-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .exercise-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .exercise-content .goal {
+            background: rgba(0, 123, 255, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html">Teoría</a></li>
+                <li><a href="../ejercicios.html" class="active">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="exercise-section" style="padding-top: 100px;">
+        <div class="exercise-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                EJERCICIO 06</p>
+            <h1>FlowFilters: Ventas por Período</h1>
+            <span class="diff-badge diff-hard"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 7/10</span>
+        </div>
+
+        <div class="exercise-content">
+            <div class="goal">
+                <strong>Objetivo:</strong> Crear un FlowFilter que permita filtrar los cálculos de un FlowField por un
+                rango de fechas.
+            </div>
+
+            <h2>Instrucciones</h2>
+            <ul>
+                <li>Crea un campo <code>"Date Filter"</code> en tu tabla de estadísticas.</li>
+                <li>Configura <code>FieldClass = FlowFilter;</code> y tipo <code>Date</code>.</li>
+                <li>Modifica un FlowField existente (como "Total Ventas") añadiendo a su <code>CalcFormula</code> una
+                    condición: <code>"Posting Date" = FIELD("Date Filter")</code>.</li>
+                <li>Prueba a filtrar la página por diferentes fechas para ver cómo cambia el valor.</li>
+            </ul>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">field</span>(100; "Date Filter"; Date)
+{
+    FieldClass = FlowFilter;
+    Caption = 'Filtro Fecha';
+}
+
+<span class="cmd">field</span>(101; "Ventas Periodo"; Decimal)
+{
+    FieldClass = FlowField;
+    CalcFormula = Sum("Sales Line".Amount WHERE ("Posting Date" = FIELD("Date Filter")));
+}</code></pre>
+            </div>
+
+            <a href="../ejercicios.html" class="btn btn-secondary"
+                style="margin-top: 40px; display: inline-block;">&larr; Volver a Ejercicios</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

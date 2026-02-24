@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio: PK AutoIncrement - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../ejercicios.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .exercise-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .exercise-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .exercise-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .exercise-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .exercise-content .goal {
+            background: rgba(0, 123, 255, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html">Teoría</a></li>
+                <li><a href="../ejercicios.html" class="active">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="exercise-section" style="padding-top: 100px;">
+        <div class="exercise-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                EJERCICIO 03</p>
+            <h1>PK: Numeración Automática</h1>
+            <span class="diff-badge diff-medium"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 4/10</span>
+        </div>
+
+        <div class="exercise-content">
+            <div class="goal">
+                <strong>Objetivo:</strong> Crear una tabla de histórico de eventos donde la clave primaria sea un número
+                entero que crezca automáticamente.
+            </div>
+
+            <h2>Instrucciones</h2>
+            <ul>
+                <li>Crea la tabla <code>History Log</code> con ID <code>50102</code>.</li>
+                <li>Define un campo <code>Entry No.</code> de tipo <code>Integer</code>.</li>
+                <li>Configura la propiedad <code>AutoIncrement = true;</code> en dicho campo.</li>
+                <li>Asegúrate de que <code>Entry No.</code> sea la <strong>Clave Primaria</strong> en la sección
+                    <code>keys</code>.</li>
+                <li>Añade un campo <code>Description</code> de tipo <code>Text[250]</code>.</li>
+            </ul>
+
+            <h2>Ayuda</h2>
+            <div class="ide-code">
+                <pre><code><span class="cmd">table</span> <span class="var">50102</span> "History Log"
+{
+    fields
+    {
+        <span class="cmd">field</span>(1; "Entry No."; Integer)
+        {
+            AutoIncrement = true;
+        }
+        <span class="string">// ... resto de campos</span>
+    }
+    
+    keys
+    {
+        <span class="cmd">key</span>(PK; "Entry No.") { Clustered = true; }
+    }
+}</code></pre>
+            </div>
+
+            <a href="../ejercicios.html" class="btn btn-secondary"
+                style="margin-top: 40px; display: inline-block;">&larr; Volver a Ejercicios</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>
