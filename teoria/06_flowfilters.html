@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowFilters - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-section" style="padding-top: 100px;">
+        <div class="theory-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                Lógica y Eventos</p>
+            <h1>FlowFilters</h1>
+            <span class="diff-badge diff-hard"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 7/10</span>
+        </div>
+
+        <div class="theory-content">
+            <p>Un <strong>FlowFilter</strong> (Filtro de Flujo) es el "mejor amigo pero independiente" de un FlowField.
+                El FlowFilter es un campo especial de tu tabla, pero es como un campo "fantasma": no guarda datos de
+                verdad para almacenarlos permanentemente.</p>
+
+            <h2>¿Qué son?</h2>
+            <p>Son campos de la tabla que sirven únicamente para <strong>recibir parámetros y filtros dinámicos desde la
+                    pantalla del usuario</strong> con el propósito de dárselos a un FlowField para que la fórmula cambie
+                según la situación y "fluya" a través de él.</p>
+
+            <h2>¿Cómo modifican el resultado de un FlowField?</h2>
+            <p>Imagina que tienes un <strong>FlowField</strong> que es "Deuda Total". Cuando entras a ver al Cliente, te
+                dice "Nos debe 5.000€". Bien, usando la directiva <code>Sum(...)</code> en AL.</p>
+            <p>Pero ¿qué pasa si el contable quiere saber: "Cuánto nos empezó a deber <em>este mes específico</em>
+                (Enero)"?</p>
+            <p>Para esto, el programador diseña un <strong>FlowFilter</strong> de tipo fecha llamado "Filtro Fecha". En
+                el código AL del FlowField "Deuda Total", le dice a la fórmula:
+                <code>Sum(Facturas donde "Fecha Emisión" = mi FlowFilter)</code>.</p>
+            <p>Así, el usuario, al ver la ficha del cliente en pantalla, le pone un filtro de fecha a la página (Enero
+                1..Enero 31). El <strong>FlowFilter</strong> "atrapa" ese mes, se lo pasa al FlowField, y en décimas de
+                segundo la "Suma" que valía 5.000€ baja mágicamente a 800€, calculando únicamente los registros
+                pertenecientes a enero.</p>
+
+            <div class="ide-code">
+                <pre><code><span class="string">// 1. El campo invisible que atrapa la fecha</span>
+<span class="cmd">field</span>(55; "Date Filter"; Date)
+{
+    FieldClass = FlowFilter;
+}
+
+<span class="string">// 2. El FlowField mágico modificado en vivo</span>
+<span class="cmd">field</span>(50; "Deuda Total"; Decimal)
+{
+    FieldClass = FlowField;
+    CalcFormula = Sum("Líneas de Compra".Cantidad 
+                      where("Código Cliente" = field("No."),
+                            "Posting Date" = field("Date Filter"))); <span class="string">// AQUÍ ENTRA EN ACCIÓN</span>
+}</code></pre>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

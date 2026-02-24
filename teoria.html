@@ -4,31 +4,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página en Construcción</title>
+    <title>Teoría - Business Central</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
 </head>
 
-<body style="display: flex; flex-direction: column; min-height: 100vh;">
+<body>
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="nav-logo">BC Guide</a>
             <ul class="nav-menu">
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="instalacion.html">Instalación</a></li>
-                <li><a href="teoria.html">Teoría</a></li>
+                <li><a href="teoria.html" class="active">Teoría</a></li>
                 <li><a href="ejercicios.html">Ejercicios</a></li>
             </ul>
         </div>
     </nav>
 
-    <main
-        style="flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; padding: 20px;">
-        <div>
-            <h1 style="font-size: 3rem; color: var(--primary-blue); margin-bottom: 1rem;">Próximamente</h1>
-            <p style="color: var(--text-gray); font-size: 1.2rem;">Esta sección de contenido está actualmente en
-                desarrollo.</p>
-            <br>
-            <a href="index.html" class="btn btn-primary">Volver al Inicio</a>
+    <main class="theory-section">
+        <div class="theory-header">
+            <h1>Aprende Business Central</h1>
+            <p>Guía de conceptos ordenados desde las bases de datos hasta la interfaz gráfica.</p>
+        </div>
+
+        <div class="theory-grid">
+
+            <!-- Card 01 -->
+            <div class="theory-card">
+                <span class="diff-badge diff-easy">Dif. 2/10</span>
+                <h2>Enums</h2>
+                <p>Qué son, para qué sirven y cómo estructurar sus valores (ej. categorías de libros).</p>
+                <a href="teoria/01_enums.html" class="btn btn-primary">Ver M&aacute;s</a>
+            </div>
+
+            <!-- Card 02 -->
+            <div class="theory-card">
+                <span class="diff-badge diff-easy">Dif. 3/10</span>
+                <h2>Tablas y Tipos de Datos</h2>
+                <p>Explicación de los tipos principales en AL (Code, Text, Integer, Date, Boolean).</p>
+                <a href="teoria/02_tablas_y_tipos.html" class="btn btn-primary">Ver M&aacute;s</a>
+            </div>
+
+            <!-- Card 03 -->
+            <div class="theory-card">
+                <span class="diff-badge diff-medium">Dif. 4/10</span>
+                <h2>Claves Primarias (PK)</h2>
+                <p>Concepto de identificador único y uso de propiedades como AutoIncrement.</p>
+                <a href="teoria/03_claves_primarias.html" class="btn btn-primary">Ver M&aacute;s</a>
+            </div>
+
+            <!-- Card 04 -->
+            <div class="theory-card">
+                <span class="diff-badge diff-medium">Dif. 5/10</span>
+                <h2>TableRelations</h2>
+                <p>Teoría sobre cómo conectar datos entre distintas tablas (ej. vincular un préstamo a un socio y a un
+                    libro).</p>
+                <a href="teoria/04_tablerelations.html" class="btn btn-primary">Ver M&aacute;s</a>
+            </div>
+
+            <!-- Card 05 -->
+            <div class="theory-card">
+                <span class="diff-badge diff-medium">Dif. 6/10</span>
+                <h2>FlowFields</h2>
+                <p>Concepto de campos calculados dinámicamente y el uso de funciones como Sum.</p>
+                <a href="teoria/05_flowfields.html" class="btn btn-primary">Ver M&aacute;s</a>
+            </div>
+
+            <!-- Card 06 -->
+            <div class="theory-card">
+                <span class="diff-badge diff-hard">Dif. 7/10</span>
+                <h2>FlowFilters</h2>
+                <p>Qué son (ej. filtros de fechas) y cómo modifican el resultado de un FlowField.</p>
+                <a href="teoria/06_flowfilters.html" class="btn btn-primary">Ver M&aacute;s</a>
+            </div>
+
+            <!-- Card 07 -->
+            <div class="theory-card">
+                <span class="diff-badge diff-medium">Dif. 6/10</span>
+                <h2>Triggers de Tabla</h2>
+                <p>Explicación teórica de los eventos que ocurren al interactuar con los datos (OnInsert, OnModify,
+                    OnValidate).</p>
+                <a href="teoria/07_triggers.html" class="btn btn-primary">Ver M&aacute;s</a>
+            </div>
+
+            <!-- Card 08 -->
+            <div class="theory-card">
+                <span class="diff-badge diff-easy">Dif. 3/10</span>
+                <h2>Tipos de Pages</h2>
+                <p>Diferencia conceptual entre mostrar listas de registros (Page Type: List) y detalles individuales
+                    (Card).</p>
+                <a href="teoria/08_tipos_pages.html" class="btn btn-primary">Ver M&aacute;s</a>
+            </div>
+
+            <!-- Card 09 -->
+            <div class="theory-card">
+                <span class="diff-badge diff-medium">Dif. 6/10</span>
+                <h2>Parts (Subpáginas)</h2>
+                <p>Diferencia teórica entre un CardPart (para resúmenes estáticos) y un ListPart (para historiales o
+                    sublistas).</p>
+                <a href="teoria/09_parts.html" class="btn btn-primary">Ver M&aacute;s</a>
+            </div>
+
+            <!-- Card 10 -->
+            <div class="theory-card">
+                <span class="diff-badge diff-medium">Dif. 4/10</span>
+                <h2>FactBoxes</h2>
+                <p>Qué son los paneles laterales informativos y cómo mejoran la navegación y la experiencia de usuario.
+                </p>
+                <a href="teoria/10_factboxes.html" class="btn btn-primary">Ver M&aacute;s</a>
+            </div>
+
+            <!-- Card 11 -->
+            <div class="theory-card">
+                <span class="diff-badge diff-hard">Dif. 7/10</span>
+                <h2>Queries</h2>
+                <p>Concepto, ventajas de rendimiento frente a un Page y uso para cálculos agrupados (ej. sumar días
+                    totales).</p>
+                <a href="teoria/11_queries.html" class="btn btn-primary">Ver M&aacute;s</a>
+            </div>
+
+            <!-- Card 12 -->
+            <div class="theory-card">
+                <span class="diff-badge diff-hard">Dif. 8/10</span>
+                <h2>Reports y DataItems</h2>
+                <p>Explicación de la arquitectura base de un informe para imprimir/exportar y qué es un DataItem.</p>
+                <a href="teoria/12_reports.html" class="btn btn-primary">Ver M&aacute;s</a>
+            </div>
+
+            <!-- Card 13 -->
+            <div class="theory-card">
+                <span class="diff-badge diff-hard">Dif. 9/10</span>
+                <h2>Jerarquía en Reports</h2>
+                <p>Cómo anidar DataItems (ej. meter los préstamos dentro de los datos del socio) y cómo ordenar la
+                    información.</p>
+                <a href="teoria/13_jerarquia_reports.html" class="btn btn-primary">Ver M&aacute;s</a>
+            </div>
+
+            <!-- Card 14 -->
+            <div class="theory-card">
+                <span class="diff-badge diff-hard">Dif. 7/10</span>
+                <h2>RequestPage</h2>
+                <p>Función de la pantalla previa del informe para que el usuario introduzca filtros antes de generar el
+                    documento final.</p>
+                <a href="teoria/14_requestpage.html" class="btn btn-primary">Ver M&aacute;s</a>
+            </div>
+
         </div>
     </main>
 

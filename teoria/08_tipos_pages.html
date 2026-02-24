@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipos de Pages - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-section" style="padding-top: 100px;">
+        <div class="theory-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                Interfaz de Usuario</p>
+            <h1>Tipos de Pages</h1>
+            <span class="diff-badge diff-easy"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 3/10</span>
+        </div>
+
+        <div class="theory-content">
+            <p>Una <strong>Page</strong> (página) es la representación visual, lo que llamamos el Frontend. En Business
+                Central, las páginas son generadas por la plataforma web dinámicamente según como definas su estructura
+                en AL. En los ERPs de Microsoft, la interfaz está predefinida por un patrón muy estricto para asegurar
+                homogeneidad.</p>
+
+            <h2>Diferencia Conceptual</h2>
+            <p>Dentro del desarrollo necesitas usar la propiedad clave <code>PageType</code> donde eliges uno de varios
+                modelos de interfaz que controla cómo de pintarán los datos al usuario de Chrome, Edge, etc.</p>
+
+            <h3>Page Type: List</h3>
+            <p>La vista tipo "Lista". Literalmente pinta una cuadrícula tipo Excel.</p>
+            <p>Está pensada para mostrar docenas de registros simultáneos uno bajo el otro, pero habitualmente no se
+                muestra en una List todos los infinitos campos que posee la tabla, solo enseñan lo resumido: "Nº",
+                "Título", "Fecha", etc. Los usuarios acceden a List pages para navegar, ordenar y filtrar grandes bases
+                de datos.</p>
+
+            <h3>Page Type: Card</h3>
+            <p>La vista de "Ficha de Detalle" o Tipo Tarjeta.</p>
+            <p>Ocurre cuando el usuario hace clic en una línea de la "List" y se "infiltra". La Card **solo muestra 1
+                único registro**, pero con un nivel de profunidad masivo. Estructura la pantalla en paneles llamados
+                <code>FastTabs</code> (Pestañas como "General", "Facturación", "Envío") donde acomoda de forma elegante
+                decenas y decenas de campos (textos largos, booleanos sueltos, adjuntos) para ese cliente individual o
+                factura concreta.</p>
+
+            <h3>Otros PageTypes menores</h3>
+            <ul>
+                <li><strong>RoleCenter:</strong> La página principal que hace de "Área de Trabajo" personal cuando
+                    alguien entra al programa, llena de mosaicos grandes, gráficos y alarmas directas.</li>
+                <li><strong>Worksheet:</strong> Muy similar a List, pero concebido para escritura de datos ultra rápica
+                    (tipo Diarios Contables) y ejecución rutinaria a finales de mes.</li>
+            </ul>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">page</span> <span class="var">50100</span> "Customer Mini List"
+{
+    <span class="string">// Le dice a la plataforma entera: Dibuja esto como una tabla de Excel interactiva.</span>
+    PageType = List;
+    ApplicationArea = All;
+    UsageCategory = Lists;
+    SourceTable = Customer;
+    ...
+}</code></pre>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

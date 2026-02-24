@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claves Primarias (PK) - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-section" style="padding-top: 100px;">
+        <div class="theory-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                Estructuras de Datos</p>
+            <h1>Claves Primarias (PK)</h1>
+            <span class="diff-badge diff-medium"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 4/10</span>
+        </div>
+
+        <div class="theory-content">
+            <p>La <strong>Clave Primaria</strong> (Primary Key o PK) es la regla más estricta de una tabla de base de
+                datos: es lo que hace a cada registro totalmente único e irrepetible.</p>
+
+            <h2>El concepto de Identificador Único</h2>
+            <p>Imagina que tienes dos clientes que se llaman "Juan Pérez". Si ambos piden algo, ¿cómo sabe el sistema a
+                quién facturar? Necesitan identificadores distintos (por ejemplo, "CLI0001" y "CLI0002").</p>
+            <p>Ese campo es la "Llave" o "Clave Primaria". <strong>Una tabla NO puede tener dos líneas con la misma
+                    clave primaria.</strong> Si lo intentas, Business Central lanzará un error.</p>
+
+            <h2>Llaves Combinadas</h2>
+            <p>A veces un solo campo no basta. Puedes combinar dos. Por ejemplo, en una línea de factura, la suma del
+                "Nº de Factura" + "Nº de Línea" forman la Primary Key. Aunque dos facturas diferentes tengan la línea
+                "10000", la combinación total es única.</p>
+
+            <h2>La propiedad AutoIncrement</h2>
+            <p>No siempre quieres preocuparte por inventar una letra y un número ("DOC01", "DOC02"). Si usas un tipo
+                numérico (como <code>Integer</code> o <code>BigInteger</code>), puedes decirle al sistema que cuente él
+                de uno en uno automáticamente usando la propiedad <code>AutoIncrement = true;</code> en AL.</p>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">table</span> <span class="var">50100</span> "Tabla de Log"
+{
+    fields
+    {
+        <span class="cmd">field</span>(1; "Entry No."; Integer)
+        {
+            AutoIncrement = true;
+        }
+        <span class="cmd">field</span>(2; "Description"; Text[100]) { }
+    }
+    
+    keys
+    {
+        <span class="cmd">key</span>(PK; "Entry No.")
+        {
+            Clustered = true;
+        }
+    }
+}</code></pre>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

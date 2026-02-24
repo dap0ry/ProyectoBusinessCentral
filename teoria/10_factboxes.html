@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FactBoxes - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-section" style="padding-top: 100px;">
+        <div class="theory-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                Interfaz de Usuario</p>
+            <h1>FactBoxes</h1>
+            <span class="diff-badge diff-medium"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 4/10</span>
+        </div>
+
+        <div class="theory-content">
+            <p>Los <strong>FactBoxes</strong> son aquellos cuadros y paneles informativos especiales que siempre se
+                apegan al riel lateral *derecho* en las pantallas de Business Central.</p>
+
+            <h2>¿Qué son los paneles laterales?</h2>
+            <p>Si alguna vez estás navegando una lista (`List Page`) infinita de clientes que solo tiene tres diminutas
+                columnas (Teléfono, Cuidad, Nombre), y quisieras saber "Cuánto me debe este" tendrías que salirte o
+                doble-clicar para abrir una `Card` completa, interrumpiendo abruptamente tu flujo mental de filtrado y
+                búsqueda.</p>
+            <p>Los desarrolladores de ERP resolvieron eso habilitando el "Área de FactBox".</p>
+            <p>Cuando el usuario mueve las flechas por las distintas filas de la izquierda, el <strong>FactBox de la
+                    derecha reacciona instantáneamente actualizando en vivo "Datos curiosos" y resúmenes valiosos de
+                    FlowFields.</strong></p>
+
+            <h2>¿Cómo mejoran la navegación?</h2>
+            <p>Tienen superposiciones de datos, fotos y enlaces cruzados. No solo aportan contexto pasivo sino que sus
+                numeritos en verde brillante son clicables (`DrillDowns`) permitiéndote teletransportarte a los orígenes
+                del problema sin cambiar ni ensuciar tu vista master de la parte principal.</p>
+            <p>Por debajo, un FactBox es sencillamente una `Page` de tipo <strong>CardPart</strong> insertada en un
+                bloque maestro superior de código llamado `factboxarea()`, que se engarza dinámicamente con la entidad
+                en pantalla.</p>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">layout</span>
+{
+    area(<span class="param">FactBoxes</span>)
+    {
+        <span class="cmd">part</span>(CustomerSalesHistory; "Customer Sales History")
+        {
+            SubPageLink = "No." = field("Sell-to Customer No.");
+        }
+    }
+}</code></pre>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

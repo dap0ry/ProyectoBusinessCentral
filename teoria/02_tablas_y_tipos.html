@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablas y Tipos de Datos - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-section" style="padding-top: 100px;">
+        <div class="theory-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                Estructuras de Datos</p>
+            <h1>Tablas y Tipos de Datos</h1>
+            <span class="diff-badge diff-easy"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 3/10</span>
+        </div>
+
+        <div class="theory-content">
+            <p>La base de Business Central es su base de datos (SQL Server por debajo). Para diseñar un programa,
+                primero hay que diseñar la <strong>Tabla</strong> (`table` en AL) que guardará la información.</p>
+
+            <h2>Tipos principales en AL</h2>
+            <p>A diferencia de lenguajes como Python o JS, AL requiere que especifiques exactamente qué tipo de
+                información va en cada columna (campo):</p>
+            <ul>
+                <li><strong>Code:</strong> Es un texto especial para códigos o IDs alfanuméricos ("CUST001"). Todo se
+                    guarda siempre en MAYÚSCULAS y los espacios no relevantes se ignoran en filtros. Un tamaño común es
+                    Code[20].</li>
+                <li><strong>Text:</strong> Cadenas de texto ordinarias para descripciones, nombres o direcciones ("Av.
+                    de América, Madrid"). Respeta mayúsculas y minúsculas ingresadas. Ejemplo: Text[100].</li>
+                <li><strong>Integer:</strong> Números enteros sin decimales, perfectos para contadores (1, 2, 3...) o
+                    identificadores numéricos.</li>
+                <li><strong>Decimal:</strong> Números con decimales. Crítico para precios, cantidades, balances y
+                    contabilidad general (ej. 19.99).</li>
+                <li><strong>Date / Time / DateTime:</strong> Útil para fechas de pedido, tiempos límite o estampas
+                    exactas (Fecha+Hora) de cuándo se creó un registro.</li>
+                <li><strong>Boolean:</strong> Sólo verdadero o falso (True / False). En las páginas se representa
+                    normalmente como un "check" o casilla de verificación (ej. "Autorizado").</li>
+                <li><strong>Option:</strong> Parecido al Enum, pero antiguo y con los valores pre-programados
+                    directamente en el campo. Se recomienda usar Enums hoy en día.</li>
+            </ul>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">table</span> <span class="var">50100</span> "Mi Tabla de Ejemplo"
+{
+    fields
+    {
+        <span class="cmd">field</span>(1; "No."; Code[20]) { ... }
+        <span class="cmd">field</span>(2; "Nombre"; Text[100]) { ... }
+        <span class="cmd">field</span>(3; "Cantidad Total"; Decimal) { ... }
+    }
+}</code></pre>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

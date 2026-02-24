@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TableRelations - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-section" style="padding-top: 100px;">
+        <div class="theory-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                Estructuras de Datos</p>
+            <h1>TableRelations</h1>
+            <span class="diff-badge diff-medium"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 5/10</span>
+        </div>
+
+        <div class="theory-content">
+            <p>Los sistemas ERP basan todo su poder en que sus múltiples tablas de datos "hablan" unas con otras. La
+                forma en la que le decimos a una tabla que uno de sus campos contiene código relacionado con OTRA tabla,
+                es mediante el concepto <strong>TableRelation</strong>.</p>
+
+            <h2>Vincular información sin duplicarla</h2>
+            <p>Imagina que estás registrando un **préstamo**. Necesitas saber qué socio o miembro de la biblioteca se
+                lleva el libro. NO escribes manualmante su DNI, su nombre completo, domicilio y teléfono cada vez. En su
+                lugar, el préstamo solo guarda el "Nº de Socio".</p>
+            <p>Para conseguir eso, le ponemos la propiedad <code>TableRelation</code> al campo del número del socio
+                dentro del préstamo para que apunte directamente a la tabla maestra gigante de "Socios".</p>
+
+            <h2>Efectos Prácticos UI</h2>
+            <p>Al hacer esto en AL, el sistema UI de Business Central automáticamente "reacciona". Cuando el usuario
+                intente rellenar ese campo, le aparecerán tres puntitos <code>(...)</code> y al pulsar, se abrirá casi
+                como por magia una ventana lateral listando todos los socios para que pueda hacer clic (look-up) y
+                escoger sin confundirse.</p>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">table</span> <span class="var">50101</span> "Préstamos"
+{
+    fields
+    {
+        <span class="cmd">field</span>(1; "Id Prestamo"; Code[20]) { ... }
+        
+        <span class="cmd">field</span>(2; "Nº Socio"; Code[20])
+        {
+            <span class="string">// Aquí indicamos que lo que el usuario ponga en "Nº Socio" tiene
+            // que existir obligatoriamente en el campo "No." de la Tabla "Customer" (Cliente).</span>
+            TableRelation = Customer."No.";
+        }
+    }
+}</code></pre>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

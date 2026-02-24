@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports y DataItems - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-section" style="padding-top: 100px;">
+        <div class="theory-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                Informes y Documentos</p>
+            <h1>Reports y DataItems</h1>
+            <span class="diff-badge diff-hard"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 8/10</span>
+        </div>
+
+        <div class="theory-content">
+            <p>Los <strong>Reports</strong> (Informes) son los objetos más complejos de construir visualmente dentro de
+                Business Central. Son los motores que generan los PDFs comerciales finales que verá el socio o cliente
+                (facturas con logotipo, albaranes, listados contables mensuales a enviar).</p>
+
+            <h2>La Arquitectura de un Report</h2>
+            <p>Se dividen en dos capas totalmente distintas:</p>
+            <ul>
+                <li><strong>El Dataset (El AL code):</strong> La programación en texto que decide *qué datos* exactos de
+                    base de datos extraemos, iteramos y preparamos. Es la cocina que recolecta los ingredientes.</li>
+                <li><strong>El Layout (El diseño visual Word/RDLC, HTML):</strong> Una vez los datos están compilados y
+                    limpios como variables separadas en memoria, se inyectan dentro de una plantilla vacía para que sean
+                    dibujados en un papel virtual con tablas y letras en negrita.</li>
+            </ul>
+
+            <h2>¿Qué es un DataItem?</h2>
+            <p>Un <code>DataItem</code> es una tabla de origen que se usará en el informe. Al definir un Report en AL,
+                escribimos una serie de bloques DataItem.</p>
+            <p>Si yo quiero sacar un listado de "Todos Los Clientes", yo declaro el
+                <code>DataItem(Customer; Customer)</code>. Automáticamente el motor coge a mi tabla `Customer` y empieza
+                a <strong>iterar una por una</strong> de forma implícita e invisible miles de veces. Por cada ciclo,
+                recoge las `column` (columnas o variables) que yo le ordené que publicase desde esa tabla, las etiqueta,
+                y las avienta al <em>Layout</em> para ser dibujadas de la nada en esa página.</p>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">dataset</span>
+{
+    <span class="string">// Lo que declare aquí, será un "bucle infinito" sobre los clientes</span>
+    <span class="cmd">dataitem</span>(Venta; "Customer")
+    {
+        <span class="string">// Solo quiero exportar a mi Word/PDF el Nombre de esta iteración. Nada más.</span>
+        <span class="cmd">column</span>(NombreCliente; "Name") { }
+        <span class="cmd">column</span>(DeudaActual; "Balance (LCY)") { }
+    }
+}</code></pre>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

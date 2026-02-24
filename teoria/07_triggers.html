@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triggers de Tabla - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-section" style="padding-top: 100px;">
+        <div class="theory-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                Lógica y Eventos</p>
+            <h1>Triggers de Tabla</h1>
+            <span class="diff-badge diff-medium"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 6/10</span>
+        </div>
+
+        <div class="theory-content">
+            <p>Los <strong>Triggers</strong> (Disparadores) son fragmentos de código AL que se ejecutan automáticamente
+                por la plataforma cuando ciertos *eventos físicos* suceden con los registros de la base de datos.</p>
+
+            <h2>Eventos de la Tabla</h2>
+            <p>Si escribimos código dentro de ciertas funciones pre-generadas en la raíz del objeto <code>table</code>,
+                nos aseguramos que ese código SIEMPRE se ejecute (a menos que el programador meta un bypass inseguro)
+                sin importar desde qué pantalla ni cómo llegó la orden.</p>
+            <ul>
+                <li><strong>OnInsert():</strong> Se dispara mágicamente la primera vez que un registro en blanco (nuevo)
+                    es salvado en SQL. Se usa muchísimo para autocompletar números de serie, asignar fechas de hoy
+                    "Create Date" y arrastrar campos principales.</li>
+                <li><strong>OnModify():</strong> Se dispara cada vez que una columna existente de un registro guardado
+                    recibe un valor diferente. Se usa para auditar, guardar históricos de "Modificado Por" o bloquear
+                    ciertas ediciones ("Si la factura ya está contabilizada, Error()").</li>
+                <li><strong>OnDelete():</strong> Justo antes de destruir el registro. Se usa comúnmente para validar
+                    dependencias ("Error() si un Cliente con facturas abiertas intenta ser borrado").</li>
+                <li><strong>OnRename():</strong> Es el más raro. Se utiliza solo si intentamos cambiar físicamente el
+                    valor bloqueado de la Clave Primaria (Primary Key). Se usa mucho en BC si cambias una "Categoría de
+                    Producto", este trigger navega por las tablas relacionadas actualizando los viejos nombres por el
+                    nuevo automáticamente para que nada se rompa.</li>
+            </ul>
+
+            <h2>Triggers de Campo (OnValidate)</h2>
+            <p>Puesto que un `OnModify` es general de toda la fila, el trigger más usado en el día a día es el que posee
+                *cada campo* por separado: <strong>OnValidate()</strong>.</p>
+            <p>Tú teclean en un campo de la pantalla, presionas el *Tabulador* del teclado, e inmediatamente
+                "OnValidate()" salta.</p>
+            <p>Se usa para calcular campos relacionados en vivo. Ejemplo maestro: El usuario cambia la `Cantidad`, el
+                código `OnValidate()` de la cantidad atrapa un evento que coge el `Precio Unitario` de otro lado, los
+                multiplica e inyecta la respuesta en el `Importe Módificado` de forma automática.</p>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">field</span>(5; "Cantidad"; Decimal)
+{
+    <span class="cmd">trigger</span> <span class="param">OnValidate</span>()
+    <span class="cmd">begin</span>
+        <span class="string">// Si cambias la cantidad, yo me encargo del resto.</span>
+        Rec."Importe Total" := Rec."Cantidad" * Rec."Precio Unitario";
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RequestPage - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-section" style="padding-top: 100px;">
+        <div class="theory-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                Informes y Documentos</p>
+            <h1>RequestPage</h1>
+            <span class="diff-badge diff-hard"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 7/10</span>
+        </div>
+
+        <div class="theory-content">
+            <p>¿Qué pasa si tienes 1 millón de facturas contabilizadas y lanzas a lo bestia un super Report de PDF para
+                revisar ventas? El motor de BC bloqueará todo tratando de sacar en pantalla 45.000 páginas en Word o
+                PDF, destrozado la memoria del software. Para esto existe el <strong>RequestPage</strong>.</p>
+
+            <h2>La pantalla previa del informe</h2>
+            <p>Es una "mini ventana popup especial" (Page) que siempre aparece segundos antes de que el motor empiece
+                forzosamente a correr tus bucles `DataItem` del código del informe. Esta ventana interrumpe literalmente
+                al motor en seco.</p>
+
+            <h2>Introduciendo filtros obligatorios</h2>
+            <p>Le da al usuario controles para "parar": campos como "Fecha Desde... Hasta...", o Selectores Booleanos
+                como <em>[√] Incluir Clientes Morosos</em>. Además, el RequestPage captura implícitamente qué filtros ha
+                metido el usuario desde fuera de la web (desde la lista de sus clientes habituales).</p>
+            <p>El código AL que reside en el corazón de la <code>requestpage</code> almacena las decisiones del usuario
+                y se las entrega al gran bucle del Dataset para filtrarlo todo agresivamente antes de empezar a escupir
+                datos.</p>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">requestpage</span>
+{
+    <span class="cmd">layout</span>
+    {
+        area(<span class="param">Content</span>)
+        {
+            <span class="cmd">group</span>(Options)
+            {
+                <span class="cmd">field</span>("Ignorar Devoluciones"; IgnorarDevols)
+                {
+                    <span class="string">// Capturamos una variable global en este campo antes de que inicie todo.</span>
+                    ApplicationArea = All;
+                }
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

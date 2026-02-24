@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queries - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-section" style="padding-top: 100px;">
+        <div class="theory-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                Avanzado y Rendimiento</p>
+            <h1>Queries</h1>
+            <span class="diff-badge diff-hard"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 7/10</span>
+        </div>
+
+        <div class="theory-content">
+            <p>En el mundo real con más de 10 millones de líneas de almacén, una <strong>Query</strong> es el único
+                objeto de AL capaz de interactuar directamente en crudo, de forma brutal y veloz con el verdadero gestor
+                de base de datos final (el motor SQL).</p>
+
+            <h2>Rendimiento puro frente a Pages</h2>
+            <p>Si quieres recolectar datos a mano usando el viejo estilo "abro un Récord mediante bucle de AL -> si pasa
+                mis filtros manuales, lo guardo -> actualizo mi total", estás ejecutando muchísimos ciclos del
+                procesador y memoria RAM (con <code>SetFilter</code> y <code>FindSet()</code>). Esto destruirá las
+                instancias del servidor a escala.</p>
+            <p>Una Query toma todo lo que le has definido (unas 5 o 6 tablas a unir simultáneamente) y compacta la
+                petición de información en *1 sola y gigante orden SQL nativa*. Se la encarga al motor y SQL retorna las
+                tablas trituradas y pre-calculadas infinitamente más rápido en 0.2 segundos.</p>
+
+            <h2>Funciones Analíticas (Agrupación)</h2>
+            <p>La mayor ventaja es definir que *ciertas columnas las sume SQL solito* (`Method = Sum;`) mientras agrupa
+                el desglose en un método inigualable en AL, como por ejemplo: "Quiero saber cuánto se ha vendido pero
+                devuélvemelo agrupado por Mes y dentro del mes por el Código del Vendedor." BC es incapaz en lenguaje
+                procedimental de hacer sumas bidimensionales en un microsegundo, pero las Queries lo hacen de facto.</p>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">query</span> <span class="var">50100</span> "Ventas Por Almacen"
+{
+    elements
+    {
+        <span class="cmd">dataitem</span>(Venta; "Sales Invoice Header")
+        {
+            <span class="string">// ¡Agrúpalo por aquí!</span>
+            <span class="cmd">column</span>(Location_Code; "Location Code") { }
+            
+            <span class="cmd">column</span>(TotalEuros; "Amount")
+            {
+                <span class="string">// Esta magia pide a SQL que suma, evitando el bucle loop de AL en RAM.</span>
+                Method = Sum;
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+.theory-section {
+    padding: 120px 0 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 90%;
+}
+
+.theory-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.theory-header h1 {
+    font-size: 3rem;
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-white);
+    margin-bottom: 1rem;
+}
+
+.theory-header p {
+    color: var(--text-gray);
+    font-size: 1.2rem;
+}
+
+/* 3-Column Grid Layout */
+.theory-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+    .theory-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .theory-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Concept Cards */
+.theory-card {
+    background: var(--glass-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2.5rem;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    transition: var(--transition-smooth);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.theory-card:hover {
+    border-color: var(--accent-blue);
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 240, 255, 0.1);
+}
+
+.theory-card h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    color: var(--text-white);
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+.theory-card p {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    flex-grow: 1;
+    /* Pushes button to bottom */
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.theory-card .btn {
+    align-self: flex-start;
+    padding: 10px 25px;
+    font-size: 0.95rem;
+}
+
+/* Difficulty Badges */
+.diff-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.diff-easy {
+    background-color: rgba(39, 201, 63, 0.15);
+    color: #27c93f;
+    border: 1px solid rgba(39, 201, 63, 0.3);
+}
+
+.diff-medium {
+    background-color: rgba(255, 189, 46, 0.15);
+    color: #ffbd2e;
+    border: 1px solid rgba(255, 189, 46, 0.3);
+}
+
+.diff-hard {
+    background-color: rgba(255, 95, 86, 0.15);
+    color: #ff5f56;
+    border: 1px solid rgba(255, 95, 86, 0.3);
+}

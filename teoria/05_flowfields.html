@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowFields - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-section" style="padding-top: 100px;">
+        <div class="theory-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                Lógica y Eventos</p>
+            <h1>FlowFields</h1>
+            <span class="diff-badge diff-medium"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 6/10</span>
+        </div>
+
+        <div class="theory-content">
+            <p>En las bases de datos normales, si entras en un albarán y quieres mostrar siempre la "Suma Total de
+                Euros" a pagar, creas un campo y programas triggers para que se actualice sumando cada vez que añadan,
+                editen o borren una línea. Un <strong>FlowField</strong> te libera de todo ese trabajo sucio.</p>
+
+            <h2>Concepto de Campos Calculados Dinámicamente</h2>
+            <p>Un FlowField *no existe* físicamente en la base de datos como un número estático guardado en su cajita.
+                Actúa como un *embudo vivo*. Su valor está siempre vacío hasta que una pieza de interfaz (una pantalla),
+                o un código lo "calcula" pidiendo su refresco explícito.</p>
+
+            <p>¿Qué logra? Ahorra espacio de almacenamiento masivo y evita errores fatales si un trigger se salta la
+                actualización.</p>
+
+            <h2>Funciones Soportadas e Implementación</h2>
+            <p>Un FlowField requiere un <code>FieldClass = FlowField;</code> y una fórmula matemática expresada con
+                <code>CalcFormula</code>. Las operaciones que soporta por detrás la base de datos SQL son limitadas:</p>
+            <ul>
+                <li><strong>Sum:</strong> Suma lo que valga un campo de otra tabla (ej. Facturas -> Factura Líneas ->
+                    Sum(Importe)).</li>
+                <li><strong>Average:</strong> Hace la media.</li>
+                <li><strong>Exist:</strong> Devuelve True (un Boolean) si existe al menos 1 registro en otra tabla que
+                    cumpla el vínculo.</li>
+                <li><strong>Count:</strong> Cuenta cuántas líneas de otra tabla coinciden con el enlace.</li>
+                <li><strong>Min / Max:</strong> Extrae el valor numérico (o fecha) menor o mayor de la otra tabla.</li>
+                <li><strong>Lookup:</strong> Se trae y muestra un campo de texto u otra cosa de otra tabla, de forma
+                    pasiva, sin guardarlo.</li>
+            </ul>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">field</span>(50; "Importe del Préstamo Activo"; Decimal)
+{
+    FieldClass = FlowField;
+    <span class="string">// Calcula la SUMA del campo "Saldo". 
+    // Donde el "Nº Socio" del préstamo coincida con el "Nº" del Socio que estoy viendo.</span>
+    CalcFormula = Sum("Detalle de Préstamos".Saldo 
+                      where("Nº Socio" = field("No.")));
+}</code></pre>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parts (Subpáginas) - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-section" style="padding-top: 100px;">
+        <div class="theory-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                Interfaz de Usuario</p>
+            <h1>Parts (Subpáginas)</h1>
+            <span class="diff-badge diff-medium"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 6/10</span>
+        </div>
+
+        <div class="theory-content">
+            <p>Muchas veces una pantalla "Principal" no es suficiente para describir toda la información. Las
+                <strong>Subpáginas</strong> son como pequeñas aplicaciones o "Widget-vistas" que incrustamos limpiamente
+                *dentro* de las pantallas maestras para organizar datos gigantes sin confundir a la gente.</p>
+
+            <h2>ListPart (Historiales o Sublistas)</h2>
+            <p>Se utiliza cuando la entidad tiene un flujo de diseño tipo Cabecera->Líneas (Header->Lines).</p>
+            <p>Piensa en un albarán gigante de supermercado o pedido de Venta. Abres la cabecera, es de tipo `Card` y
+                tiene info tuya global: nombre de cliente y fecha. Pero esa interfaz master "Cards" no sirve para
+                teclear y listar los 45 artículos comprados.</p>
+            <p>Así que el sistema incrusta un control inmenso tipo tabla llamado *Subformulario Líneas Pedido*, el cual
+                en realidad es un pequeño programa de tipo <strong>ListPart</strong> (Una lista, convertida en Part, en
+                Pieza). Aquí dentro el usuario puede machacar el enter velozmente viendo un historial gigante. Si pasas
+                a tu siguiente factura, la `Page` master pasa de factura, y dinámicamente el `ListPart` debajo descarta
+                en medio segundo su filtro y se trae y pinta el historial del cliente nuevo.</p>
+
+            <h2>CardPart (Resúmenes Estáticos)</h2>
+            <p>Una "Card" convertida en Pieza y enjaulada a un rincón.</p>
+            <p>Sirve para concentrar datos densos pero pequeños de otra tabla, usualmente a la derecha de la pantalla
+                sin ensuciar la "Card" original. Por ejemplo, en el pedido gigante, el cliente tiene su "Límite de
+                Riesgo" o saldo contable de su tarjeta que se asoma a un lado.</p>
+
+            <div class="ide-code">
+                <pre><code><span class="string">// Lo que le dices a tu Card Principal...</span>
+<span class="cmd">part</span>(SalesLines; "Sales Order Subform")
+{
+    ApplicationArea = Basic, Suite;
+    SubPageLink = "Document No." = field("No.");
+    <span class="string">// ¡Boom! Estás incrustando otra pieza dentro.</span>
+}</code></pre>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>
