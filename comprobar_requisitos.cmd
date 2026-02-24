@@ -22,8 +22,7 @@ set "FAILED=0"
 
 :: 1. Comprobar Edicion de Windows
 echo [1/3] Comprobando Edicion de Windows...
-for /f "tokens=4-5 delims=[.] " %%i in ('ver') do set VERSION=%%i.%%j
-for /f "tokens=2 delims==" %%A in ('wmic os get Caption /value ^| find "="') do set "OS_NAME=%%A"
+for /f "usebackq tokens=*" %%A in (`powershell -NoProfile -Command "(Get-CimInstance Win32_OperatingSystem).Caption"`) do set "OS_NAME=%%A"
 
 echo Sistema detectado: %OS_NAME%
 echo "%OS_NAME%" | findstr /I /C:"Pro" >nul

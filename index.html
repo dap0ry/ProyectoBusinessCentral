@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
         rel="stylesheet">
+    <!-- Prism.js for Syntax Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -38,11 +40,86 @@
             <div class="blob-blue"></div>
             <div class="blob-black"></div>
         </div>
+
+        <div class="code-container">
+            <h2 class="section-title">Backend de Ejemplo (Flask)</h2>
+            <pre><code class="language-python">from flask import Flask, jsonify, request
+from jsonschema import validate
+from pymongo import MongoClient
+import os
+import json
+
+path_base:str = os.path.dirname(os.path.abspath(__file__))
+
+application = Flask(__name__)
+
+@application.route("/")
+def hello_world():
+    return "<h1>Hola Mundo!</h1>"
+
+@application.route('/users', methods=['GET'])
+def get_usuarios():
+    with open(f'{path_base}/users.json', 'r', encoding='utf8') as fd:
+        usuarios:list[dict] = json.loads(fd.read())
+    return jsonify(usuarios), 200
+
+@application.route('/users', methods=['POST'])
+def crear_usuario():
+    try:
+        data:dict = request.get_json()
+        schema:dict = {
+            "$schema": "http://json-schema.org",
+            "type": "object",
+            "properties": {
+                "username": { "type": "string", "minLength": 3 },
+                "password": { "type": "string" }
+            },
+            "required": ["username", "password"],
+            "additionalProperties": False
+        }
+        validate(instance=data, schema=schema)
+        with open(f'{path_base}/users.json', 'r', encoding='utf8') as fd:
+            usuarios:list[dict] = json.loads(fd.read())
+        data['id'] = usuarios[-1]['id'] + 1
+        usuarios.append(data)
+        with open(f'{path_base}/users.json', 'w', encoding='utf8') as fd:
+            fd.write(json.dumps(usuarios, indent=4))
+        return jsonify({'result': 'OK', 'id': data['id']}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+@application.route('/users/<int:id>', methods=['GET'])
+def get_usuario(id:int):
+    with open(f'{path_base}/users.json', 'r', encoding='utf8') as fd:
+        usuarios:list[dict] = json.loads(fd.read())
+    filtrado = list(filter(lambda u: u['id'] == id, usuarios))
+    if len(filtrado) == 0:
+        return '', 404
+    return jsonify(filtrado[0]), 200
+
+@application.route('/users/<int:id>', methods=['DELETE'])
+def borrar_usuario(id:int):
+    with open(f'{path_base}/users.json', 'r', encoding='utf8') as fd:
+        usuarios:list[dict] = json.loads(fd.read())
+    user = next((u for u in usuarios if u['id'] == id), None)
+    if not user:
+        return '', 404
+    usuarios.remove(user)
+    with open(f'{path_base}/users.json', 'w', encoding='utf8') as fd:
+        fd.write(json.dumps(usuarios, indent=4))
+    return jsonify({'result': 'OK'}), 200
+
+if __name__ == '__main__':
+    application.run(debug=True, host='0.0.0.0')</code></pre>
+        </div>
     </main>
 
     <footer class="footer">
         <p>&copy; 2026 Guía Business Central. Diseñado para la excelencia.</p>
     </footer>
+    <!-- Prism.js script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </body>
 
 </html>

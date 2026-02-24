@@ -75,13 +75,46 @@ body {
 
 /* Hero Section */
 .hero {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     position: relative;
-    padding-top: 80px;
+    padding: 120px 2rem 60px;
+}
+
+.code-container {
+    margin-top: 4rem;
+    z-index: 10;
+    width: 100%;
+    max-width: 900px;
+    text-align: left;
+    background: var(--glass-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.section-title {
+    font-family: 'Outfit', sans-serif;
+    color: var(--accent-blue);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+pre {
+    padding: 0;
+    margin: 0;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+code {
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.95rem;
 }
 
 .hero-content {
