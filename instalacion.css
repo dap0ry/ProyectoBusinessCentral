@@ -134,6 +134,62 @@
     color: var(--primary-blue);
 }
 
+/* IDE Code Blocks Formating */
+.ide-code {
+    background: #1e1e1e;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+}
+
+.ide-header {
+    background: #2d2d2d;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.ide-header .title {
+    color: #cccccc;
+    font-size: 0.8rem;
+    font-family: 'Inter', sans-serif;
+    margin-left: 10px;
+}
+
+.ide-header .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.ide-header .dot.red { background: #ff5f56; }
+.ide-header .dot.yellow { background: #ffbd2e; }
+.ide-header .dot.green { background: #27c93f; }
+
+.ide-code pre {
+    margin: 0;
+    padding: 15px;
+    overflow-x: auto;
+}
+
+.ide-code code {
+    font-family: Consolas, 'Courier New', monospace;
+    color: #d4d4d4;
+    line-height: 1.5;
+    white-space: pre;
+}
+
+/* Syntax Highlighting Colors */
+.ide-code .cmd { color: #569cd6; } /* Blue for Cmdlets/Functions */
+.ide-code .param { color: #9cdcfe; } /* Light Blue for Parameters */
+.ide-code .var { color: #4fc1ff; } /* Variable Color */
+.ide-code .string { color: #ce9178; } /* String Color orange/brown */
+
 @media (max-width: 768px) {
     .timeline-line {
         left: 30px;

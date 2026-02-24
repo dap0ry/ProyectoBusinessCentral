@@ -33,62 +33,204 @@
         <div class="timeline-container">
             <div class="timeline-line"></div>
 
-            <!-- Paso 1: Docker (Derecha) -->
+            <!-- Paso 1 -->
             <div class="timeline-item right">
                 <div class="timeline-dot"></div>
                 <div class="timeline-content card">
-                    <img src="BCWeb\source\logos\DockerLogo.png" alt="Docker Logo" class="step-icon">
-                    <h2>1. Instalación de Docker</h2>
-                    <p>Para usar el instalador de Business Central, primero necesitas Docker Desktop. Asegúrate de:</p>
+                    <h2>1. Comprueba tu Windows</h2>
+                    <p>Necesitas:</p>
                     <ul>
-                        <li>Habilitar WSL 2 en Windows 11.</li>
-                        <li>Configurar contenedores de Windows si es necesario (o Linux según la imagen).</li>
-                        <li>Tener al menos 8GB de RAM dedicados.</li>
+                        <li>Windows 10/11 Pro o Enterprise</li>
+                        <li>16 GB RAM recomendado</li>
+                        <li>Virtualización activada en BIOS</li>
                     </ul>
+                    <p><em>Si tienes Windows Home → dímelo porque cambia el proceso.</em></p>
+                    <a href="comprobar_requisitos.cmd" download class="btn btn-primary"
+                        style="margin-top: 1.5rem; display: inline-block; padding: 10px 20px; font-size: 0.95rem;">
+                        Descargar Comprobador de Requisitos
+                    </a>
                 </div>
             </div>
 
-            <!-- Paso 2: VS Code (Izquierda) -->
+            <!-- Paso 2 -->
             <div class="timeline-item left">
                 <div class="timeline-dot"></div>
                 <div class="timeline-content card">
-                    <img src="BCWeb\source\logos\VisualStudioCodeLogo.png" alt="VS Code Logo" class="step-icon">
-                    <h2>2. Configuración de VS Code</h2>
-                    <p>Instala las herramientas necesarias para desarrollar en AL:</p>
+                    <h2>2. Activar virtualización en BIOS</h2>
+                    <p>Reinicia el PC y entra en la BIOS (F2 / DEL normalmente). Activa:</p>
                     <ul>
-                        <li>Descarga e instala Visual Studio Code.</li>
-                        <li>Configura el archivo launch.json para conectar con tu contenedor de Docker.</li>
+                        <li>Intel VT-x (Intel)</li>
+                        <li>SVM Mode (AMD)</li>
                     </ul>
+                    <p>Guarda y sal.</p>
                 </div>
             </div>
 
-            <!-- Paso 3: Business Central (Derecha) -->
+            <!-- Paso 3 -->
+            <div class="timeline-item right">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content card">
+                    <h2>3. Activar Hyper-V y Containers</h2>
+                    <p>Abre PowerShell como administrador y ejecuta:</p>
+                    <div class="ide-code">
+                        <pre><code><span class="cmd">dism.exe</span> /online /enable-feature /featurename:Microsoft-Hyper-V /all
+<span class="cmd">dism.exe</span> /online /enable-feature /featurename:Containers /all</code></pre>
+                    </div>
+                    <p>Reinicia el PC cuando termine.</p>
+                </div>
+            </div>
+
+            <!-- Paso 4 -->
+            <div class="timeline-item left">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content card">
+                    <img src="BCWeb\source\logos\DockerLogo.png" alt="Docker Logo" class="step-icon">
+                    <h2>4. Descargar Docker Desktop</h2>
+                    <ul>
+                        <li>Ve a la web oficial de Docker.</li>
+                        <li>Descarga Docker Desktop para Windows e instálalo normal.</li>
+                        <li>Reinicia si lo pide.</li>
+                        <li>Cuando lo abras por primera vez: acepta los términos y deja que termine la instalación
+                            interna.</li>
+                    </ul>
+                    <a href="https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe"
+                        class="btn btn-primary"
+                        style="margin-top: 1.5rem; display: inline-block; padding: 10px 20px; font-size: 0.95rem;">
+                        Descargar Docker Desktop
+                    </a>
+                </div>
+            </div>
+
+            <!-- Paso 5 -->
+            <div class="timeline-item right">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content card">
+                    <h2>5. Cambiar a Windows Containers (MUY IMPORTANTE)</h2>
+                    <p>Business Central NO funciona con Linux containers.</p>
+                    <ul>
+                        <li>Abre Docker Desktop.</li>
+                        <li>Abajo a la derecha en el icono de Docker (en la barra de tareas de Windows).</li>
+                        <li>Click derecho y pulsa:</li>
+                    </ul>
+                    <p><strong>👉 Switch to Windows containers</strong></p>
+                    <p><em>Si ya estás en Windows, no te saldrá esa opción.</em></p>
+                </div>
+            </div>
+
+            <!-- Paso 6 -->
+            <div class="timeline-item left">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content card">
+                    <h2>6. Instalar BcContainerHelper</h2>
+                    <p>Instalamos la herramienta oficial para crear el contenedor. Abre PowerShell como administrador:
+                    </p>
+                    <div class="ide-code">
+                        <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                                class="dot green"></span><span class="title">Administrador: PowerShell</span></div>
+                        <pre><code><span class="cmd">Install-Module</span> BcContainerHelper <span class="param">-Force</span></code></pre>
+                    </div>
+                    <p>Si pregunta algo → escribe Y.</p>
+                </div>
+            </div>
+
+            <!-- Paso 7 -->
+            <div class="timeline-item right">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content card">
+                    <h2>7. Permitir ejecución de scripts</h2>
+                    <p>Si PowerShell da error al instalar módulos:</p>
+                    <div class="ide-code">
+                        <pre><code><span class="cmd">Set-ExecutionPolicy</span> RemoteSigned</code></pre>
+                    </div>
+                    <p>Escribe Y si te pregunta.</p>
+                </div>
+            </div>
+
+            <!-- Paso 8 -->
+            <div class="timeline-item left">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content card">
+                    <h2>8. Crear credenciales para Business Central</h2>
+                    <p>En el mismo PowerShell:</p>
+                    <div class="ide-code">
+                        <pre><code><span class="var">$credential</span> = <span class="cmd">Get-Credential</span></code></pre>
+                    </div>
+                    <p>Se abrirá una ventana. Pon por ejemplo:</p>
+                    <ul>
+                        <li>Usuario: admin</li>
+                        <li>Contraseña: Admin1234</li>
+                    </ul>
+                    <p>Guárdalo.</p>
+                </div>
+            </div>
+
+            <!-- Paso 9 -->
+            <div class="timeline-item right">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content card">
+                    <h2>9. Crear el contenedor</h2>
+                    <p>Este es el paso más importante. Copia y pega esto tal cual:</p>
+                    <div class="ide-code">
+                        <pre><code><span class="cmd">New-BcContainer</span> `
+  <span class="param">-accept_eula</span> `
+  <span class="param">-containerName</span> bccontainer `
+  <span class="param">-artifactUrl</span> (<span class="cmd">Get-BCArtifactUrl</span> <span class="param">-type</span> Sandbox <span class="param">-country</span> es <span class="param">-select</span> Latest) `
+  <span class="param">-credential</span> <span class="var">$credential</span> `
+  <span class="param">-updateHosts</span> `
+  <span class="param">-includeAL</span></code></pre>
+                    </div>
+                    <p style="color: var(--accent-blue); margin-top: 15px;">⚠️ Tardará 10–30 minutos. NO cierres la
+                        ventana.</p>
+                </div>
+            </div>
+
+            <!-- Paso 10 -->
+            <div class="timeline-item left">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content card">
+                    <h2>10. Esperar a que termine</h2>
+                    <p>Si todo va bien verás el mensaje:</p>
+                    <div class="ide-code">
+                        <pre><code><span class="string">Container bccontainer successfully created</span></code></pre>
+                    </div>
+                    <p>Si da error, revisa el mensaje rojo del PowerShell.</p>
+                </div>
+            </div>
+
+            <!-- Paso 11 -->
             <div class="timeline-item right">
                 <div class="timeline-dot"></div>
                 <div class="timeline-content card">
                     <img src="BCWeb\source\logos\BusinessCentralLogo.png" alt="BC Logo" class="step-icon">
-                    <h2>3. Despliegue del Contenedor</h2>
-                    <p>Usa scripts de PowerShell o el asistente de BC para levantar la imagen:</p>
+                    <h2>11. Entrar en Business Central</h2>
+                    <p>Abre el navegador y entra a:</p>
+                    <p><a href="http://bccontainer/BusinessCentral" target="_blank"
+                            style="color: var(--accent-blue); text-decoration: underline;">http://bccontainer/BusinessCentral</a>
+                    </p>
                     <ul>
-                        <li>Descarga la imagen oficial de Microsoft Artifact Registry.</li>
-                        <li>Acepta el EULA y configura las credenciales de administrador.</li>
-                        <li>Verifica el acceso vía Web Client antes de empezar a programar.</li>
+                        <li>Usuario: admin</li>
+                        <li>Contraseña: la que pusiste</li>
                     </ul>
+                    <p>Y ya estás dentro.</p>
                 </div>
             </div>
 
-            <!-- Paso 4: AL Language (Izquierda) -->
+            <!-- Paso 12 -->
             <div class="timeline-item left">
                 <div class="timeline-dot"></div>
                 <div class="timeline-content card">
-                    <img src="BCWeb\source\logos\AlLogo.png" alt="AL Logo" class="step-icon">
-                    <h2>4. Extensión AL</h2>
-                    <p>El núcleo del desarrollo en Business Central:</p>
-                    <ul>
-                        <li>Instala la extensión "AL Language" desde el marketplace.</li>
-                        <li>Crea un nuevo proyecto con `AL: Go!`.</li>
-                        <li>Descarga los símbolos del servidor para habilitar el IntelliSense.</li>
-                    </ul>
+                    <h2>12. Comandos útiles</h2>
+                    <p>Para gestionar tu entorno de desarrollo en el futuro:</p>
+                    <div class="ide-code">
+                        <div class="ide-header"><span class="title">Parar contenedor:</span></div>
+                        <pre><code><span class="cmd">Stop-BcContainer</span> bccontainer</code></pre>
+                        <hr style="border-color: rgba(255,255,255,0.1); margin: 10px 0;">
+                        <div class="ide-header"><span class="title">Arrancar contenedor:</span></div>
+                        <pre><code><span class="cmd">Start-BcContainer</span> bccontainer</code></pre>
+                        <hr style="border-color: rgba(255,255,255,0.1); margin: 10px 0;">
+                        <div class="ide-header"><span class="title">Eliminar contenedor:</span></div>
+                        <pre><code><span class="cmd">Remove-BcContainer</span> bccontainer</code></pre>
+                    </div>
                 </div>
             </div>
 
