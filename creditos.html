@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créditos - Business Central</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 3rem 1.5rem;
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .credits-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .credits-header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, var(--primary-blue) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.3rem;
+        }
+
+        .credits-header p {
+            color: var(--text-gray);
+            font-size: 1rem;
+        }
+
+        .credits-grid {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .credits-section {
+            background: var(--glass-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 1.8rem 2rem;
+            backdrop-filter: blur(10px);
+            transition: var(--transition-smooth);
+            flex: 1;
+        }
+
+        .credits-section:hover {
+            border-color: rgba(0, 162, 255, 0.35);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .credits-group-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 1.1rem;
+            opacity: 0.85;
+        }
+
+        .credit-entry {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            padding: 0.65rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .credit-entry:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .credit-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: white;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+        }
+
+        .credit-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-white);
+        }
+
+        .credit-role {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            margin-top: 0.1rem;
+        }
+
+        .footer {
+            padding: 0.8rem 0;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="instalacion.html">Instalación</a></li>
+                <li><a href="teoria.html">Teoría</a></li>
+                <li><a href="ejercicios.html">Ejercicios</a></li>
+                <li><a href="creditos.html" class="active">Créditos</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-wrapper">
+        <div class="credits-header">
+            <h1>Créditos</h1>
+            <p>Personas que han hecho posible esta guía.</p>
+        </div>
+
+        <div class="credits-grid">
+            <!-- Desarrollo Web -->
+            <div class="credits-section">
+                <div class="credits-group-label">🖥️ Desarrollo Web</div>
+                <a href="https://github.com/dap0ry" target="_blank" rel="noopener" class="credit-entry"
+                    style="text-decoration:none;">
+                    <img src="https://github.com/dap0ry.png" alt="Daniel Poza Rivera"
+                        style="width:46px;height:46px;border-radius:50%;object-fit:cover;flex-shrink:0;box-shadow:0 4px 12px rgba(0,120,212,0.3);">
+                    <div>
+                        <div class="credit-name">Daniel Poza Rivera</div>
+                        <div class="credit-role">Diseño y desarrollo web</div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Ejercicios -->
+            <div class="credits-section">
+                <div class="credits-group-label">✏️ Ejercicios</div>
+                <div class="credit-entry">
+                    <div class="credit-avatar">N1</div>
+                    <div>
+                        <div class="credit-name">Nombre 1</div>
+                        <div class="credit-role">Ejercicios prácticos</div>
+                    </div>
+                </div>
+                <div class="credit-entry">
+                    <div class="credit-avatar">N2</div>
+                    <div>
+                        <div class="credit-name">Nombre 2</div>
+                        <div class="credit-role">Ejercicios prácticos</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teoría -->
+            <div class="credits-section">
+                <div class="credits-group-label">📚 Teoría</div>
+                <a href="https://github.com/alexfupe" target="_blank" rel="noopener" class="credit-entry"
+                    style="text-decoration:none;">
+                    <img src="https://github.com/alexfupe.png" alt="Alejandro Fuentes"
+                        style="width:46px;height:46px;border-radius:50%;object-fit:cover;flex-shrink:0;box-shadow:0 4px 12px rgba(0,120,212,0.3);">
+                    <div>
+                        <div class="credit-name">Alejandro Fuentes</div>
+                        <div class="credit-role">Contenido teórico</div>
+                    </div>
+                </a>
+                <a href="https://github.com/ccrespo-dev" target="_blank" rel="noopener" class="credit-entry"
+                    style="text-decoration:none;">
+                    <img src="https://github.com/ccrespo-dev.png" alt="Carlos Crespo"
+                        style="width:46px;height:46px;border-radius:50%;object-fit:cover;flex-shrink:0;box-shadow:0 4px 12px rgba(0,120,212,0.3);">
+                    <div>
+                        <div class="credit-name">Carlos Crespo</div>
+                        <div class="credit-role">Contenido teórico</div>
+                    </div>
+                </a>
+                <a href="https://github.com/ballescano-dev" target="_blank" rel="noopener" class="credit-entry"
+                    style="text-decoration:none;">
+                    <img src="https://github.com/ballescano-dev.png" alt="Ángel Ballescano"
+                        style="width:46px;height:46px;border-radius:50%;object-fit:cover;flex-shrink:0;box-shadow:0 4px 12px rgba(0,120,212,0.3);">
+                    <div>
+                        <div class="credit-name">Ángel Ballescano</div>
+                        <div class="credit-role">Contenido teórico</div>
+                    </div>
+                </a>
+                <a href="https://github.com/Laurisrofer" target="_blank" rel="noopener" class="credit-entry"
+                    style="text-decoration:none;">
+                    <img src="https://github.com/Laurisrofer.png" alt="Laura"
+                        style="width:46px;height:46px;border-radius:50%;object-fit:cover;flex-shrink:0;box-shadow:0 4px 12px rgba(0,120,212,0.3);">
+                    <div>
+                        <div class="credit-name">Laura</div>
+                        <div class="credit-role">Contenido teórico</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>
