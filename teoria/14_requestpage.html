@@ -38,6 +38,114 @@
         .theory-content li {
             margin-bottom: 0.5rem;
         }
+
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+
+        .alert-info ul {
+            margin-bottom: 0 !important;
+        }
+
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warning h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
     </style>
 </head>
 
@@ -65,41 +173,283 @@
         </div>
 
         <div class="theory-content">
-            <p>¿Qué pasa si tienes 1 millón de facturas contabilizadas y lanzas a lo bestia un super Report de PDF para
-                revisar ventas? El motor de BC bloqueará todo tratando de sacar en pantalla 45.000 páginas en Word o
-                PDF, destrozado la memoria del software. Para esto existe el <strong>RequestPage</strong>.</p>
 
-            <h2>La pantalla previa del informe</h2>
-            <p>Es una "mini ventana popup especial" (Page) que siempre aparece segundos antes de que el motor empiece
-                forzosamente a correr tus bucles `DataItem` del código del informe. Esta ventana interrumpe literalmente
-                al motor en seco.</p>
+            <p>¿Qué pasa si tienes 1 millón de facturas y lanzas un Report sin filtros? El motor de BC bloqueará todo
+                tratando de generar 45.000 páginas en PDF, destrozando la memoria del servidor. Para esto existe el
+                <strong>RequestPage</strong>: la pantalla previa que aparece antes de que el informe empiece a procesar
+                datos.
+            </p>
 
-            <h2>Introduciendo filtros obligatorios</h2>
-            <p>Le da al usuario controles para "parar": campos como "Fecha Desde... Hasta...", o Selectores Booleanos
-                como <em>[√] Incluir Clientes Morosos</em>. Además, el RequestPage captura implícitamente qué filtros ha
-                metido el usuario desde fuera de la web (desde la lista de sus clientes habituales).</p>
-            <p>El código AL que reside en el corazón de la <code>requestpage</code> almacena las decisiones del usuario
-                y se las entrega al gran bucle del Dataset para filtrarlo todo agresivamente antes de empezar a escupir
-                datos.</p>
+            <!-- SINTAXIS BÁSICA -->
+            <h2>Estructura básica</h2>
+            <p>La sección <code>requestpage</code> va dentro del Report, al mismo nivel que <code>dataset</code>:</p>
 
             <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
                 <pre><code><span class="cmd">requestpage</span>
 {
-    <span class="cmd">layout</span>
+    SaveValues = <span class="param">true</span>;  <span class="comment">// BC recuerda la última configuración del usuario</span>
+
+    layout
     {
-        area(<span class="param">Content</span>)
+        area(Content)
         {
-            <span class="cmd">group</span>(Options)
+            group(Opciones)
             {
-                <span class="cmd">field</span>("Ignorar Devoluciones"; IgnorarDevols)
+                Caption = <span class="string">'Opciones del Informe'</span>;
+
+                <span class="cmd">field</span>(IncluirDevueltos; IncluirDevueltos)
                 {
-                    <span class="string">// Capturamos una variable global en este campo antes de que inicie todo.</span>
                     ApplicationArea = All;
+                    Caption         = <span class="string">'Incluir préstamos ya devueltos'</span>;
+                    ToolTip         = <span class="string">'Marca esta casilla para ver también los préstamos devueltos.'</span>;
                 }
             }
         }
     }
+
+    <span class="cmd">trigger</span> <span class="param">OnOpenPage</span>()
+    <span class="cmd">begin</span>
+        <span class="comment">// Valores por defecto al abrir la RequestPage</span>
+        IncluirDevueltos := <span class="param">false</span>;
+    <span class="cmd">end</span>;
 }</code></pre>
+            </div>
+
+            <!-- QUÉ ES -->
+            <h2>¿Qué es la RequestPage?</h2>
+            <p>Es una "mini ventana popup" que aparece siempre <strong>antes</strong> de que el motor empiece a recorrer
+                los DataItems del informe. Esta ventana interrumpe al motor en seco y le da al usuario controles para
+                acotar los datos: campos de fecha "Desde... Hasta...", selectores booleanos como <em>Incluir Clientes
+                    Morosos</em>, rangos de código, etc.</p>
+
+            <p>Los filtros estándar de los DataItems aparecen en la RequestPage de forma automática. Tú solo defines las
+                <strong>opciones adicionales</strong> que quieras añadir.
+            </p>
+
+            <!-- SAVEVALUES -->
+            <h2>SaveValues — Recordar la última configuración</h2>
+            <p><code>SaveValues = true</code> hace que BC recuerde la última configuración que usó el usuario. Muy
+                cómodo para informes que se lanzan a diario con los mismos parámetros.</p>
+
+            <!-- FILTROS CON FECHAS -->
+            <h2>Añadir filtros de fecha</h2>
+            <p>El caso más habitual: permitir que el usuario filtre el informe por un rango de fechas. Las variables
+                definidas en la RequestPage son <strong>globales del Report</strong>, accesibles desde cualquier trigger
+                y DataItem:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">requestpage</span>
+{
+    SaveValues = <span class="param">true</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            group(Opciones)
+            {
+                Caption = <span class="string">'Opciones'</span>;
+                <span class="cmd">field</span>(IncluirDevueltos; IncluirDevueltos)
+                {
+                    ApplicationArea = All;
+                    Caption         = <span class="string">'Incluir préstamos devueltos'</span>;
+                }
+            }
+            group(Fechas)
+            {
+                Caption = <span class="string">'Rango de fechas'</span>;
+                <span class="cmd">field</span>(FechaDesde; FechaFiltroDesde)
+                {
+                    ApplicationArea = All;
+                    Caption         = <span class="string">'Fecha inicio: Desde'</span>;
+                }
+                <span class="cmd">field</span>(FechaHasta; FechaFiltroHasta)
+                {
+                    ApplicationArea = All;
+                    Caption         = <span class="string">'Fecha inicio: Hasta'</span>;
+                }
+            }
+        }
+    }
+
+    <span class="cmd">trigger</span> <span class="param">OnOpenPage</span>()
+    <span class="cmd">begin</span>
+        <span class="comment">// Valores por defecto: año en curso completo</span>
+        FechaFiltroDesde := DMY2Date(<span class="var">1</span>, <span class="var">1</span>, Date2DMY(Today(), <span class="var">3</span>));  <span class="comment">// 1 de enero del año actual</span>
+        FechaFiltroHasta := Today();
+        IncluirDevueltos := <span class="param">false</span>;
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <!-- USO EN DATAITEMS -->
+            <h2>Usar las opciones en los DataItems</h2>
+            <p>Las variables de la RequestPage se aplican en <code>OnPreDataItem()</code>, no en
+                <code>OnAfterGetRecord()</code>. Así BC filtra antes de traer los datos, no después:
+            </p>
+
+            <div class="alert-warning">
+                <h3>⚠️ Filtra siempre en OnPreDataItem</h3>
+                <p style="margin: 0;">Si filtraras en <code>OnAfterGetRecord</code>, BC primero traería
+                    <strong>todos</strong> los registros y luego los descartaría uno a uno, lo cual es muy ineficiente.
+                    Filtra siempre en <code>OnPreDataItem</code> para que SQL solo devuelva lo que necesitas.
+                </p>
+            </div>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">dataitem</span>(Prestamo; Prestamo)
+{
+    DataItemLink = <span class="string">"No. Socio"</span> = FIELD(<span class="string">"No."</span>);
+
+    <span class="cmd">trigger</span> <span class="param">OnPreDataItem</span>()
+    <span class="cmd">begin</span>
+        <span class="comment">// Aplicamos los filtros de fecha que el usuario eligió en la RequestPage</span>
+        <span class="cmd">if</span> FechaFiltroDesde <> <span class="var">0D</span> <span class="cmd">then</span>
+            SetFilter(<span class="string">"Fecha Inicio"</span>, <span class="string">'>=%1'</span>, FechaFiltroDesde);
+        <span class="cmd">if</span> FechaFiltroHasta <> <span class="var">0D</span> <span class="cmd">then</span>
+            SetFilter(<span class="string">"Fecha Inicio"</span>, <span class="string">'<=%1'</span>, FechaFiltroHasta);
+
+        <span class="comment">// Si el usuario NO marcó "Incluir devueltos", los excluimos</span>
+        <span class="cmd">if not</span> IncluirDevueltos <span class="cmd">then</span>
+            SetFilter(Estado, <span class="string">'<>%1'</span>, Estado::Devuelto);
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <!-- EJEMPLO COMPLETO -->
+            <h2>Ejemplo completo: Report con RequestPage integrada</h2>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">report</span> <span class="var">50102</span> <span class="string">"Informe Completo Prestamos"</span>
+{
+    Caption         = <span class="string">'Informe Completo de Préstamos'</span>;
+    UsageCategory   = ReportsAndAnalysis;
+    ApplicationArea = All;
+
+    dataset
+    {
+        <span class="cmd">dataitem</span>(Socio; Socio)
+        {
+            <span class="cmd">column</span>(Socio_No;     <span class="string">"No."</span>)          { }
+            <span class="cmd">column</span>(Socio_Nombre; Nombre)         { }
+            <span class="cmd">column</span>(Socio_Total;  TotalDiasSocio) { }
+
+            <span class="cmd">trigger</span> <span class="param">OnPreDataItem</span>()
+            <span class="cmd">begin</span>
+                SetCurrentKey(Nombre);
+            <span class="cmd">end</span>;
+
+            <span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+            <span class="cmd">begin</span>
+                TotalDiasSocio := <span class="var">0</span>;
+            <span class="cmd">end</span>;
+
+            <span class="cmd">dataitem</span>(Prestamo; Prestamo)
+            {
+                DataItemLink = <span class="string">"No. Socio"</span> = FIELD(<span class="string">"No."</span>);
+
+                <span class="cmd">column</span>(Prest_No;     <span class="string">"No."</span>)           { }
+                <span class="cmd">column</span>(Prest_Inicio; <span class="string">"Fecha Inicio"</span>)  { }
+                <span class="cmd">column</span>(Prest_Dias;   <span class="string">"Dias Prestamo"</span>) { }
+                <span class="cmd">column</span>(Prest_Estado; Estado)          { }
+
+                <span class="cmd">trigger</span> <span class="param">OnPreDataItem</span>()
+                <span class="cmd">begin</span>
+                    <span class="comment">// Filtros dinámicos desde la RequestPage</span>
+                    <span class="cmd">if</span> FechaFiltroDesde <> <span class="var">0D</span> <span class="cmd">then</span>
+                        SetFilter(<span class="string">"Fecha Inicio"</span>, <span class="string">'>=%1'</span>, FechaFiltroDesde);
+                    <span class="cmd">if</span> FechaFiltroHasta <> <span class="var">0D</span> <span class="cmd">then</span>
+                        SetFilter(<span class="string">"Fecha Inicio"</span>, <span class="string">'<=%1'</span>, FechaFiltroHasta);
+                    <span class="cmd">if not</span> IncluirDevueltos <span class="cmd">then</span>
+                        SetFilter(Estado, <span class="string">'<>%1'</span>, Estado::Devuelto);
+
+                    SetCurrentKey(<span class="string">"Fecha Inicio"</span>);
+                    SetAscending(<span class="string">"Fecha Inicio"</span>, <span class="param">false</span>);
+                <span class="cmd">end</span>;
+
+                <span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+                <span class="cmd">begin</span>
+                    TotalDiasSocio += <span class="string">"Dias Prestamo"</span>;
+                <span class="cmd">end</span>;
+            }
+        }
+    }
+
+    requestpage
+    {
+        SaveValues = <span class="param">true</span>;
+        layout
+        {
+            area(Content)
+            {
+                group(Opciones) { Caption = <span class="string">'Opciones'</span>;
+                    <span class="cmd">field</span>(IncluirDevueltos; IncluirDevueltos) { ApplicationArea = All; Caption = <span class="string">'Incluir devueltos'</span>; }
+                }
+                group(Fechas) { Caption = <span class="string">'Rango de fechas'</span>;
+                    <span class="cmd">field</span>(FechaDesde; FechaFiltroDesde) { ApplicationArea = All; Caption = <span class="string">'Desde'</span>; }
+                    <span class="cmd">field</span>(FechaHasta; FechaFiltroHasta) { ApplicationArea = All; Caption = <span class="string">'Hasta'</span>; }
+                }
+            }
+        }
+        <span class="cmd">trigger</span> <span class="param">OnOpenPage</span>()
+        <span class="cmd">begin</span>
+            FechaFiltroDesde := DMY2Date(<span class="var">1</span>, <span class="var">1</span>, Date2DMY(Today(), <span class="var">3</span>));
+            FechaFiltroHasta := Today();
+            IncluirDevueltos := <span class="param">false</span>;
+        <span class="cmd">end</span>;
+    }
+
+    <span class="cmd">var</span>
+        TotalDiasSocio  : <span class="param">Integer</span>;
+        IncluirDevueltos: <span class="param">Boolean</span>;
+        FechaFiltroDesde: <span class="param">Date</span>;
+        FechaFiltroHasta: <span class="param">Date</span>;
+
+    rendering
+    {
+        layout(RDLCLayout)
+        {
+            Type       = RDLC;
+            LayoutFile = <span class="string">'src/layouts/InformeCompleto.rdlc'</span>;
+        }
+    }
+
+    <span class="cmd">trigger</span> <span class="param">OnPreReport</span>()
+    <span class="cmd">begin</span>
+        <span class="comment">// Validamos que la fecha Desde no sea posterior a Hasta</span>
+        <span class="cmd">if</span> (FechaFiltroDesde <> <span class="var">0D</span>) <span class="cmd">and</span> (FechaFiltroHasta <> <span class="var">0D</span>) <span class="cmd">then</span>
+            <span class="cmd">if</span> FechaFiltroDesde > FechaFiltroHasta <span class="cmd">then</span>
+                Error(<span class="string">'La fecha "Desde" no puede ser posterior a la fecha "Hasta".'</span>);
+    <span class="cmd">end</span>;
+
+    <span class="cmd">trigger</span> <span class="param">OnPostReport</span>()
+    <span class="cmd">begin</span>
+        Message(<span class="string">'Informe generado correctamente.'</span>);
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <!-- TIPS -->
+            <div class="alert-info">
+                <h3>💡 Tips</h3>
+                <ul>
+                    <li><code>SaveValues = true</code> guarda la última configuración del usuario. Ideal para informes
+                        que se ejecutan a diario con los mismos parámetros.</li>
+                    <li>Las variables de la RequestPage son <strong>globales del Report</strong>: accesibles desde
+                        cualquier DataItem y trigger sin necesidad de pasarlas como parámetros.</li>
+                    <li>Usa <code>OnOpenPage()</code> de la RequestPage para poner valores por defecto inteligentes (ej.
+                        año en curso, sin devueltos...).</li>
+                    <li>Aplica los filtros siempre en <code>OnPreDataItem</code>, nunca en
+                        <code>OnAfterGetRecord</code>. El primero filtra en SQL antes de traer datos; el segundo los
+                        trae todos y los descarta uno a uno.
+                    </li>
+                    <li>Valida las opciones del usuario en <code>OnPreReport()</code>: es el último punto antes de que
+                        el motor empiece a leer datos.</li>
+                </ul>
             </div>
 
             <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;

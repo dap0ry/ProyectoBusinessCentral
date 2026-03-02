@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio: PK AutoIncrement - Business Central</title>
+    <title>Ejercicio: Claves Primarias - Business Central</title>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="../ejercicios.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
@@ -42,6 +42,164 @@
             border-radius: 8px;
             margin-bottom: 2rem;
         }
+
+        /* Contexto previo */
+        .prev-context {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 28px;
+            margin-bottom: 40px;
+        }
+
+        .prev-context .prev-label {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .prev-context h4 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+        }
+
+        .prev-context ul {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .prev-context ul li {
+            margin-bottom: 4px;
+        }
+
+        /* Exercise block */
+        .exercise-block {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .exercise-block .exercise-number {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-blue);
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .exercise-block h3 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .badge-section {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 0.78rem;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* IDE */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info strong {
+            color: var(--primary-blue);
+        }
+
+        .alert-warn {
+            background-color: rgba(234, 179, 8, 0.08);
+            border-left: 4px solid #eab308;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warn strong {
+            color: #eab308;
+        }
     </style>
 </head>
 
@@ -62,50 +220,213 @@
         <div class="exercise-header" style="margin-bottom: 30px;">
             <p
                 style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
-                EJERCICIO 03</p>
-            <h1>PK: Numeración Automática</h1>
+                EJERCICIO 03 · CLAVES PRIMARIAS</p>
+            <h1>Claves Primarias (PK)</h1>
             <span class="diff-badge diff-medium"
                 style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 4/10</span>
         </div>
 
         <div class="exercise-content">
-            <div class="goal">
-                <strong>Objetivo:</strong> Crear una tabla de histórico de eventos donde la clave primaria sea un número
-                entero que crezca automáticamente.
+
+            <!-- Contexto previo -->
+            <div class="prev-context">
+                <div class="prev-label">Ejercicios anteriores</div>
+                <h4>¿Qué construiste hasta ahora?</h4>
+                <ul>
+                    <li>El Enum <code>"Rental Status"</code> (ID 50100) con los estados de la maquinaria, extensible.
+                    </li>
+                    <li>La tabla <code>"Maquinaria"</code> (ID 50100) con los campos <code>"No."</code>,
+                        <code>"Descripcion"</code> y <code>"Estado"</code>, y su PK simple sobre <code>"No."</code>.
+                    </li>
+                    <li>Las pages <code>"Maquinaria List"</code> y <code>"Maquinaria Card"</code> con un trigger
+                        <code>OnValidate</code> y una acción de filtro por estado.
+                    </li>
+                </ul>
             </div>
 
-            <h2>Instrucciones</h2>
-            <ul>
-                <li>Crea la tabla <code>History Log</code> con ID <code>50102</code>.</li>
-                <li>Define un campo <code>Entry No.</code> de tipo <code>Integer</code>.</li>
-                <li>Configura la propiedad <code>AutoIncrement = true;</code> en dicho campo.</li>
-                <li>Asegúrate de que <code>Entry No.</code> sea la <strong>Clave Primaria</strong> en la sección
-                    <code>keys</code>.</li>
-                <li>Añade un campo <code>Description</code> de tipo <code>Text[250]</code>.</li>
-            </ul>
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 1 – Añadir SK a Maquinaria
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 01</div>
+                <div class="badge-section">Clave secundaria</div>
+                <h3>Añade una clave secundaria a Maquinaria</h3>
 
-            <h2>Ayuda</h2>
-            <div class="ide-code">
-                <pre><code><span class="cmd">table</span> <span class="var">50102</span> "History Log"
+                <div class="goal">
+                    <strong>Objetivo:</strong> Ampliar la tabla <code>"Maquinaria"</code> con dos nuevos campos y una
+                    clave secundaria sobre el estado, para acelerar las búsquedas y filtros que ya creaste en
+                    el ejercicio anterior.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Abre la tabla <code>"Maquinaria"</code> y añade dos campos nuevos:
+                        <code>"Categoria"</code> (Code[20]) y <code>"Fecha Alta"</code> (Date).
+                    </li>
+                    <li>En la sección <code>keys</code>, mantén la PK existente sobre <code>"No."</code>.</li>
+                    <li>Añade una clave secundaria <code>SK1</code> sobre el campo <code>"Estado"</code>.</li>
+                    <li>Añade una segunda clave secundaria <code>SK2</code> sobre <code>"Categoria"</code> con la
+                        propiedad <code>MaintainSqlIndex = false</code> (solo se usará en filtros internos de BC, no en
+                        consultas SQL externas).</li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — Maquinaria.Table.al (fragmento keys)</span></div>
+                    <pre><code>    keys
+    {
+        <span class="cmd">key</span>(PK;  <span class="string">"No."</span>)       { }
+        <span class="cmd">key</span>(SK1; <span class="string">"Estado"</span>)    { }
+        <span class="cmd">key</span>(SK2; <span class="string">"Categoria"</span>)
+        {
+            MaintainSqlIndex = <span class="param">false</span>;
+        }
+    }</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> <code>MaintainSqlIndex = false</code> ahorra recursos en escritura
+                    cuando el índice solo se necesita dentro de Business Central. Es especialmente útil en tablas con
+                    muchas inserciones.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 2 – Nueva tabla con PK compuesta
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 02</div>
+                <div class="badge-section">PK compuesta</div>
+                <h3>Crea la tabla de líneas de alquiler</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Diseñar una tabla de líneas relacionada con <code>"Maquinaria"</code>
+                    usando una <strong>clave primaria compuesta</strong> para representar la relación
+                    documento → línea.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea el archivo <code>LineaAlquiler.Table.al</code> con ID <code>50101</code> y nombre
+                        <code>"Linea Alquiler"</code>.
+                    </li>
+                    <li>Añade los campos: <code>"No. Alquiler"</code> (Code[20]), <code>"No. Linea"</code> (Integer),
+                        <code>"No. Maquina"</code> (Code[20]), <code>"Fecha Inicio"</code> (Date) y
+                        <code>"Fecha Fin"</code> (Date).
+                    </li>
+                    <li>Define la PK como <strong>compuesta</strong> sobre los campos <code>"No. Alquiler"</code> y
+                        <code>"No. Linea"</code> combinados.
+                    </li>
+                    <li>Añade una clave secundaria <code>SK1</code> sobre <code>"No. Maquina"</code> para poder buscar
+                        rápidamente todos los alquileres de una máquina concreta.</li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — LineaAlquiler.Table.al</span></div>
+                    <pre><code><span class="cmd">table</span> <span class="var">50101</span> <span class="string">"Linea Alquiler"</span>
 {
     fields
     {
-        <span class="cmd">field</span>(1; "Entry No."; Integer)
-        {
-            AutoIncrement = true;
-        }
-        <span class="string">// ... resto de campos</span>
+        <span class="cmd">field</span>(<span class="var">1</span>; <span class="string">"No. Alquiler"</span>;  <span class="param">Code</span>[20]) { }
+        <span class="cmd">field</span>(<span class="var">2</span>; <span class="string">"No. Linea"</span>;     <span class="param">Integer</span>)  { }
+        <span class="cmd">field</span>(<span class="var">3</span>; <span class="string">"No. Maquina"</span>;   <span class="param">Code</span>[20]) { }
+        <span class="cmd">field</span>(<span class="var">4</span>; <span class="string">"Fecha Inicio"</span>;  <span class="param">Date</span>)     { }
+        <span class="cmd">field</span>(<span class="var">5</span>; <span class="string">"Fecha Fin"</span>;     <span class="param">Date</span>)     { }
     }
-    
     keys
     {
-        <span class="cmd">key</span>(PK; "Entry No.") { Clustered = true; }
+        <span class="cmd">key</span>(PK; <span class="string">"No. Alquiler"</span>, <span class="string">"No. Linea"</span>) { }  <span class="comment">// PK compuesta</span>
+        <span class="cmd">key</span>(SK1; <span class="string">"No. Maquina"</span>)              { }  <span class="comment">// SK para búsquedas</span>
     }
 }</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> La PK compuesta garantiza que el alquiler <code>ALQ001</code> puede
+                    tener las líneas 1, 2 y 3 sin conflicto. La unicidad se evalúa sobre la <em>combinación</em>
+                    de ambos campos, no sobre cada uno por separado.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 3 – AutoIncrement en un histórico
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 03</div>
+                <div class="badge-section">AutoIncrement</div>
+                <h3>Tabla de movimientos con numeración automática</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Crear una tabla de historial de cambios de estado de la maquinaria
+                    usando <code>AutoIncrement</code> como PK, y una SK con <code>MaintainSiftIndex</code> para
+                    mantener contadores por máquina.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea <code>HistorialEstado.Table.al</code> con ID <code>50102</code> y nombre
+                        <code>"Historial Estado Maquina"</code>.
+                    </li>
+                    <li>El primer campo debe ser <code>"Entry No."</code> de tipo <code>Integer</code> con la
+                        propiedad <code>AutoIncrement = true</code>. Este será la PK.</li>
+                    <li>Añade los campos: <code>"No. Maquina"</code> (Code[20]), <code>"Estado Anterior"</code>
+                        (Enum "Rental Status"), <code>"Estado Nuevo"</code> (Enum "Rental Status") y
+                        <code>"Fecha Cambio"</code> (DateTime).
+                    </li>
+                    <li>Define la PK sobre <code>"Entry No."</code>.</li>
+                    <li>Añade una SK sobre <code>"No. Maquina"</code> con <code>MaintainSiftIndex = true</code> para
+                        poder contar los cambios de estado de cada máquina de forma eficiente.</li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — HistorialEstado.Table.al</span></div>
+                    <pre><code><span class="cmd">table</span> <span class="var">50102</span> <span class="string">"Historial Estado Maquina"</span>
+{
+    fields
+    {
+        <span class="cmd">field</span>(<span class="var">1</span>; <span class="string">"Entry No."</span>;       <span class="param">Integer</span>)
+        {
+            AutoIncrement = <span class="param">true</span>;  <span class="comment">// BC asigna el número automáticamente</span>
+        }
+        <span class="cmd">field</span>(<span class="var">2</span>; <span class="string">"No. Maquina"</span>;     <span class="param">Code</span>[20])              { }
+        <span class="cmd">field</span>(<span class="var">3</span>; <span class="string">"Estado Anterior"</span>; <span class="param">Enum</span> <span class="string">"Rental Status"</span>) { }
+        <span class="cmd">field</span>(<span class="var">4</span>; <span class="string">"Estado Nuevo"</span>;    <span class="param">Enum</span> <span class="string">"Rental Status"</span>) { }
+        <span class="cmd">field</span>(<span class="var">5</span>; <span class="string">"Fecha Cambio"</span>;    <span class="param">DateTime</span>)             { }
+    }
+    keys
+    {
+        <span class="cmd">key</span>(PK; <span class="string">"Entry No."</span>)
+        {
+            <span class="comment">// Clustered = true por defecto, no hace falta declararlo</span>
+        }
+        <span class="cmd">key</span>(SK1; <span class="string">"No. Maquina"</span>)
+        {
+            MaintainSiftIndex = <span class="param">true</span>;
+        }
+    }
+}</code></pre>
+                </div>
+
+                <div class="alert-warn">
+                    <strong>⚠️ Recuerda:</strong> <code>AutoIncrement</code> no garantiza una secuencia sin huecos.
+                    Si se borra un registro, su número <em>no</em> se reutiliza. No uses este campo para
+                    numerar documentos visibles al usuario; para eso existen los <code>No. Series</code>.
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Bonus:</strong> ¿Dónde escribirías el código que inserta una fila en esta tabla
+                    cada vez que cambia el campo <code>"Estado"</code> de <code>"Maquinaria"</code>? Pista: ya
+                    tienes el sitio perfecto en el trigger <code>OnValidate</code> del campo <code>"Estado"</code>
+                    de <code>MaquinariaCard.Page.al</code>.
+                </div>
             </div>
 
             <a href="../ejercicios.html" class="btn btn-secondary"
-                style="margin-top: 40px; display: inline-block;">&larr; Volver a Ejercicios</a>
+                style="margin-top: 10px; margin-bottom: 60px; display: inline-block;">&larr; Volver a Ejercicios</a>
         </div>
     </main>
 

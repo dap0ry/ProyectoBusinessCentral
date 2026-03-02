@@ -73,6 +73,8 @@
                     <h2>3. Activar Hyper-V y Containers</h2>
                     <p>Abre PowerShell como administrador y ejecuta:</p>
                     <div class="ide-code">
+                        <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                                class="dot green"></span><span class="title">Administrador: PowerShell</span></div>
                         <pre><code><span class="cmd">dism.exe</span> /online /enable-feature /featurename:Microsoft-Hyper-V /all
 <span class="cmd">dism.exe</span> /online /enable-feature /featurename:Containers /all</code></pre>
                     </div>
@@ -140,6 +142,8 @@
                     <h2>7. Permitir ejecución de scripts</h2>
                     <p>Si PowerShell da error al instalar módulos:</p>
                     <div class="ide-code">
+                        <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                                class="dot green"></span><span class="title">Administrador: PowerShell</span></div>
                         <pre><code><span class="cmd">Set-ExecutionPolicy</span> RemoteSigned</code></pre>
                     </div>
                     <p>Escribe Y si te pregunta.</p>
@@ -153,6 +157,8 @@
                     <h2>8. Crear credenciales para Business Central</h2>
                     <p>En el mismo PowerShell:</p>
                     <div class="ide-code">
+                        <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                                class="dot green"></span><span class="title">Administrador: PowerShell</span></div>
                         <pre><code><span class="var">$credential</span> = <span class="cmd">Get-Credential</span></code></pre>
                     </div>
                     <p>Se abrirá una ventana. Pon por ejemplo:</p>
@@ -171,6 +177,8 @@
                     <h2>9. Crear el contenedor</h2>
                     <p>Este es el paso más importante. Copia y pega esto tal cual:</p>
                     <div class="ide-code">
+                        <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                                class="dot green"></span><span class="title">Administrador: PowerShell</span></div>
                         <pre><code><span class="cmd">New-BcContainer</span> `
   <span class="param">-accept_eula</span> `
   <span class="param">-containerName</span> bccontainer `
@@ -191,6 +199,8 @@
                     <h2>10. Esperar a que termine</h2>
                     <p>Si todo va bien verás el mensaje:</p>
                     <div class="ide-code">
+                        <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                                class="dot green"></span><span class="title">Administrador: PowerShell</span></div>
                         <pre><code><span class="string">Container bccontainer successfully created</span></code></pre>
                     </div>
                     <p>Si da error, revisa el mensaje rojo del PowerShell.</p>
@@ -221,14 +231,28 @@
                 <div class="timeline-content card">
                     <h2>12. Comandos útiles</h2>
                     <p>Para gestionar tu entorno de desarrollo en el futuro:</p>
+                    <h3
+                        style="color: var(--text-gray); font-size: 1rem; margin: 1rem 0 0.5rem; font-family: 'Outfit', sans-serif;">
+                        Parar contenedor</h3>
                     <div class="ide-code">
-                        <div class="ide-header"><span class="title">Parar contenedor:</span></div>
+                        <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                                class="dot green"></span><span class="title">Administrador: PowerShell</span></div>
                         <pre><code><span class="cmd">Stop-BcContainer</span> bccontainer</code></pre>
-                        <hr style="border-color: rgba(255,255,255,0.1); margin: 10px 0;">
-                        <div class="ide-header"><span class="title">Arrancar contenedor:</span></div>
+                    </div>
+                    <h3
+                        style="color: var(--text-gray); font-size: 1rem; margin: 1rem 0 0.5rem; font-family: 'Outfit', sans-serif;">
+                        Arrancar contenedor</h3>
+                    <div class="ide-code">
+                        <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                                class="dot green"></span><span class="title">Administrador: PowerShell</span></div>
                         <pre><code><span class="cmd">Start-BcContainer</span> bccontainer</code></pre>
-                        <hr style="border-color: rgba(255,255,255,0.1); margin: 10px 0;">
-                        <div class="ide-header"><span class="title">Eliminar contenedor:</span></div>
+                    </div>
+                    <h3
+                        style="color: var(--text-gray); font-size: 1rem; margin: 1rem 0 0.5rem; font-family: 'Outfit', sans-serif;">
+                        Eliminar contenedor</h3>
+                    <div class="ide-code">
+                        <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                                class="dot green"></span><span class="title">Administrador: PowerShell</span></div>
                         <pre><code><span class="cmd">Remove-BcContainer</span> bccontainer</code></pre>
                     </div>
                 </div>

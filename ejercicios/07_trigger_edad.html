@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio: Triggers - Business Central</title>
+    <title>Ejercicio: Triggers de Tabla - Business Central</title>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="../ejercicios.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
@@ -42,6 +42,216 @@
             border-radius: 8px;
             margin-bottom: 2rem;
         }
+
+        /* Contexto previo */
+        .prev-context {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 28px;
+            margin-bottom: 40px;
+        }
+
+        .prev-context .prev-label {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .prev-context h4 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+        }
+
+        .prev-context ul {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .prev-context ul li {
+            margin-bottom: 4px;
+        }
+
+        /* Exercise block */
+        .exercise-block {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .exercise-block .exercise-number {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-blue);
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .exercise-block h3 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .badge-section {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 0.78rem;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Lifecycle diagram */
+        .lifecycle {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            margin: 24px 0 32px;
+            overflow-x: auto;
+        }
+
+        .lifecycle-step {
+            flex: 1;
+            min-width: 130px;
+            background: #1e1e1e;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 14px 12px;
+            text-align: center;
+            position: relative;
+        }
+
+        .lifecycle-step:not(:last-child)::after {
+            content: '▶';
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #444;
+            font-size: 0.8rem;
+            z-index: 1;
+        }
+
+        .lifecycle-step .ls-trigger {
+            font-family: Consolas, monospace;
+            font-size: 0.8rem;
+            color: #c678dd;
+            margin-bottom: 6px;
+        }
+
+        .lifecycle-step .ls-desc {
+            font-size: 0.75rem;
+            color: #888;
+            line-height: 1.4;
+        }
+
+        .lifecycle-step.active {
+            border-color: rgba(97, 175, 239, 0.4);
+            background: rgba(97, 175, 239, 0.05);
+        }
+
+        .lifecycle-step.active .ls-trigger {
+            color: #61afef;
+        }
+
+        /* IDE */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info strong {
+            color: var(--primary-blue);
+        }
+
+        .alert-warn {
+            background-color: rgba(234, 179, 8, 0.08);
+            border-left: 4px solid #eab308;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warn strong {
+            color: #eab308;
+        }
     </style>
 </head>
 
@@ -62,38 +272,338 @@
         <div class="exercise-header" style="margin-bottom: 30px;">
             <p
                 style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
-                EJERCICIO 07</p>
-            <h1>Triggers: Control de Edad</h1>
+                EJERCICIO 07 · TRIGGERS DE TABLA</p>
+            <h1>Triggers de Tabla</h1>
             <span class="diff-badge diff-medium"
                 style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 6/10</span>
         </div>
 
         <div class="exercise-content">
-            <div class="goal">
-                <strong>Objetivo:</strong> Usar el trigger <code>OnValidate</code> para impedir que se registren socios
-                menores de una edad determinada.
+
+            <!-- Contexto previo -->
+            <div class="prev-context">
+                <div class="prev-label">Ejercicios anteriores</div>
+                <h4>¿Qué tienes construido hasta ahora?</h4>
+                <ul>
+                    <li>Enum <code>"Rental Status"</code> con los estados de maquinaria, extensible.</li>
+                    <li>Tabla <code>"Maquinaria"</code> (50100): FlowFields con <code>"Date Filter"</code> conectado a
+                        <code>"No. Alquileres"</code>, <code>"Tiene Historial"</code> y
+                        <code>"Ultimo Cambio Estado"</code>.
+                    </li>
+                    <li>Tabla <code>"Cabecera Alquiler"</code> (50103): FlowFields <code>"No. Lineas"</code> y
+                        <code>"Descripcion Maquina"</code>.
+                    </li>
+                    <li>Tabla <code>"Linea Alquiler"</code> (50101): PK compuesta, <code>TableRelation</code> hacia
+                        ambas tablas.</li>
+                    <li>Tabla <code>"Historial Estado Maquina"</code> (50102): <code>AutoIncrement</code>,
+                        <code>TableRelation</code> condicional según <code>"Tipo Origen"</code>.
+                    </li>
+                    <li>Codeunit <code>"Maquinaria Stats"</code> (50100) con comparativa trimestral usando
+                        <code>SetRange</code> + <code>CalcFields</code>.
+                    </li>
+                    <li>Pages <code>"Maquinaria List"</code>, <code>"Maquinaria Card"</code> y
+                        <code>"Cabecera Alquiler Card"</code>.
+                    </li>
+                </ul>
             </div>
 
-            <h2>Instrucciones</h2>
-            <ul>
-                <li>En la tabla de <code>Socio</code>, localiza el campo <code>"Birth Date"</code> (Fecha de
-                    Nacimiento).</li>
-                <li>Escribe código en el trigger <code>OnValidate()</code> de ese campo.</li>
-                <li>Calcula la edad comparando la fecha de nacimiento con la fecha actual (<code>WorkDate</code>).</li>
-                <li>Si la edad es menor de 18 años, muestra un <strong>Error</strong> y no permitas guardar el valor.
-                </li>
-            </ul>
+            <p>Hasta ahora el modelo de datos está completo: tablas, relaciones, FlowFields y FlowFilters. Pero las
+                tablas no <em>reaccionan</em> a nada todavía. Si alguien crea un alquiler, la tabla no asigna ningún
+                valor automáticamente. Si alguien borra una cabecera con líneas activas, BC lo permite sin protestar.
+            </p>
 
-            <div class="ide-code">
-                <pre><code><span class="cmd">trigger</span> <span class="param">OnValidate</span>()
-<span class="cmd">begin</span>
-    <span class="cmd">if</span> (Age < 18) <span class="cmd">then</span>
-        <span class="cmd">Error</span>('El socio debe ser mayor de edad.');
-<span class="cmd">end</span>;</code></pre>
+            <p>En este ejercicio vas a añadir los triggers de tabla que dan vida al proyecto, repartidos entre las tres
+                tablas principales. El diagrama muestra qué trigger cubre cada momento del ciclo de vida de un alquiler:
+            </p>
+
+            <div class="lifecycle">
+                <div class="lifecycle-step active">
+                    <div class="ls-trigger">OnInsert</div>
+                    <div class="ls-desc">Asignar fecha y estado inicial</div>
+                </div>
+                <div class="lifecycle-step active">
+                    <div class="ls-trigger">OnValidate</div>
+                    <div class="ls-desc">Calcular días, validar fechas</div>
+                </div>
+                <div class="lifecycle-step active">
+                    <div class="ls-trigger">OnModify</div>
+                    <div class="ls-desc">Auditar usuario y registrar cambio en historial</div>
+                </div>
+                <div class="lifecycle-step active">
+                    <div class="ls-trigger">OnDelete</div>
+                    <div class="ls-desc">Impedir borrar con líneas activas</div>
+                </div>
+                <div class="lifecycle-step active">
+                    <div class="ls-trigger">OnRename</div>
+                    <div class="ls-desc">Bloquear cambio de PK</div>
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 1 – OnInsert y OnModify en Cabecera Alquiler
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 01</div>
+                <div class="badge-section">OnInsert · OnModify</div>
+                <h3>Inicialización y auditoría en Cabecera Alquiler</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Hacer que <code>"Cabecera Alquiler"</code> se autocomplete al
+                    crearse (fecha de inicio = hoy, estado = <em>Disponible</em>) y que registre el usuario que
+                    hizo el último cambio cada vez que se modifique.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Abre <code>CabeceraAlquiler.Table.al</code> y añade dos campos físicos nuevos:
+                        <code>"Creado Por"</code> (Code[50]) y <code>"Modificado Por"</code> (Code[50]),
+                        ambos con <code>Editable = false</code>.
+                    </li>
+                    <li>Escribe el trigger <code>OnInsert()</code> al nivel raíz de la tabla (fuera de
+                        <code>fields</code> y <code>keys</code>): asigna <code>Rec."Fecha Inicio" := Today</code>,
+                        <code>Rec."Estado" := Rec."Estado"::Disponible</code> y
+                        <code>Rec."Creado Por" := UserId</code>.
+                    </li>
+                    <li>Escribe el trigger <code>OnModify()</code>: asigna
+                        <code>Rec."Modificado Por" := UserId</code>.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — CabeceraAlquiler.Table.al (triggers raíz)</span>
+                    </div>
+                    <pre><code>    <span class="comment">// ── Campos nuevos (dentro de fields) ────────────────────────</span>
+        <span class="cmd">field</span>(<span class="var">9</span>;  <span class="string">"Creado Por"</span>;    <span class="param">Code</span>[50]) { Editable = <span class="param">false</span>; }
+        <span class="cmd">field</span>(<span class="var">10</span>; <span class="string">"Modificado Por"</span>; <span class="param">Code</span>[50]) { Editable = <span class="param">false</span>; }
+
+    <span class="comment">// ── Triggers raíz (fuera de fields y keys) ──────────────────</span>
+    <span class="cmd">trigger</span> <span class="param">OnInsert</span>()
+    <span class="cmd">begin</span>
+        Rec.<span class="string">"Fecha Inicio"</span> := Today;
+        Rec.<span class="string">"Estado"</span>       := Rec.<span class="string">"Estado"</span>::Disponible;
+        Rec.<span class="string">"Creado Por"</span>   := UserId;
+    <span class="cmd">end</span>;
+
+    <span class="cmd">trigger</span> <span class="param">OnModify</span>()
+    <span class="cmd">begin</span>
+        Rec.<span class="string">"Modificado Por"</span> := UserId;
+    <span class="cmd">end</span>;</code></pre>
+                </div>
+
+                <div class="alert-warn">
+                    <strong>⚠️ Recuerda:</strong> Los triggers de tabla se ejecutan <em>siempre</em>,
+                    independientemente de desde qué pantalla llegue la operación. El <code>OnModify</code> se
+                    disparará también desde el codeunit <code>"Maquinaria Stats"</code> o desde cualquier otro
+                    proceso que modifique la tabla.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 2 – OnValidate en Linea Alquiler
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 02</div>
+                <div class="badge-section">OnValidate · Cascada</div>
+                <h3>Validación de fechas y cálculo de días en Linea Alquiler</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Añadir a la tabla <code>"Linea Alquiler"</code> un campo
+                    <code>"Dias Alquiler"</code> que se calcule automáticamente cuando el usuario introduzca
+                    la fecha de fin, y que impida fechas de fin anteriores a la de inicio.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Abre <code>LineaAlquiler.Table.al</code> y añade el campo
+                        <code>"Dias Alquiler"</code> (Integer) con <code>Editable = false</code>.
+                    </li>
+                    <li>En el campo <code>"Fecha Fin"</code>, añade el trigger <code>OnValidate()</code>:
+                        <ul>
+                            <li>Si <code>Rec."Fecha Fin" &lt; Rec."Fecha Inicio"</code> lanza un
+                                <code>Error</code> con el mensaje <em>'La fecha de fin no puede ser anterior
+                                    a la de inicio.'</em>
+                            </li>
+                            <li>Si la validación pasa, calcula:
+                                <code>Rec."Dias Alquiler" := Rec."Fecha Fin" - Rec."Fecha Inicio"</code>.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Añade también un <code>OnValidate()</code> en <code>"Fecha Inicio"</code> que dispare
+                        en cascada la revalidación de <code>"Fecha Fin"</code> si este ya tiene valor:
+                        <code>if Rec."Fecha Fin" &lt;&gt; 0D then Rec.Validate("Fecha Fin")</code>.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — LineaAlquiler.Table.al (campos y triggers)</span>
+                    </div>
+                    <pre><code>        <span class="comment">// ── Campo nuevo ─────────────────────────────────────────────</span>
+        <span class="cmd">field</span>(<span class="var">6</span>; <span class="string">"Dias Alquiler"</span>; <span class="param">Integer</span>) { Editable = <span class="param">false</span>; }
+
+        <span class="comment">// ── OnValidate en Fecha Inicio: cascada hacia Fecha Fin ─────</span>
+        <span class="cmd">field</span>(<span class="var">4</span>; <span class="string">"Fecha Inicio"</span>; <span class="param">Date</span>)
+        {
+            <span class="cmd">trigger</span> <span class="param">OnValidate</span>()
+            <span class="cmd">begin</span>
+                <span class="cmd">if</span> Rec.<span class="string">"Fecha Fin"</span> &lt;&gt; <span class="var">0D</span> <span class="cmd">then</span>
+                    Rec.Validate(<span class="string">"Fecha Fin"</span>); <span class="comment">// revalida para recalcular días</span>
+            <span class="cmd">end</span>;
+        }
+
+        <span class="comment">// ── OnValidate en Fecha Fin: validación + cálculo ───────────</span>
+        <span class="cmd">field</span>(<span class="var">5</span>; <span class="string">"Fecha Fin"</span>; <span class="param">Date</span>)
+        {
+            <span class="cmd">trigger</span> <span class="param">OnValidate</span>()
+            <span class="cmd">begin</span>
+                <span class="cmd">if</span> Rec.<span class="string">"Fecha Fin"</span> &lt; Rec.<span class="string">"Fecha Inicio"</span> <span class="cmd">then</span>
+                    Error(<span class="string">'La fecha de fin no puede ser anterior a la de inicio.'</span>);
+
+                Rec.<span class="string">"Dias Alquiler"</span> := Rec.<span class="string">"Fecha Fin"</span> - Rec.<span class="string">"Fecha Inicio"</span>;
+            <span class="cmd">end</span>;
+        }</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> <code>Rec.Validate("Fecha Fin")</code> no solo asigna el
+                    valor: dispara el <code>OnValidate</code> del campo destino completo, incluyendo la
+                    validación de integridad referencial y cualquier otra lógica que tenga. Úsalo siempre
+                    que quieras que un cambio en un campo reaccione correctamente a través de la cadena
+                    de validaciones.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 3 – OnDelete en Cabecera Alquiler
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 03</div>
+                <div class="badge-section">OnDelete</div>
+                <h3>Protege la cabecera contra borrados peligrosos</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Impedir que se borre una <code>"Cabecera Alquiler"</code> que
+                    tenga líneas asociadas en <code>"Linea Alquiler"</code>, y aprovechar el FlowField
+                    <code>"No. Lineas"</code> que ya tienes para hacer la comprobación de forma elegante.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>En <code>CabeceraAlquiler.Table.al</code>, añade el trigger <code>OnDelete()</code>.</li>
+                    <li>Dentro del trigger, llama primero a <code>Rec.CalcFields("No. Lineas")</code>
+                        para calcular el FlowField.</li>
+                    <li>Si <code>Rec."No. Lineas" &gt; 0</code> lanza un <code>Error</code> con el mensaje:
+                        <em>'No se puede eliminar una cabecera con %1 línea(s) asociada(s).'</em>,
+                        pasando <code>Rec."No. Lineas"</code> como parámetro.
+                    </li>
+                    <li>Añade también el trigger <code>OnRename()</code> que bloquee cualquier cambio de PK
+                        con el mensaje: <em>'Los alquileres no pueden ser renombrados.'</em></li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — CabeceraAlquiler.Table.al (triggers OnDelete y
+                            OnRename)</span></div>
+                    <pre><code>    <span class="cmd">trigger</span> <span class="param">OnDelete</span>()
+    <span class="cmd">begin</span>
+        Rec.CalcFields(<span class="string">"No. Lineas"</span>); <span class="comment">// forzamos el cálculo del FlowField</span>
+        <span class="cmd">if</span> Rec.<span class="string">"No. Lineas"</span> &gt; <span class="var">0</span> <span class="cmd">then</span>
+            Error(
+                <span class="string">'No se puede eliminar una cabecera con %1 línea(s) asociada(s).'</span>,
+                Rec.<span class="string">"No. Lineas"</span>
+            );
+    <span class="cmd">end</span>;
+
+    <span class="cmd">trigger</span> <span class="param">OnRename</span>()
+    <span class="cmd">begin</span>
+        Error(<span class="string">'Los alquileres no pueden ser renombrados.'</span>);
+    <span class="cmd">end</span>;</code></pre>
+                </div>
+
+                <div class="alert-warn">
+                    <strong>⚠️ Ojo:</strong> Dentro de un trigger <code>OnDelete</code>, los FlowFields
+                    no se calculan automáticamente: debes llamar a <code>CalcFields</code> explícitamente
+                    antes de leer su valor, igual que harías desde un codeunit.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 4 – OnModify en Maquinaria: insertar historial
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 04</div>
+                <div class="badge-section">OnModify · Historial automático</div>
+                <h3>Registra cada cambio de estado en el historial automáticamente</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Completar el ciclo del proyecto conectando la tabla
+                    <code>"Maquinaria"</code> con la tabla <code>"Historial Estado Maquina"</code> mediante
+                    el trigger <code>OnModify()</code>, de modo que cualquier cambio en el campo
+                    <code>"Estado"</code> genere una fila de historial de forma completamente automática.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Abre <code>Maquinaria.Table.al</code> y añade el trigger <code>OnModify()</code>.</li>
+                    <li>Dentro del trigger, declara una variable de tipo <code>Record "Historial Estado Maquina"</code>
+                        y otra de tipo <code>Record "Maquinaria"</code> llamada <code>MaquinaAntes</code>.</li>
+                    <li>Usa <code>MaquinaAntes.Get(Rec."No.")</code> para leer el estado <em>antes</em>
+                        del cambio (el registro aún no ha sido guardado en este punto).</li>
+                    <li>Si <code>MaquinaAntes."Estado" &lt;&gt; Rec."Estado"</code>, inserta un nuevo registro
+                        en <code>"Historial Estado Maquina"</code> con:
+                        <code>"No. Maquina"</code>, <code>"Estado Anterior"</code> = <code>MaquinaAntes."Estado"</code>,
+                        <code>"Estado Nuevo"</code> = <code>Rec."Estado"</code> y
+                        <code>"Fecha Cambio"</code> = <code>CurrentDateTime</code>.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — Maquinaria.Table.al (trigger OnModify)</span></div>
+                    <pre><code>    <span class="cmd">trigger</span> <span class="param">OnModify</span>()
+    <span class="cmd">var</span>
+        Historial    : Record <span class="string">"Historial Estado Maquina"</span>;
+        MaquinaAntes : Record <span class="string">"Maquinaria"</span>;
+    <span class="cmd">begin</span>
+        <span class="comment">// Leemos el estado guardado ANTES de este modify</span>
+        MaquinaAntes.Get(Rec.<span class="string">"No."</span>);
+
+        <span class="comment">// Solo insertamos historial si el estado ha cambiado realmente</span>
+        <span class="cmd">if</span> MaquinaAntes.<span class="string">"Estado"</span> &lt;&gt; Rec.<span class="string">"Estado"</span> <span class="cmd">then</span> <span class="cmd">begin</span>
+            Historial.Init();
+            Historial.<span class="string">"No. Maquina"</span>     := Rec.<span class="string">"No."</span>;
+            Historial.<span class="string">"Estado Anterior"</span> := MaquinaAntes.<span class="string">"Estado"</span>;
+            Historial.<span class="string">"Estado Nuevo"</span>    := Rec.<span class="string">"Estado"</span>;
+            Historial.<span class="string">"Fecha Cambio"</span>    := CurrentDateTime;
+            Historial.<span class="string">"Tipo Origen"</span>     := Historial.<span class="string">"Tipo Origen"</span>::Manual;
+            Historial.Insert(<span class="param">true</span>); <span class="comment">// true para ejecutar el OnInsert de la tabla</span>
+        <span class="cmd">end</span>;
+    <span class="cmd">end</span>;</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> Dentro de <code>OnModify</code>, <code>Rec</code> contiene
+                    los valores <em>nuevos</em> que están a punto de guardarse. Para leer los valores
+                    <em>anteriores</em> debes hacer un <code>Get</code> explícito sobre el mismo registro,
+                    ya que en este momento el registro viejo aún existe en la base de datos sin modificar.
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Bonus:</strong> Ahora que el historial se inserta automáticamente desde
+                    <code>OnModify</code>, el trigger <code>OnValidate</code> del campo <code>"Estado"</code>
+                    en <code>MaquinariaCard.Page.al</code> ya no necesita hacerlo manualmente. Puedes
+                    simplificarlo para que solo muestre el aviso de <em>Retirado</em>, y dejar toda la
+                    lógica de persistencia en la tabla donde siempre debió estar.
+                </div>
             </div>
 
             <a href="../ejercicios.html" class="btn btn-secondary"
-                style="margin-top: 40px; display: inline-block;">&larr; Volver a Ejercicios</a>
+                style="margin-top: 10px; margin-bottom: 60px; display: inline-block;">&larr; Volver a Ejercicios</a>
         </div>
     </main>
 

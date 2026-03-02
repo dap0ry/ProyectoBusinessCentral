@@ -38,6 +38,115 @@
         .theory-content li {
             margin-bottom: 0.5rem;
         }
+
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+
+        .alert-info ul {
+            margin-bottom: 0 !important;
+        }
+
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warning h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+
+        /* IDE Styles AL */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
     </style>
 </head>
 
@@ -65,46 +174,242 @@
         </div>
 
         <div class="theory-content">
+
             <p>Los <strong>Triggers</strong> (Disparadores) son fragmentos de código AL que se ejecutan automáticamente
-                por la plataforma cuando ciertos *eventos físicos* suceden con los registros de la base de datos.</p>
+                por la plataforma cuando ciertos <em>eventos físicos</em> suceden con los registros de la base de datos.
+            </p>
 
-            <h2>Eventos de la Tabla</h2>
             <p>Si escribimos código dentro de ciertas funciones pre-generadas en la raíz del objeto <code>table</code>,
-                nos aseguramos que ese código SIEMPRE se ejecute (a menos que el programador meta un bypass inseguro)
-                sin importar desde qué pantalla ni cómo llegó la orden.</p>
-            <ul>
-                <li><strong>OnInsert():</strong> Se dispara mágicamente la primera vez que un registro en blanco (nuevo)
-                    es salvado en SQL. Se usa muchísimo para autocompletar números de serie, asignar fechas de hoy
-                    "Create Date" y arrastrar campos principales.</li>
-                <li><strong>OnModify():</strong> Se dispara cada vez que una columna existente de un registro guardado
-                    recibe un valor diferente. Se usa para auditar, guardar históricos de "Modificado Por" o bloquear
-                    ciertas ediciones ("Si la factura ya está contabilizada, Error()").</li>
-                <li><strong>OnDelete():</strong> Justo antes de destruir el registro. Se usa comúnmente para validar
-                    dependencias ("Error() si un Cliente con facturas abiertas intenta ser borrado").</li>
-                <li><strong>OnRename():</strong> Es el más raro. Se utiliza solo si intentamos cambiar físicamente el
-                    valor bloqueado de la Clave Primaria (Primary Key). Se usa mucho en BC si cambias una "Categoría de
-                    Producto", este trigger navega por las tablas relacionadas actualizando los viejos nombres por el
-                    nuevo automáticamente para que nada se rompa.</li>
-            </ul>
+                nos aseguramos de que ese código <strong>siempre se ejecute</strong>, sin importar desde qué pantalla ni
+                cómo llegó la orden.</p>
 
-            <h2>Triggers de Campo (OnValidate)</h2>
-            <p>Puesto que un `OnModify` es general de toda la fila, el trigger más usado en el día a día es el que posee
-                *cada campo* por separado: <strong>OnValidate()</strong>.</p>
-            <p>Tú teclean en un campo de la pantalla, presionas el *Tabulador* del teclado, e inmediatamente
-                "OnValidate()" salta.</p>
-            <p>Se usa para calcular campos relacionados en vivo. Ejemplo maestro: El usuario cambia la `Cantidad`, el
-                código `OnValidate()` de la cantidad atrapa un evento que coge el `Precio Unitario` de otro lado, los
-                multiplica e inyecta la respuesta en el `Importe Módificado` de forma automática.</p>
+            <div class="alert-warning">
+                <h3>⚠️ Orden de ejecución</h3>
+                <p style="margin: 0;">El código contenido en cada trigger se ejecuta <strong>antes</strong> de ejecutar
+                    el evento correspondiente. Es decir, tienes la oportunidad de validar, modificar o cancelar la
+                    operación antes de que BC la lleve a cabo.</p>
+            </div>
+
+            <!-- TABLA RESUMEN -->
+            <h2>Triggers principales de tabla</h2>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Trigger</th>
+                        <th>Cuándo se ejecuta</th>
+                        <th>Uso habitual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>OnInsert()</code></td>
+                        <td>La primera vez que un registro nuevo se guarda en SQL</td>
+                        <td>Autocompletar números de serie, asignar fecha de creación, arrastrar campos</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnModify()</code></td>
+                        <td>Cada vez que un campo existente recibe un valor diferente</td>
+                        <td>Auditoría, guardar "Modificado Por", bloquear ediciones en registros contabilizados</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnDelete()</code></td>
+                        <td>Justo antes de destruir el registro</td>
+                        <td>Validar dependencias, impedir borrar registros con datos relacionados</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnRename()</code></td>
+                        <td>Al cambiar físicamente el valor de la Clave Primaria</td>
+                        <td>Actualizar tablas relacionadas para que nada se rompa al renombrar</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- ONINSERT -->
+            <h2>OnInsert — Al crear un registro</h2>
+            <p>Se dispara la primera vez que un registro en blanco (nuevo) es salvado en SQL. Se usa para autocompletar
+                números de serie, asignar la fecha de hoy como "Create Date" o arrastrar campos principales.</p>
 
             <div class="ide-code">
-                <pre><code><span class="cmd">field</span>(5; "Cantidad"; Decimal)
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">trigger</span> <span class="param">OnInsert</span>()
+<span class="cmd">begin</span>
+    Rec.<span class="string">"Created Date"</span> := Today; <span class="comment">// Asignación automática al crear</span>
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <!-- ONMODIFY -->
+            <h2>OnModify — Al modificar un registro</h2>
+            <p>Se dispara cada vez que una columna existente de un registro guardado recibe un valor diferente. Se usa
+                para auditar cambios, guardar históricos de "Modificado Por" o bloquear ciertas ediciones.</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">trigger</span> <span class="param">OnModify</span>()
+<span class="cmd">begin</span>
+    Rec.<span class="string">"Last Modified By"</span> := UserId; <span class="comment">// Auditoría de cambios</span>
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <!-- ONDELETE -->
+            <h2>OnDelete — Al borrar un registro</h2>
+            <p>Se ejecuta justo antes de destruir el registro. Se usa comúnmente para validar dependencias, por ejemplo
+                impedir que se borre un cliente que tiene facturas abiertas.</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">trigger</span> <span class="param">OnDelete</span>()
+<span class="cmd">begin</span>
+    <span class="cmd">if</span> Rec.Status = Rec.Status::Released <span class="cmd">then</span>
+        Error(<span class="string">'No se puede borrar un registro lanzado.'</span>);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <!-- ONRENAME -->
+            <h2>OnRename — Al cambiar la clave primaria</h2>
+            <p>Es el más raro. Se activa solo si intentamos cambiar físicamente el valor de la Clave Primaria. Se usa
+                mucho en BC para navegar por las tablas relacionadas y actualizar los viejos valores por el nuevo
+                automáticamente para que nada se rompa.</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">trigger</span> <span class="param">OnRename</span>()
+<span class="cmd">begin</span>
+    Error(<span class="string">'Los registros de esta tabla no pueden ser renombrados por integridad.'</span>);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <!-- ONVALIDATE -->
+            <h2>OnValidate — Trigger de campo</h2>
+            <p>Puesto que <code>OnModify</code> es general para toda la fila, el trigger más usado en el día a día es el
+                que posee <strong>cada campo</strong> por separado: <code>OnValidate()</code>.</p>
+
+            <p>El usuario teclea en un campo de la pantalla, presiona el <em>Tabulador</em>, e inmediatamente
+                <code>OnValidate()</code> salta. Se usa para calcular campos relacionados en vivo o para validar que el
+                valor introducido es correcto.
+            </p>
+
+            <p>Ejemplo clásico: el usuario cambia la <code>Cantidad</code>, el <code>OnValidate()</code> coge el
+                <code>Precio Unitario</code>, los multiplica e inyecta el resultado en el <code>Importe Total</code> de
+                forma automática.
+            </p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">field</span>(<span class="var">5</span>; <span class="string">"Cantidad"</span>; <span class="param">Decimal</span>)
 {
     <span class="cmd">trigger</span> <span class="param">OnValidate</span>()
     <span class="cmd">begin</span>
-        <span class="string">// Si cambias la cantidad, yo me encargo del resto.</span>
-        Rec."Importe Total" := Rec."Cantidad" * Rec."Precio Unitario";
+        <span class="comment">// Si cambias la cantidad, se recalcula el importe automáticamente</span>
+        Rec.<span class="string">"Importe Total"</span> := Rec.<span class="string">"Cantidad"</span> * Rec.<span class="string">"Precio Unitario"</span>;
     <span class="cmd">end</span>;
 }</code></pre>
+            </div>
+
+            <!-- ONVALIDATE CON VALIDACIÓN Y CASCADA -->
+            <h2>OnValidate con validación y cascada</h2>
+            <p>El <code>OnValidate</code> también permite validar el dato antes de aceptarlo y disparar la validación en
+                cascada de otros campos relacionados:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">field</span>(<span class="var">50</span>; <span class="string">"Discount %"</span>; <span class="param">Decimal</span>)
+{
+    <span class="cmd">trigger</span> <span class="param">OnValidate</span>()
+    <span class="cmd">begin</span>
+        <span class="cmd">if</span> (Rec.<span class="string">"Discount %"</span> > <span class="var">50</span>) <span class="cmd">then</span>
+            Error(<span class="string">'Descuento máximo permitido: 50%.'</span>);
+
+        <span class="comment">// Validación en cascada: recalcula el importe neto automáticamente</span>
+        Rec.Validate(<span class="string">"Net Amount"</span>, Rec.<span class="string">"Gross Amount"</span> * (<span class="var">1</span> - (Rec.<span class="string">"Discount %"</span> / <span class="var">100</span>)));
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <!-- EJEMPLO COMPLETO -->
+            <h2>Ejemplo completo: tabla con todos los triggers</h2>
+            <p>Una tabla de préstamos que usa todos los triggers para controlar el ciclo de vida del dato:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">table</span> <span class="var">50103</span> <span class="string">"Prestamo"</span>
+{
+    fields
+    {
+        <span class="cmd">field</span>(<span class="var">1</span>; <span class="string">"No."</span>;              <span class="param">Code</span>[20])   { }
+        <span class="cmd">field</span>(<span class="var">2</span>; <span class="string">"No. Socio"</span>;        <span class="param">Code</span>[20])   { TableRelation = <span class="string">"Socio"</span>; }
+        <span class="cmd">field</span>(<span class="var">3</span>; <span class="string">"No. Libro"</span>;        <span class="param">Code</span>[20])   { TableRelation = <span class="string">"Libro"</span>; }
+        <span class="cmd">field</span>(<span class="var">4</span>; <span class="string">"Fecha Prestamo"</span>;   <span class="param">Date</span>)       { }
+        <span class="cmd">field</span>(<span class="var">5</span>; <span class="string">"Fecha Devolucion"</span>; <span class="param">Date</span>)       { }
+        <span class="cmd">field</span>(<span class="var">6</span>; <span class="string">"Dias Prestamo"</span>;    <span class="param">Integer</span>)    { }
+        <span class="cmd">field</span>(<span class="var">7</span>; <span class="string">"Devuelto"</span>;         <span class="param">Boolean</span>)    { }
+        <span class="cmd">field</span>(<span class="var">8</span>; <span class="string">"Modificado Por"</span>;   <span class="param">Code</span>[50])   { }
+        <span class="cmd">field</span>(<span class="var">9</span>; <span class="string">"Estado"</span>;           <span class="param">Enum</span> <span class="string">"Estado Prestamo"</span>) { }
+
+        <span class="cmd">field</span>(<span class="var">10</span>; <span class="string">"Fecha Devolucion Prevista"</span>; <span class="param">Date</span>)
+        {
+            <span class="cmd">trigger</span> <span class="param">OnValidate</span>()
+            <span class="cmd">begin</span>
+                <span class="comment">// No se puede devolver antes de que empiece el préstamo</span>
+                <span class="cmd">if</span> Rec.<span class="string">"Fecha Devolucion Prevista"</span> &lt; Rec.<span class="string">"Fecha Prestamo"</span> <span class="cmd">then</span>
+                    Error(<span class="string">'La fecha de devolución no puede ser anterior a la de préstamo.'</span>);
+
+                <span class="comment">// Calculamos automáticamente los días de préstamo</span>
+                Rec.<span class="string">"Dias Prestamo"</span> := Rec.<span class="string">"Fecha Devolucion Prevista"</span> - Rec.<span class="string">"Fecha Prestamo"</span>;
+            <span class="cmd">end</span>;
+        }
+    }
+
+    keys
+    {
+        <span class="cmd">key</span>(PK; <span class="string">"No."</span>) { }
+        <span class="cmd">key</span>(SK1; <span class="string">"No. Socio"</span>) { }
+        <span class="cmd">key</span>(SK2; <span class="string">"No. Libro"</span>) { }
+    }
+
+    <span class="comment">// Al crear: asignamos la fecha de hoy automáticamente</span>
+    <span class="cmd">trigger</span> <span class="param">OnInsert</span>()
+    <span class="cmd">begin</span>
+        Rec.<span class="string">"Fecha Prestamo"</span> := Today;
+        Rec.<span class="string">"Estado"</span>         := Rec.<span class="string">"Estado"</span>::Activo;
+    <span class="cmd">end</span>;
+
+    <span class="comment">// Al modificar: registramos quién hizo el último cambio</span>
+    <span class="cmd">trigger</span> <span class="param">OnModify</span>()
+    <span class="cmd">begin</span>
+        Rec.<span class="string">"Modificado Por"</span> := UserId;
+    <span class="cmd">end</span>;
+
+    <span class="comment">// Al borrar: impedimos borrar préstamos que no han sido devueltos</span>
+    <span class="cmd">trigger</span> <span class="param">OnDelete</span>()
+    <span class="cmd">begin</span>
+        <span class="cmd">if not</span> Rec.Devuelto <span class="cmd">then</span>
+            Error(<span class="string">'No se puede eliminar un préstamo que no ha sido devuelto.'</span>);
+    <span class="cmd">end</span>;
+
+    <span class="comment">// Al renombrar: bloqueamos el cambio de PK por integridad</span>
+    <span class="cmd">trigger</span> <span class="param">OnRename</span>()
+    <span class="cmd">begin</span>
+        Error(<span class="string">'Los préstamos no pueden ser renombrados.'</span>);
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <!-- TIPS -->
+            <div class="alert-info">
+                <h3>💡 Tips</h3>
+                <ul>
+                    <li>Los triggers de tabla se ejecutan <strong>siempre</strong>, independientemente de desde qué
+                        pantalla o proceso llegue la operación.</li>
+                    <li>Usa <code>OnInsert</code> para lógica de inicialización y <code>OnValidate</code> para lógica de
+                        negocio campo a campo.</li>
+                    <li>Usa <code>Error()</code> dentro de cualquier trigger para cancelar la operación y mostrar un
+                        mensaje al usuario.</li>
+                    <li><code>Rec.Validate()</code> dentro de un <code>OnValidate</code> permite disparar la validación
+                        de otro campo en cascada, manteniendo la lógica centralizada.</li>
+                    <li>Evita lógica pesada en <code>OnModify</code>: se dispara en cada cambio de campo y puede
+                        ralentizar la experiencia.</li>
+                </ul>
             </div>
 
             <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;

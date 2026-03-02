@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio Completo - Business Central</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #3b82f6;
+            --text-gray: #9ca3af;
+            --text-white: #f9fafb;
+            --card-bg: #1f2937;
+            --bg: #111827;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text-gray);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            line-height: 1.75;
+        }
+
+        /* ── NAV ── */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(17, 24, 39, .92);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255, 255, 255, .07);
+            padding: 0 2rem;
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .nav-logo {
+            color: var(--primary-blue);
+            font-family: 'Outfit';
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+            margin-left: auto;
+        }
+
+        .nav-menu a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-size: .9rem;
+            transition: color .2s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--text-white);
+        }
+
+        /* ── LAYOUT ── */
+        main {
+            padding: 100px 2rem 4rem;
+        }
+
+        .theory-header {
+            max-width: 900px;
+            margin: 0 auto 2rem;
+        }
+
+        .theory-header h1 {
+            font-family: 'Outfit';
+            font-size: 2rem;
+            color: var(--text-white);
+            margin-bottom: .5rem;
+        }
+
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+        }
+
+        h2 {
+            color: var(--text-white);
+            margin: 3rem 0 1rem;
+            font-family: 'Outfit';
+            font-size: 1.5rem;
+            border-left: 4px solid var(--primary-blue);
+            padding-left: 14px;
+        }
+
+        h3 {
+            color: var(--text-white);
+            margin: 1.8rem 0 .75rem;
+            font-family: 'Outfit';
+            font-size: 1.15rem;
+        }
+
+        p {
+            margin-bottom: 1.4rem;
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1.4rem;
+            padding-left: 22px;
+        }
+
+        ul {
+            list-style: square;
+        }
+
+        li {
+            margin-bottom: .45rem;
+        }
+
+        code {
+            background: rgba(255, 255, 255, .08);
+            border-radius: 4px;
+            padding: 1px 6px;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: .9em;
+            color: #e5c07b;
+        }
+
+        /* ── BADGES ── */
+        .step-badge {
+            display: inline-block;
+            background: var(--primary-blue);
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: .72rem;
+            padding: 3px 11px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .diff-badge {
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: .8rem;
+            font-family: 'Outfit';
+            font-weight: 700;
+        }
+
+        .diff-hard {
+            background: rgba(239, 68, 68, .15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, .3);
+        }
+
+        kbd {
+            display: inline-block;
+            background: #2d2d2d;
+            border: 1px solid rgba(255, 255, 255, .2);
+            border-radius: 4px;
+            padding: 1px 7px;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: .82rem;
+            color: #e5c07b;
+            box-shadow: 0 2px 0 rgba(0, 0, 0, .4);
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, .07);
+            margin: 3rem 0;
+        }
+
+        /* ── IDE ── */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.4rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .5);
+            border: 1px solid rgba(255, 255, 255, .09);
+            font-size: .92rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 7px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(0, 0, 0, .5);
+        }
+
+        .ide-header .title {
+            color: #888;
+            font-size: .78rem;
+            font-family: 'Inter';
+        }
+
+        .ide-header .file-name {
+            color: #ccc;
+            font-size: .78rem;
+            font-family: 'Inter';
+        }
+
+        .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+
+        .dot.red {
+            background: #ff5f57;
+        }
+
+        .dot.yellow {
+            background: #febc2e;
+        }
+
+        .dot.green {
+            background: #28c840;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 14px 16px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.65;
+            white-space: pre;
+            background: none;
+            padding: 0;
+        }
+
+        .cmd {
+            color: #c678dd;
+        }
+
+        .param {
+            color: #e5c07b;
+        }
+
+        .var {
+            color: #61afef;
+        }
+
+        .string {
+            color: #98c379;
+        }
+
+        .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .key {
+            color: #e06c75;
+        }
+
+        /* ── ALERTS ── */
+        .alert-info {
+            background: rgba(59, 130, 246, .09);
+            border-left: 4px solid var(--primary-blue);
+            padding: 18px 20px;
+            margin: 28px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+
+        .alert-info ul {
+            margin-bottom: 0 !important;
+        }
+
+        .alert-warning {
+            background: rgba(234, 179, 8, .09);
+            border-left: 4px solid #eab308;
+            padding: 18px 20px;
+            margin: 28px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warning h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+
+        .alert-success {
+            background: rgba(34, 197, 94, .09);
+            border-left: 4px solid #22c55e;
+            padding: 18px 20px;
+            margin: 28px 0;
+            border-radius: 4px;
+        }
+
+        .alert-success h3 {
+            margin-top: 0;
+            color: #22c55e;
+        }
+
+        .alert-success ul {
+            margin-bottom: 0 !important;
+        }
+
+        /* ── TABLE ── */
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 18px 0;
+            background: var(--card-bg);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, .08);
+            padding: 11px 14px;
+            text-align: left;
+        }
+
+        .theory-table th {
+            background: rgba(0, 0, 0, .4);
+            color: var(--text-white);
+            font-family: 'Outfit';
+            font-size: .92rem;
+        }
+
+        .theory-table td {
+            font-size: .95rem;
+        }
+
+        .theory-table td code {
+            font-size: .82rem;
+        }
+
+        /* ── STEP FLOW (numbered steps visual) ── */
+        .step-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 1.5rem 0 2rem;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 16px;
+            position: relative;
+        }
+
+        .step-item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 36px;
+            bottom: 0;
+            width: 2px;
+            background: rgba(59, 130, 246, .25);
+        }
+
+        .step-num {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit';
+            font-weight: 700;
+            font-size: .88rem;
+            margin-top: 4px;
+            z-index: 1;
+        }
+
+        .step-body {
+            padding-bottom: 1.8rem;
+            flex: 1;
+        }
+
+        .step-body h3 {
+            margin-top: 4px;
+            margin-bottom: .5rem;
+        }
+
+        /* ── BC URL box ── */
+        .bc-url {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(59, 130, 246, .12);
+            border: 1px solid rgba(59, 130, 246, .3);
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-family: Consolas, 'Courier New', monospace;
+            color: #93c5fd;
+            font-size: .97rem;
+            margin: .6rem 0 1.2rem;
+        }
+
+        .bc-url span {
+            color: #60a5fa;
+            font-size: 1rem;
+        }
+
+        /* ── footer ── */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(156, 163, 175, .4);
+            font-size: .85rem;
+            border-top: 1px solid rgba(255, 255, 255, .05);
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            border: 1px solid rgba(59, 130, 246, .4);
+            color: var(--primary-blue);
+            padding: 9px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: .9rem;
+            transition: background .2s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(59, 130, 246, .12);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="theory-header">
+            <p
+                style="text-transform:uppercase;letter-spacing:2px;color:var(--primary-blue);font-size:.85rem;font-weight:bold;margin-bottom:10px;">
+                Ejercicio Integrador</p>
+            <h1>Biblioteca Municipal — Proyecto Completo</h1>
+            <span class="diff-badge diff-hard" style="margin-top:10px;">Dificultad: 10/10</span>
+            <p style="margin-top:18px;max-width:720px;">Construimos desde cero el sistema de gestión de una biblioteca
+                municipal. El ejercicio recorre todos los conceptos: configuración del entorno, Enums, Tablas, Claves,
+                TableRelations, FlowFields, FlowFilters, Triggers, Pages, FactBoxes, Parts, Queries y Reports.</p>
+        </div>
+
+        <div class="theory-content">
+
+            <!-- ══════════════════════════════════════════════
+                 PASO 0 — PREPARAR EL ENTORNO
+            ══════════════════════════════════════════════ -->
+            <hr class="divider">
+            <span class="step-badge">Paso 0 — Entorno</span>
+            <h2>Preparar VS Code y crear el proyecto</h2>
+            <p>Antes de escribir una sola línea de AL hay que preparar el entorno de desarrollo. Sigue estos pasos en
+                orden la primera vez; en sesiones posteriores solo necesitarás arrancar el contenedor y abrir la
+                carpeta.</p>
+
+            <div class="step-flow">
+
+                <!-- 0.1 -->
+                <div class="step-item">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        <h3>Instalar extensiones en VS Code</h3>
+                        <p>Abre el panel de extensiones con <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> e instala
+                            las dos extensiones oficiales de Microsoft:</p>
+                        <table class="theory-table">
+                            <thead>
+                                <tr>
+                                    <th>Extensión</th>
+                                    <th>Para qué sirve</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>AL Language</strong></td>
+                                    <td>Sintaxis, snippets, IntelliSense, compilación y debug</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>AL Language Extension Pack</strong></td>
+                                    <td>Herramientas adicionales para BC</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 0.2 -->
+                <div class="step-item">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        <h3>Arrancar el contenedor de Business Central</h3>
+                        <p>Abre <strong>PowerShell como administrador</strong> y ejecuta:</p>
+                        <div class="ide-code">
+                            <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                                    class="dot green"></span><span class="title">Administrador: PowerShell</span></div>
+                            <pre><code><span class="cmd">Start-BcContainer</span> bccontainer</code></pre>
+                        </div>
+                        <p>Espera hasta que el comando termine sin errores. Puedes verificar que está corriendo con
+                            <code>Get-BcContainers</code>.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 0.3 -->
+                <div class="step-item">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <h3>Crear el proyecto: AL: Go!</h3>
+                        <p>Abre la <strong>Paleta de comandos</strong> con <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +
+                            <kbd>P</kbd> y escribe:
+                        </p>
+                        <div class="ide-code">
+                            <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                                    class="dot green"></span><span class="title">Paleta de comandos — VS Code</span>
+                            </div>
+                            <pre><code><span class="string">AL: Go!</span></code></pre>
+                        </div>
+                        <p>VS Code te pedirá una <strong>carpeta de destino</strong> y la <strong>versión del
+                                servidor</strong> (elige <code>Latest</code> o la que coincida con tu contenedor). Esto
+                            genera la estructura base:</p>
+                        <div class="ide-code">
+                            <div class="ide-header"><span class="title">Explorador — Estructura generada</span></div>
+                            <pre><code>📁 BibliotecaMunicipal/
+   ├── <span class="string">.vscode/</span>
+   │   └── <span class="var">launch.json</span>        <span class="comment">// configuración de conexión al servidor BC</span>
+   ├── <span class="string">app.json</span>               <span class="comment">// metadatos: ID, nombre, versión, dependencias</span>
+   └── <span class="string">HelloWorld.al</span>          <span class="comment">// fichero de ejemplo (puedes borrarlo)</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 0.4 -->
+                <div class="step-item">
+                    <div class="step-num">4</div>
+                    <div class="step-body">
+                        <h3>Configurar app.json</h3>
+                        <p>Abre <code>app.json</code> y ajusta el rango de IDs para que coincida con los objetos de este
+                            ejercicio (<code>50100–50999</code>):</p>
+                        <div class="ide-code">
+                            <div class="ide-header"><span class="title">app.json</span></div>
+                            <pre><code>{
+    <span class="key">"id"</span>:          <span class="string">"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"</span>,  <span class="comment">// GUID único (no tocar)</span>
+    <span class="key">"name"</span>:        <span class="string">"BibliotecaMunicipal"</span>,
+    <span class="key">"publisher"</span>:   <span class="string">"TuNombre"</span>,
+    <span class="key">"version"</span>:     <span class="string">"1.0.0.0"</span>,
+    <span class="key">"idRanges"</span>: [{ <span class="key">"from"</span>: <span class="var">50100</span>, <span class="key">"to"</span>: <span class="var">50999</span> }],
+    <span class="key">"runtime"</span>:     <span class="string">"12.0"</span>,
+    <span class="key">"platform"</span>:    <span class="string">"22.0.0.0"</span>,
+    <span class="key">"application"</span>: <span class="string">"22.0.0.0"</span>,
+    <span class="key">"dependencies"</span>: []
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 0.5 -->
+                <div class="step-item">
+                    <div class="step-num">5</div>
+                    <div class="step-body">
+                        <h3>Configurar launch.json</h3>
+                        <p>Abre <code>.vscode/launch.json</code> y asegúrate de que <code>"server"</code> apunta a tu
+                            contenedor local:</p>
+                        <div class="ide-code">
+                            <div class="ide-header"><span class="title">.vscode/launch.json</span></div>
+                            <pre><code>{
+    <span class="key">"version"</span>: <span class="string">"0.2.0"</span>,
+    <span class="key">"configurations"</span>: [{
+        <span class="key">"name"</span>:              <span class="string">"Publicar en contenedor local"</span>,
+        <span class="key">"request"</span>:           <span class="string">"launch"</span>,
+        <span class="key">"type"</span>:              <span class="string">"al"</span>,
+        <span class="key">"environmentType"</span>:   <span class="string">"OnPrem"</span>,
+        <span class="key">"server"</span>:            <span class="string">"http://bccontainer"</span>,  <span class="comment">// nombre del contenedor</span>
+        <span class="key">"serverInstance"</span>:    <span class="string">"BC"</span>,
+        <span class="key">"authentication"</span>:    <span class="string">"UserPassword"</span>,
+        <span class="key">"startupObjectId"</span>:   <span class="var">50100</span>,         <span class="comment">// abrirá la Socio List al publicar</span>
+        <span class="key">"startupObjectType"</span>: <span class="string">"Page"</span>
+    }]
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 0.6 -->
+                <div class="step-item">
+                    <div class="step-num">6</div>
+                    <div class="step-body">
+                        <h3>Descargar los símbolos: AL: Download Symbols</h3>
+                        <p>Los símbolos son los metadatos de todas las tablas, páginas y codeunits base de BC. Sin ellos
+                            IntelliSense no funciona. Ejecútalo <strong>antes de empezar a escribir código</strong> y
+                            cada vez que BC se actualice:</p>
+                        <div class="ide-code">
+                            <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                                    class="dot green"></span><span class="title">Paleta de comandos</span></div>
+                            <pre><code><span class="string">AL: Download Symbols</span></code></pre>
+                        </div>
+                        <p>VS Code descargará los ficheros <code>.app</code> en la carpeta <code>.alpackages/</code> del
+                            proyecto. Cuando aparezcan <code>Microsoft_Application_...</code>,
+                            <code>Microsoft_Base Application_...</code> y <code>Microsoft_System_...</code>, puedes
+                            empezar a codificar.
+                        </p>
+                        <div class="alert-warning">
+                            <h3>⚠️ Si falla la descarga</h3>
+                            <p style="margin:0">Comprueba que el contenedor está corriendo, que el valor de
+                                <code>"server"</code> en <code>launch.json</code> coincide exactamente con el nombre del
+                                contenedor, y que las credenciales son las que configuraste al crear el contenedor.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 0.7 -->
+                <div class="step-item">
+                    <div class="step-num">7</div>
+                    <div class="step-body">
+                        <h3>Crear los ficheros AL con snippets</h3>
+                        <p>Crea un fichero <code>.al</code> por objeto (por ejemplo
+                            <code>EstadoPrestamo.Enum.al</code>). Usa los snippets para generar la plantilla base:
+                        </p>
+                        <table class="theory-table">
+                            <thead>
+                                <tr>
+                                    <th>Escribe en el editor…</th>
+                                    <th>Obtiene…</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><kbd>tenum</kbd> + <kbd>Tab</kbd></td>
+                                    <td>Plantilla completa de un Enum AL</td>
+                                </tr>
+                                <tr>
+                                    <td><kbd>ttable</kbd> + <kbd>Tab</kbd></td>
+                                    <td>Plantilla completa de una tabla AL</td>
+                                </tr>
+                                <tr>
+                                    <td><kbd>tpage</kbd> + <kbd>Tab</kbd></td>
+                                    <td>Plantilla de una Page (card, list…)</td>
+                                </tr>
+                                <tr>
+                                    <td><kbd>tquery</kbd> + <kbd>Tab</kbd></td>
+                                    <td>Plantilla de una Query</td>
+                                </tr>
+                                <tr>
+                                    <td><kbd>treport</kbd> + <kbd>Tab</kbd></td>
+                                    <td>Plantilla de un Report</td>
+                                </tr>
+                                <tr>
+                                    <td><kbd>tfield</kbd> + <kbd>Tab</kbd></td>
+                                    <td>Declaración de un campo</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 0.8 -->
+                <div class="step-item">
+                    <div class="step-num">8</div>
+                    <div class="step-body">
+                        <h3>Compilar y publicar</h3>
+                        <p>Una vez tienes los ficheros escritos, publica con:</p>
+                        <table class="theory-table">
+                            <thead>
+                                <tr>
+                                    <th>Atajo</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><kbd>Ctrl</kbd> + <kbd>F5</kbd></td>
+                                    <td>Compilar y publicar <strong>sin debugger</strong> — el 90% de las veces</td>
+                                </tr>
+                                <tr>
+                                    <td><kbd>F5</kbd></td>
+                                    <td>Compilar, publicar y abrir BC con el <strong>debugger activo</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd></td>
+                                    <td>Solo compilar (sin publicar) — para detectar errores rápido</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 0.9 — PROBAR EN BC -->
+                <div class="step-item">
+                    <div class="step-num">9</div>
+                    <div class="step-body">
+                        <h3>Probar en Business Central local</h3>
+                        <p>Tras publicar con <kbd>Ctrl</kbd> + <kbd>F5</kbd>, BC se abrirá automáticamente en el
+                            navegador. También puedes acceder manualmente:</p>
+
+                        <div class="bc-url"><span>🌐</span> http://bccontainer/BusinessCentral</div>
+
+                        <p>Para encontrar los objetos del ejercicio directamente, usa la <strong>búsqueda
+                                universal</strong> de BC (<kbd>Alt</kbd> + <kbd>Q</kbd> o el icono 🔍 en la barra
+                            superior) y busca los nombres de tus páginas:</p>
+                        <table class="theory-table">
+                            <thead>
+                                <tr>
+                                    <th>Busca en BC…</th>
+                                    <th>Abre…</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>Socio List</code></td>
+                                    <td>Lista de socios con FactBox de préstamos</td>
+                                </tr>
+                                <tr>
+                                    <td><code>Socio Card</code></td>
+                                    <td>Ficha de socio con estadísticas y FlowFilter</td>
+                                </tr>
+                                <tr>
+                                    <td><code>Socios Morosos</code></td>
+                                    <td>Informe con RequestPage de fechas</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p>También puedes navegar directamente añadiendo el parámetro <code>page</code> a la URL:</p>
+                        <div class="ide-code">
+                            <div class="ide-header"><span class="title">Barra de direcciones del navegador</span></div>
+                            <pre><code><span class="comment">// Socio List (Page 50100)</span>
+http://bccontainer/BusinessCentral/?page=50100
+
+<span class="comment">// Socio Card (Page 50101)</span>
+http://bccontainer/BusinessCentral/?page=50101
+
+<span class="comment">// Report Socios Morosos (Report 50100)</span>
+http://bccontainer/BusinessCentral/?report=50100</code></pre>
+                        </div>
+
+                        <div class="alert-success">
+                            <h3>✅ Qué verificar al probar</h3>
+                            <ul>
+                                <li>Al crear un socio nuevo, <strong>Fecha Alta</strong> no se rellena sola (es manual).
+                                    Rellénala para el ejercicio.</li>
+                                <li>Al crear un préstamo, <strong>Fecha Inicio</strong> se pone a Today automáticamente
+                                    gracias al <code>OnInsert</code>.</li>
+                                <li>Intenta poner una <strong>Fecha Devolución anterior a la de inicio</strong>: debe
+                                    aparecer el mensaje de error del <code>OnValidate</code>.</li>
+                                <li>Intenta <strong>borrar un préstamo en estado Activo</strong>: el
+                                    <code>OnDelete</code> debe impedirlo.
+                                </li>
+                                <li>En la Socio Card, el campo <strong>Total Prestamos</strong> debe actualizarse al
+                                    añadir préstamos (es un FlowField: se recalcula al mostrar).</li>
+                                <li>Filtra el campo <strong>Date Filter</strong> en la Card: <strong>Dias Totales
+                                        Prestamo</strong> debe cambiar según el rango introducido.</li>
+                                <li>En el FactBox lateral de la List, cambia de socio y comprueba que el historial se
+                                    filtra automáticamente por el socio seleccionado (<code>SubPageLink</code>).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /step-flow -->
+
+            <!-- ══════════════════════════════════════════════
+                 PASO 1: ENUM
+            ══════════════════════════════════════════════ -->
+            <hr class="divider">
+            <span class="step-badge">Paso 1 — Enum</span>
+            <h2>Estado del Préstamo</h2>
+            <p>Empezamos definiendo el <code>Enum</code> de estados. Al ser un objeto independiente, podremos
+                reutilizarlo en cualquier tabla. Dejamos la posición <code>0</code> vacía como estado "sin seleccionar"
+                y dejamos huecos entre posiciones para poder añadir valores en el futuro.</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span><span
+                        class="file-name">&nbsp;EstadoPrestamo.Enum.al</span></div>
+                <pre><code><span class="cmd">enum</span> <span class="var">50100</span> <span class="string">"Estado Prestamo"</span>
+{
+    value(<span class="var">0</span>;  <span class="string">" "</span>)             { }
+    value(<span class="var">10</span>; <span class="string">"Activo"</span>)        { }
+    value(<span class="var">20</span>; <span class="string">"En Devolucion"</span>) { }
+    value(<span class="var">30</span>; <span class="string">"Devuelto"</span>)      { }
+    value(<span class="var">40</span>; <span class="string">"Vencido"</span>)       { }
+}</code></pre>
+            </div>
+
+            <!-- ══════════════════════════════════════════════
+                 PASO 2: TABLAS
+            ══════════════════════════════════════════════ -->
+            <hr class="divider">
+            <span class="step-badge">Paso 2 — Tablas y Tipos de Datos</span>
+            <h2>Tabla de Socios y Tabla de Libros</h2>
+            <p>Definimos las dos tablas maestras del sistema. Usamos <code>Code[20]</code> para los identificadores
+                (siempre en mayúsculas, sin espacios, búsqueda rápida), <code>Text</code> para descripciones libres y
+                <code>Date</code> para las fechas. La propiedad <code>NotBlank</code> asegura que los campos clave no
+                puedan quedar vacíos.
+            </p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span><span class="file-name">&nbsp;Socio.Table.al</span>
+                </div>
+                <pre><code><span class="cmd">table</span> <span class="var">50100</span> <span class="string">"Socio"</span>
+{
+    fields
+    {
+        <span class="cmd">field</span>(<span class="var">1</span>;  <span class="string">"No."</span>;          <span class="param">Code</span>[20])   { NotBlank = <span class="param">true</span>; }
+        <span class="cmd">field</span>(<span class="var">2</span>;  <span class="string">"Nombre"</span>;       <span class="param">Text</span>[100])  { }
+        <span class="cmd">field</span>(<span class="var">3</span>;  <span class="string">"Email"</span>;        <span class="param">Text</span>[100])
+        {
+            ExtendedDataType = EMail;
+        }
+        <span class="cmd">field</span>(<span class="var">4</span>;  <span class="string">"Telefono"</span>;     <span class="param">Text</span>[20])   { }
+        <span class="cmd">field</span>(<span class="var">5</span>;  <span class="string">"Fecha Alta"</span>;   <span class="param">Date</span>)       { }
+        <span class="cmd">field</span>(<span class="var">6</span>;  <span class="string">"Activo"</span>;       <span class="param">Boolean</span>)
+        {
+            InitValue = <span class="param">true</span>;
+        }
+
+        <span class="comment">// FlowFields — se calculan bajo demanda, no se guardan en SQL</span>
+        <span class="cmd">field</span>(<span class="var">20</span>; <span class="string">"Total Prestamos"</span>; <span class="param">Integer</span>)
+        {
+            FieldClass  = FlowField;
+            CalcFormula = <span class="param">count</span>(<span class="string">"Prestamo"</span> <span class="cmd">where</span> (<span class="string">"No. Socio"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>)));
+        }
+        <span class="cmd">field</span>(<span class="var">21</span>; <span class="string">"Dias Totales Prestamo"</span>; <span class="param">Integer</span>)
+        {
+            FieldClass  = FlowField;
+            CalcFormula = <span class="param">sum</span>(<span class="string">"Prestamo"</span>.<span class="string">"Dias Prestamo"</span>
+                              <span class="cmd">where</span> (<span class="string">"No. Socio"</span>   = <span class="cmd">field</span>(<span class="string">"No."</span>),
+                                     <span class="string">"Date Filter"</span> = <span class="cmd">field</span>(<span class="string">"Date Filter"</span>)));
+        }
+
+        <span class="comment">// FlowFilter — el usuario lo rellena en la Card para filtrar el FlowField de arriba</span>
+        <span class="cmd">field</span>(<span class="var">30</span>; <span class="string">"Date Filter"</span>; <span class="param">Date</span>)
+        {
+            FieldClass = FlowFilter;
+        }
+    }
+    keys
+    {
+        <span class="cmd">key</span>(PK; <span class="string">"No."</span>)     { }
+        <span class="cmd">key</span>(SK1; <span class="string">"Nombre"</span>) { }
+    }
+}</code></pre>
+            </div>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span><span class="file-name">&nbsp;Libro.Table.al</span>
+                </div>
+                <pre><code><span class="cmd">table</span> <span class="var">50101</span> <span class="string">"Libro"</span>
+{
+    fields
+    {
+        <span class="cmd">field</span>(<span class="var">1</span>; <span class="string">"No."</span>;      <span class="param">Code</span>[20])  { NotBlank = <span class="param">true</span>; }
+        <span class="cmd">field</span>(<span class="var">2</span>; <span class="string">"Titulo"</span>;   <span class="param">Text</span>[200]) { }
+        <span class="cmd">field</span>(<span class="var">3</span>; <span class="string">"Autor"</span>;    <span class="param">Text</span>[100]) { }
+        <span class="cmd">field</span>(<span class="var">4</span>; <span class="string">"ISBN"</span>;     <span class="param">Code</span>[20])  { }
+        <span class="cmd">field</span>(<span class="var">5</span>; <span class="string">"Disponible"</span>; <span class="param">Boolean</span>)
+        {
+            InitValue = <span class="param">true</span>;
+        }
+
+        <span class="comment">// FlowField: ¿tiene préstamos activos?</span>
+        <span class="cmd">field</span>(<span class="var">20</span>; <span class="string">"Tiene Prestamos Activos"</span>; <span class="param">Boolean</span>)
+        {
+            FieldClass  = FlowField;
+            CalcFormula = <span class="param">exist</span>(<span class="string">"Prestamo"</span>
+                                 <span class="cmd">where</span> (<span class="string">"No. Libro"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>),
+                                        Estado       = <span class="cmd">const</span>(Activo)));
+        }
+    }
+    keys
+    {
+        <span class="cmd">key</span>(PK; <span class="string">"No."</span>)    { }
+        <span class="cmd">key</span>(SK1; <span class="string">"Autor"</span>) { }
+        <span class="cmd">key</span>(SK2; <span class="string">"ISBN"</span>)
+        {
+            Unique = <span class="param">true</span>;
+        }
+    }
+}</code></pre>
+            </div>
+
+            <!-- ══════════════════════════════════════════════
+                 PASO 3: PRÉSTAMO + PK + TABLERELATION
+            ══════════════════════════════════════════════ -->
+            <hr class="divider">
+            <span class="step-badge">Paso 3 — Claves Primarias y TableRelations</span>
+            <h2>Tabla de Préstamos</h2>
+            <p>La tabla central del sistema. Usamos <code>AutoIncrement</code> en el campo <code>Entry No.</code> para
+                la PK, garantizando un identificador único sin gestión manual. Los campos <code>"No. Socio"</code> y
+                <code>"No. Libro"</code> llevan <code>TableRelation</code> para que BC genere automáticamente el icono
+                de lupa y valide que los valores existan en sus tablas de origen.
+            </p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span><span
+                        class="file-name">&nbsp;Prestamo.Table.al</span></div>
+                <pre><code><span class="cmd">table</span> <span class="var">50102</span> <span class="string">"Prestamo"</span>
+{
+    fields
+    {
+        <span class="cmd">field</span>(<span class="var">1</span>; <span class="string">"Entry No."</span>;          <span class="param">Integer</span>)
+        {
+            AutoIncrement = <span class="param">true</span>;
+        }
+        <span class="cmd">field</span>(<span class="var">2</span>; <span class="string">"No. Socio"</span>;          <span class="param">Code</span>[20])
+        {
+            TableRelation = <span class="string">"Socio"</span>;  <span class="comment">// lupa automática + validación</span>
+        }
+        <span class="cmd">field</span>(<span class="var">3</span>; <span class="string">"No. Libro"</span>;          <span class="param">Code</span>[20])
+        {
+            TableRelation = <span class="string">"Libro"</span>;
+        }
+        <span class="cmd">field</span>(<span class="var">4</span>; <span class="string">"Fecha Inicio"</span>;       <span class="param">Date</span>) { }
+        <span class="cmd">field</span>(<span class="var">5</span>; <span class="string">"Fecha Devolucion"</span>;   <span class="param">Date</span>)
+        {
+            <span class="cmd">trigger</span> <span class="param">OnValidate</span>()
+            <span class="cmd">begin</span>
+                <span class="comment">// Validamos que la devolución no sea anterior al inicio</span>
+                <span class="cmd">if</span> Rec.<span class="string">"Fecha Devolucion"</span> &lt; Rec.<span class="string">"Fecha Inicio"</span> <span class="cmd">then</span>
+                    Error(<span class="string">'La fecha de devolución no puede ser anterior a la de inicio.'</span>);
+
+                <span class="comment">// Calculamos los días automáticamente</span>
+                Rec.<span class="string">"Dias Prestamo"</span> := Rec.<span class="string">"Fecha Devolucion"</span> - Rec.<span class="string">"Fecha Inicio"</span>;
+            <span class="cmd">end</span>;
+        }
+        <span class="cmd">field</span>(<span class="var">6</span>; <span class="string">"Dias Prestamo"</span>;      <span class="param">Integer</span>)  { }
+        <span class="cmd">field</span>(<span class="var">7</span>; <span class="string">"Estado"</span>;             <span class="param">Enum</span> <span class="string">"Estado Prestamo"</span>) { }
+        <span class="cmd">field</span>(<span class="var">8</span>; <span class="string">"Modificado Por"</span>;    <span class="param">Code</span>[50]) { }
+    }
+    keys
+    {
+        <span class="cmd">key</span>(PK;  <span class="string">"Entry No."</span>)             { }
+        <span class="cmd">key</span>(SK1; <span class="string">"No. Socio"</span>)
+        {
+            MaintainSiftIndex = <span class="param">true</span>;  <span class="comment">// acelera sumas por socio</span>
+        }
+        <span class="cmd">key</span>(SK2; <span class="string">"No. Libro"</span>)            { }
+        <span class="cmd">key</span>(SK3; <span class="string">"Fecha Inicio"</span>)         { }
+    }
+
+    <span class="comment">// Triggers de tabla</span>
+    <span class="cmd">trigger</span> <span class="param">OnInsert</span>()
+    <span class="cmd">begin</span>
+        Rec.<span class="string">"Fecha Inicio"</span> := Today;
+        Rec.Estado        := Rec.Estado::Activo;
+    <span class="cmd">end</span>;
+
+    <span class="cmd">trigger</span> <span class="param">OnModify</span>()
+    <span class="cmd">begin</span>
+        Rec.<span class="string">"Modificado Por"</span> := UserId;
+    <span class="cmd">end</span>;
+
+    <span class="cmd">trigger</span> <span class="param">OnDelete</span>()
+    <span class="cmd">begin</span>
+        <span class="cmd">if</span> Rec.Estado = Rec.Estado::Activo <span class="cmd">then</span>
+            Error(<span class="string">'No se puede eliminar un préstamo activo.'</span>);
+    <span class="cmd">end</span>;
+
+    <span class="cmd">trigger</span> <span class="param">OnRename</span>()
+    <span class="cmd">begin</span>
+        Error(<span class="string">'Los préstamos no pueden ser renombrados.'</span>);
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <!-- ══════════════════════════════════════════════
+                 PASO 4: PAGES
+            ══════════════════════════════════════════════ -->
+            <hr class="divider">
+            <span class="step-badge">Paso 4 — Pages, Parts y FactBoxes</span>
+            <h2>Páginas de la interfaz</h2>
+            <p>Creamos primero el <code>ListPart</code> de préstamos (que usaremos como FactBox), luego la
+                <code>List</code> y la <code>Card</code> de socios. La Card incluye el FactBox lateral que se actualiza
+                automáticamente al cambiar de socio gracias a <code>SubPageLink</code>.
+            </p>
+
+            <h3>ListPart de préstamos</h3>
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span><span
+                        class="file-name">&nbsp;PrestamoListPart.Page.al</span></div>
+                <pre><code><span class="cmd">page</span> <span class="var">50110</span> <span class="string">"Prestamo ListPart"</span>
+{
+    PageType        = ListPart;
+    ApplicationArea = All;
+    SourceTable     = <span class="string">"Prestamo"</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(Lines)
+            {
+                <span class="cmd">field</span>(<span class="string">"Entry No."</span>;        Rec.<span class="string">"Entry No."</span>)        { }
+                <span class="cmd">field</span>(<span class="string">"No. Libro"</span>;         Rec.<span class="string">"No. Libro"</span>)         { }
+                <span class="cmd">field</span>(<span class="string">"Fecha Inicio"</span>;      Rec.<span class="string">"Fecha Inicio"</span>)      { }
+                <span class="cmd">field</span>(<span class="string">"Fecha Devolucion"</span>;  Rec.<span class="string">"Fecha Devolucion"</span>)  { }
+                <span class="cmd">field</span>(<span class="string">"Dias Prestamo"</span>;    Rec.<span class="string">"Dias Prestamo"</span>)    { }
+                <span class="cmd">field</span>(Estado;           Rec.Estado)           { }
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <h3>List de socios</h3>
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span><span
+                        class="file-name">&nbsp;SocioList.Page.al</span></div>
+                <pre><code><span class="cmd">page</span> <span class="var">50100</span> <span class="string">"Socio List"</span>
+{
+    PageType        = List;
+    ApplicationArea = All;
+    UsageCategory   = Lists;
+    SourceTable     = <span class="string">"Socio"</span>;
+    CardPageId      = <span class="string">"Socio Card"</span>;
+    Editable        = <span class="param">false</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(GroupName)
+            {
+                FreezeColumnID = <span class="string">"No."</span>;  <span class="comment">// columna fija al hacer scroll</span>
+                <span class="cmd">field</span>(<span class="string">"No."</span>;              Rec.<span class="string">"No."</span>)              { }
+                <span class="cmd">field</span>(<span class="string">"Nombre"</span>;           Rec.Nombre)            { }
+                <span class="cmd">field</span>(<span class="string">"Email"</span>;            Rec.Email)             { }
+                <span class="cmd">field</span>(<span class="string">"Fecha Alta"</span>;       Rec.<span class="string">"Fecha Alta"</span>)       { }
+                <span class="cmd">field</span>(<span class="string">"Total Prestamos"</span>;  Rec.<span class="string">"Total Prestamos"</span>)  { }  <span class="comment">// FlowField</span>
+            }
+        }
+        area(FactBoxes)
+        {
+            <span class="cmd">part</span>(HistorialPrestamos; <span class="string">"Prestamo ListPart"</span>)
+            {
+                SubPageLink = <span class="string">"No. Socio"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>);
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <h3>Card de socios</h3>
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span><span
+                        class="file-name">&nbsp;SocioCard.Page.al</span></div>
+                <pre><code><span class="cmd">page</span> <span class="var">50101</span> <span class="string">"Socio Card"</span>
+{
+    PageType        = Card;
+    ApplicationArea = All;
+    UsageCategory   = Administration;
+    SourceTable     = <span class="string">"Socio"</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            group(General)
+            {
+                <span class="cmd">field</span>(<span class="string">"No."</span>;        Rec.<span class="string">"No."</span>)        { Importance = Promoted; }
+                <span class="cmd">field</span>(Nombre;     Rec.Nombre)     { Importance = Promoted; }
+                <span class="cmd">field</span>(Email;      Rec.Email)      { }
+                <span class="cmd">field</span>(Telefono;   Rec.Telefono)   { }
+                <span class="cmd">field</span>(<span class="string">"Fecha Alta"</span>; Rec.<span class="string">"Fecha Alta"</span>) { }
+                <span class="cmd">field</span>(Activo;     Rec.Activo)     { }
+            }
+            group(Estadisticas)
+            {
+                <span class="cmd">field</span>(<span class="string">"Total Prestamos"</span>;     Rec.<span class="string">"Total Prestamos"</span>)
+                {
+                    Importance = Promoted;
+                    Editable   = <span class="param">false</span>;  <span class="comment">// FlowField: solo lectura</span>
+                }
+                <span class="cmd">field</span>(<span class="string">"Dias Totales Prestamo"</span>; Rec.<span class="string">"Dias Totales Prestamo"</span>)
+                {
+                    Importance = Additional;
+                    Editable   = <span class="param">false</span>;
+                }
+                <span class="comment">// FlowFilter: el usuario puede filtrar los días por período</span>
+                <span class="cmd">field</span>(<span class="string">"Date Filter"</span>; Rec.<span class="string">"Date Filter"</span>) { }
+            }
+        }
+        area(FactBoxes)
+        {
+            <span class="cmd">part</span>(HistorialPrestamos; <span class="string">"Prestamo ListPart"</span>)
+            {
+                SubPageLink = <span class="string">"No. Socio"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>);
+            }
+        }
+    }
+
+    <span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+    <span class="cmd">begin</span>
+        <span class="comment">// Avisamos en el título si el socio tiene préstamos activos</span>
+        <span class="cmd">if</span> Rec.<span class="string">"Total Prestamos"</span> > <span class="var">0</span> <span class="cmd">then</span>
+            CurrPage.Caption := Rec.Nombre + <span class="string">' — Préstamos activos'</span>
+        <span class="cmd">else</span>
+            CurrPage.Caption := Rec.Nombre;
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <!-- ══════════════════════════════════════════════
+                 PASO 5: QUERY
+            ══════════════════════════════════════════════ -->
+            <hr class="divider">
+            <span class="step-badge">Paso 5 — Query</span>
+            <h2>Top socios por días de préstamo</h2>
+            <p>Creamos una Query para calcular, de forma eficiente y en una sola petición SQL, cuántos días lleva
+                prestando libros cada socio. Usamos <code>LeftOuterJoin</code> para incluir también los socios sin
+                préstamos (aparecerán con 0 días).</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span><span
+                        class="file-name">&nbsp;DiasPorSocio.Query.al</span></div>
+                <pre><code><span class="cmd">query</span> <span class="var">50100</span> <span class="string">"Dias Totales por Socio"</span>
+{
+    Caption   = <span class="string">'Días Totales de Préstamo por Socio'</span>;
+    QueryType = Normal;
+
+    elements
+    {
+        <span class="cmd">dataitem</span>(Socio; Socio)
+        {
+            <span class="comment">// Sin Method → claves de agrupación</span>
+            <span class="cmd">column</span>(Num_Socio;    <span class="string">"No."</span>)  { Caption = <span class="string">'Nº Socio'</span>; }
+            <span class="cmd">column</span>(Nombre_Socio; Nombre) { Caption = <span class="string">'Nombre'</span>; }
+
+            <span class="cmd">dataitem</span>(Prestamo; <span class="string">"Prestamo"</span>)
+            {
+                DataItemLink = <span class="string">"No. Socio"</span> = Socio.<span class="string">"No."</span>;
+                SqlJoinType  = LeftOuterJoin;
+
+                <span class="cmd">column</span>(Total_Dias; <span class="string">"Dias Prestamo"</span>)
+                {
+                    Caption = <span class="string">'Total Días'</span>;
+                    Method  = Sum;    <span class="comment">// SQL suma los días por socio</span>
+                }
+                <span class="cmd">column</span>(Num_Prestamos; <span class="string">"Entry No."</span>)
+                {
+                    Caption = <span class="string">'Nº Préstamos'</span>;
+                    Method  = Count;  <span class="comment">// SQL cuenta los préstamos por socio</span>
+                }
+            }
+        }
+    }
+}
+
+<span class="comment">// Uso desde código AL:</span>
+<span class="cmd">procedure</span> MostrarTopSocios()
+<span class="cmd">var</span>
+    Q: Query <span class="string">"Dias Totales por Socio"</span>;
+<span class="cmd">begin</span>
+    Q.SetFilter(Num_Socio, <span class="string">'S*'</span>);  <span class="comment">// filtro ANTES de Open()</span>
+    Q.Open();
+    <span class="cmd">while</span> Q.Read() <span class="cmd">do</span>
+        Message(<span class="string">'%1 | %2 | %3 días'</span>, Q.Num_Socio, Q.Nombre_Socio, Q.Total_Dias);
+    Q.Close();
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <!-- ══════════════════════════════════════════════
+                 PASO 6: REPORT
+            ══════════════════════════════════════════════ -->
+            <hr class="divider">
+            <span class="step-badge">Paso 6 — Report, Jerarquía y RequestPage</span>
+            <h2>Informe de socios morosos</h2>
+            <p>El informe final: lista todos los socios con préstamos vencidos, con sus días de retraso acumulados. La
+                <strong>RequestPage</strong> permite al usuario filtrar por rango de fechas. La
+                <strong>jerarquía</strong> de DataItems anida los préstamos dentro de cada socio. Los totales se
+                acumulan con variables globales.
+            </p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span><span
+                        class="file-name">&nbsp;SociosMorosos.Report.al</span></div>
+                <pre><code><span class="cmd">report</span> <span class="var">50100</span> <span class="string">"Socios Morosos"</span>
+{
+    Caption         = <span class="string">'Listado de Socios Morosos'</span>;
+    UsageCategory   = ReportsAndAnalysis;
+    ApplicationArea = All;
+
+    dataset
+    {
+        <span class="comment">// ── NIVEL 1: SOCIO ─────────────────────────────────</span>
+        <span class="cmd">dataitem</span>(Socio; Socio)
+        {
+            <span class="cmd">column</span>(Socio_No;        <span class="string">"No."</span>)          { }
+            <span class="cmd">column</span>(Socio_Nombre;    Nombre)         { }
+            <span class="cmd">column</span>(Socio_Email;     Email)          { }
+            <span class="cmd">column</span>(Socio_TotalDias; TotalDiasSocio) { }  <span class="comment">// acumulado del hijo</span>
+
+            <span class="cmd">trigger</span> <span class="param">OnPreDataItem</span>()
+            <span class="cmd">begin</span>
+                SetCurrentKey(Nombre);  <span class="comment">// orden alfabético</span>
+            <span class="cmd">end</span>;
+
+            <span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+            <span class="cmd">begin</span>
+                TotalDiasSocio := <span class="var">0</span>;   <span class="comment">// reiniciamos al cambiar de socio</span>
+            <span class="cmd">end</span>;
+
+            <span class="comment">// ── NIVEL 2: PRÉSTAMO ───────────────────────────────</span>
+            <span class="cmd">dataitem</span>(Prestamo; <span class="string">"Prestamo"</span>)
+            {
+                DataItemLink        = <span class="string">"No. Socio"</span> = FIELD(<span class="string">"No."</span>);
+                DataItemTableFilter = Estado = FILTER(Vencido);  <span class="comment">// solo vencidos</span>
+
+                <span class="cmd">column</span>(Prest_No;     <span class="string">"Entry No."</span>)       { }
+                <span class="cmd">column</span>(Prest_Libro;  <span class="string">"No. Libro"</span>)       { }
+                <span class="cmd">column</span>(Prest_Inicio; <span class="string">"Fecha Inicio"</span>)    { }
+                <span class="cmd">column</span>(Prest_Dev;    <span class="string">"Fecha Devolucion"</span>) { }
+                <span class="cmd">column</span>(Prest_Dias;   <span class="string">"Dias Prestamo"</span>)   { }
+
+                <span class="cmd">trigger</span> <span class="param">OnPreDataItem</span>()
+                <span class="cmd">begin</span>
+                    <span class="comment">// Aplicamos los filtros de fecha de la RequestPage</span>
+                    <span class="cmd">if</span> FechaDesde &lt;> <span class="var">0D</span> <span class="cmd">then</span>
+                        SetFilter(<span class="string">"Fecha Inicio"</span>, <span class="string">'>=%1'</span>, FechaDesde);
+                    <span class="cmd">if</span> FechaHasta &lt;> <span class="var">0D</span> <span class="cmd">then</span>
+                        SetFilter(<span class="string">"Fecha Inicio"</span>, <span class="string">'<=%1'</span>, FechaHasta);
+
+                    SetCurrentKey(<span class="string">"Fecha Inicio"</span>);
+                    SetAscending(<span class="string">"Fecha Inicio"</span>, <span class="param">false</span>);  <span class="comment">// más recientes primero</span>
+                <span class="cmd">end</span>;
+
+                <span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+                <span class="cmd">begin</span>
+                    TotalDiasSocio += <span class="string">"Dias Prestamo"</span>;  <span class="comment">// acumulamos en el padre</span>
+                <span class="cmd">end</span>;
+            }
+        }
+    }
+
+    requestpage
+    {
+        SaveValues = <span class="param">true</span>;
+        layout
+        {
+            area(Content)
+            {
+                group(Fechas) { Caption = <span class="string">'Filtrar por fecha de inicio'</span>;
+                    <span class="cmd">field</span>(Desde; FechaDesde) { ApplicationArea = All; Caption = <span class="string">'Desde'</span>; }
+                    <span class="cmd">field</span>(Hasta; FechaHasta) { ApplicationArea = All; Caption = <span class="string">'Hasta'</span>; }
+                }
+            }
+        }
+        <span class="cmd">trigger</span> <span class="param">OnOpenPage</span>()
+        <span class="cmd">begin</span>
+            FechaDesde := DMY2Date(<span class="var">1</span>, <span class="var">1</span>, Date2DMY(Today(), <span class="var">3</span>));  <span class="comment">// 1 enero año actual</span>
+            FechaHasta := Today();
+        <span class="cmd">end</span>;
+    }
+
+    <span class="cmd">var</span>
+        TotalDiasSocio: <span class="param">Integer</span>;
+        FechaDesde    : <span class="param">Date</span>;
+        FechaHasta    : <span class="param">Date</span>;
+
+    rendering
+    {
+        layout(RDLCLayout)
+        {
+            Type       = RDLC;
+            LayoutFile = <span class="string">'src/layouts/SociosMorosos.rdlc'</span>;
+        }
+    }
+
+    <span class="cmd">trigger</span> <span class="param">OnPreReport</span>()
+    <span class="cmd">begin</span>
+        <span class="cmd">if</span> (FechaDesde &lt;> <span class="var">0D</span>) <span class="cmd">and</span> (FechaHasta &lt;> <span class="var">0D</span>) <span class="cmd">then</span>
+            <span class="cmd">if</span> FechaDesde > FechaHasta <span class="cmd">then</span>
+                Error(<span class="string">'La fecha "Desde" no puede ser posterior a la fecha "Hasta".'</span>);
+    <span class="cmd">end</span>;
+
+    <span class="cmd">trigger</span> <span class="param">OnPostReport</span>()
+    <span class="cmd">begin</span>
+        Message(<span class="string">'Informe de morosos generado correctamente.'</span>);
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <!-- ══════════════════════════════════════════════
+                 RESUMEN FINAL
+            ══════════════════════════════════════════════ -->
+            <hr class="divider">
+            <h2>Resumen de objetos creados</h2>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tipo</th>
+                        <th>Nombre</th>
+                        <th>Concepto aplicado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>50100</td>
+                        <td><code>Enum</code></td>
+                        <td>Estado Prestamo</td>
+                        <td>Enum con huecos entre posiciones</td>
+                    </tr>
+                    <tr>
+                        <td>50100</td>
+                        <td><code>Table</code></td>
+                        <td>Socio</td>
+                        <td>Tipos de dato, FlowField (Count/Sum), FlowFilter</td>
+                    </tr>
+                    <tr>
+                        <td>50101</td>
+                        <td><code>Table</code></td>
+                        <td>Libro</td>
+                        <td>Tipos de dato, FlowField (Exist), clave Unique</td>
+                    </tr>
+                    <tr>
+                        <td>50102</td>
+                        <td><code>Table</code></td>
+                        <td>Prestamo</td>
+                        <td>PK AutoIncrement, TableRelation, Triggers, Enum</td>
+                    </tr>
+                    <tr>
+                        <td>50100</td>
+                        <td><code>Page</code> (List)</td>
+                        <td>Socio List</td>
+                        <td>List, repeater, FreezeColumnID, FactBox</td>
+                    </tr>
+                    <tr>
+                        <td>50101</td>
+                        <td><code>Page</code> (Card)</td>
+                        <td>Socio Card</td>
+                        <td>Card, groups, Importance, FactBox, OnAfterGetRecord</td>
+                    </tr>
+                    <tr>
+                        <td>50110</td>
+                        <td><code>Page</code> (ListPart)</td>
+                        <td>Prestamo ListPart</td>
+                        <td>ListPart, SubPageLink</td>
+                    </tr>
+                    <tr>
+                        <td>50100</td>
+                        <td><code>Query</code></td>
+                        <td>Dias Totales por Socio</td>
+                        <td>DataItemLink, LeftOuterJoin, Method Sum/Count</td>
+                    </tr>
+                    <tr>
+                        <td>50100</td>
+                        <td><code>Report</code></td>
+                        <td>Socios Morosos</td>
+                        <td>Jerarquía, DataItemTableFilter, RequestPage, acumulación</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert-info">
+                <h3>💡 Claves del ejercicio</h3>
+                <ul>
+                    <li>El <strong>Enum</strong> se define una sola vez y se reutiliza en la tabla y en el
+                        <code>DataItemTableFilter</code> del Report.
+                    </li>
+                    <li>Los <strong>FlowFields</strong> no se guardan en SQL: se calculan bajo demanda con
+                        <code>CalcFields</code> o al mostrarlos en una Page.
+                    </li>
+                    <li>El <strong>FlowFilter</strong> "Date Filter" permite que el usuario filtre los días totales por
+                        período desde la propia Card, sin tocar la base de datos.</li>
+                    <li>Los <strong>Triggers</strong> de tabla garantizan la integridad siempre, independientemente de
+                        desde qué pantalla llegue la operación.</li>
+                    <li>El <strong>SubPageLink</strong> conecta el FactBox con el registro seleccionado en la List o
+                        Card padre.</li>
+                    <li>La <strong>Query</strong> calcula los totales en una sola petición SQL, sin bucles en AL.</li>
+                    <li>En el <strong>Report</strong>, los filtros de la RequestPage se aplican siempre en
+                        <code>OnPreDataItem</code>, nunca en <code>OnAfterGetRecord</code>.
+                    </li>
+                    <li>Al probar en BC, accede directamente por URL:
+                        <code>http://bccontainer/BusinessCentral/?page=50100</code>.
+                    </li>
+                </ul>
+            </div>
+
+            <a href="../teoria.html" class="btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

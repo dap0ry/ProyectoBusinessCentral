@@ -42,6 +42,116 @@
             border-radius: 8px;
             margin-bottom: 2rem;
         }
+
+        /* Exercise blocks */
+        .exercise-block {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .exercise-block .exercise-number {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-blue);
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .exercise-block h3 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        /* IDE Styles AL */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info strong {
+            color: var(--primary-blue);
+        }
+
+        .badge-section {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 0.78rem;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 
@@ -62,41 +172,194 @@
         <div class="exercise-header" style="margin-bottom: 30px;">
             <p
                 style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
-                EJERCICIO 01</p>
-            <h1>Enum: Estados de Alquiler</h1>
+                EJERCICIOS · ENUMS</p>
+            <h1>Enums en AL</h1>
             <span class="diff-badge diff-easy"
                 style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 2/10</span>
         </div>
 
         <div class="exercise-content">
-            <div class="goal">
-                <strong>Objetivo:</strong> Crear un objeto de tipo Enum en AL que gestione los posibles estados de una
-                maquinaria en una empresa de alquiler.
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 1 – Estructura base de un Enum
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 01</div>
+                <div class="badge-section">Estructura base</div>
+                <h3>Crea tu primer Enum</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Practicar la sintaxis básica de un objeto <code>Enum</code> en AL
+                    definiendo una lista cerrada de estados.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea un archivo llamado <code>RentalStatus.Enum.al</code>.</li>
+                    <li>El Enum debe tener el ID <code>50100</code> y el nombre <code>"Rental Status"</code>.</li>
+                    <li>Añade los siguientes valores respetando la estructura
+                        <code>value(&lt;posición&gt;; "&lt;valor&gt;")</code>:
+                        <br>0: <em>espacio en blanco</em>, 10: <em>Disponible</em>, 20: <em>Alquilado</em>, 30: <em>En
+                            Reparación</em>, 40: <em>Retirado</em>.
+                    </li>
+                    <li>Fíjate en que las posiciones van de 10 en 10 para dejar margen de crecimiento.</li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL</span></div>
+                    <pre><code><span class="cmd">enum</span> <span class="var">50100</span> <span class="string">"Rental Status"</span>
+{
+    <span class="cmd">value</span>(<span class="var">0</span>;  <span class="string">" "</span>)             { }
+    <span class="cmd">value</span>(<span class="var">10</span>; <span class="string">"Disponible"</span>)    { }
+    <span class="comment">// Añade el resto de valores aquí...</span>
+}</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> Deja siempre un valor <code>0</code> con texto vacío como estado
+                    "sin seleccionar". Usa huecos (0, 10, 20…) para poder insertar nuevos valores en el futuro sin
+                    romper el orden.
+                </div>
             </div>
 
-            <h2>Instrucciones</h2>
-            <ul>
-                <li>Crea un archivo llamado <code>RentalStatus.Enum.al</code>.</li>
-                <li>El Enum debe tener el ID <code>50100</code>.</li>
-                <li>Debe contener los siguientes 4 valores:
-                    <br>0: Disponible, 1: Alquilado, 2: En Reparación, 3: Retirado.
-                </li>
-                <li>Asegúrate de que sea <code>Extensible = true</code>.</li>
-            </ul>
 
-            <h2>Pista de Código</h2>
-            <div class="ide-code">
-                <pre><code><span class="cmd">enum</span> <span class="var">50100</span> "Rental Status"
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 2 – Enum extensible
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 02</div>
+                <div class="badge-section">Extensibilidad</div>
+                <h3>Hazlo extensible</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Entender la propiedad <code>Extensible</code> que diferencia a
+                    <code>Enum</code> de <code>Option</code> y que permite a otras extensiones añadir nuevos valores.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Toma el Enum del Ejercicio 01.</li>
+                    <li>Añade la propiedad <code>Extensible = true;</code> justo dentro de las llaves del Enum,
+                        antes del primer <code>value</code>.</li>
+                    <li>Crea un segundo archivo <code>RentalStatusExt.EnumExt.al</code> que extienda el Enum
+                        <code>"Rental Status"</code> y añada el valor <code>50: "Vendido"</code>.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — RentalStatus.Enum.al</span></div>
+                    <pre><code><span class="cmd">enum</span> <span class="var">50100</span> <span class="string">"Rental Status"</span>
 {
-    Extensible = true;
-    
-    <span class="cmd">value</span>(0; Available) { Caption = 'Disponible'; }
-    <span class="string">// Añade el resto de valores aquí...</span>
+    Extensible = <span class="param">true</span>;
+
+    <span class="cmd">value</span>(<span class="var">0</span>;  <span class="string">" "</span>)          { }
+    <span class="cmd">value</span>(<span class="var">10</span>; <span class="string">"Disponible"</span>) { }
+    <span class="comment">// ... resto de valores</span>
 }</code></pre>
+                </div>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — RentalStatusExt.EnumExt.al</span></div>
+                    <pre><code><span class="cmd">enumextension</span> <span class="var">50101</span> <span class="string">"Rental Status Ext"</span> <span class="cmd">extends</span> <span class="string">"Rental Status"</span>
+{
+    <span class="cmd">value</span>(<span class="var">50</span>; <span class="string">"Vendido"</span>) { }
+}</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> Sin <code>Extensible = true</code> el compilador rechazará la
+                    <code>enumextension</code>. Es una de las grandes ventajas de <code>Enum</code> frente a
+                    <code>Option</code>.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 3 – Usarlo en una tabla
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 03</div>
+                <div class="badge-section">Uso en tabla</div>
+                <h3>Aplica el Enum a un campo de tabla</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Usar el Enum <code>"Rental Status"</code> creado anteriormente como
+                    tipo de dato de un campo en una tabla AL.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea una tabla <code>50100 "Maquinaria"</code>.</li>
+                    <li>Añade los campos: <code>"No."</code> (Code[20]), <code>"Descripcion"</code> (Text[100]) y
+                        <code>"Estado"</code> de tipo <code>Enum "Rental Status"</code>.
+                    </li>
+                    <li>Define la clave primaria sobre el campo <code>"No."</code>.</li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL</span></div>
+                    <pre><code><span class="cmd">table</span> <span class="var">50100</span> <span class="string">"Maquinaria"</span>
+{
+    fields
+    {
+        <span class="cmd">field</span>(<span class="var">1</span>; <span class="string">"No."</span>;         <span class="param">Code</span>[20])                 { }
+        <span class="cmd">field</span>(<span class="var">2</span>; <span class="string">"Descripcion"</span>; <span class="param">Text</span>[100])               { }
+        <span class="cmd">field</span>(<span class="var">3</span>; <span class="string">"Estado"</span>;      <span class="param">Enum</span> <span class="string">"Rental Status"</span>)    { }
+    }
+    keys
+    {
+        <span class="cmd">key</span>(PK; <span class="string">"No."</span>) { }
+    }
+}</code></pre>
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 4 – Referenciar un valor en código
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 04</div>
+                <div class="badge-section">Referenciar valores</div>
+                <h3>Usa el Enum en código AL</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Practicar la sintaxis <code>Rec.Campo::Valor</code> para comparar el
+                    estado de un registro y reaccionar en consecuencia.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Dentro de un codeunit o trigger de la tabla <code>"Maquinaria"</code>, escribe un bloque
+                        <code>if</code> que compruebe si el campo <code>"Estado"</code> es igual a
+                        <code>Alquilado</code>.
+                    </li>
+                    <li>Si se cumple la condición, muestra el mensaje: <em>'Esta máquina está actualmente
+                            alquilada.'</em></li>
+                    <li>Añade un <code>else</code> que muestre: <em>'La máquina está disponible o en otro estado.'</em>
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL</span></div>
+                    <pre><code><span class="cmd">if</span> Rec.Estado = Rec.Estado::Alquilado <span class="cmd">then</span>
+    <span class="param">Message</span>(<span class="string">'Esta máquina está actualmente alquilada.'</span>)
+<span class="cmd">else</span>
+    <span class="param">Message</span>(<span class="string">'La máquina está disponible o en otro estado.'</span>);</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> La sintaxis de acceso al valor es siempre
+                    <code>Rec.&lt;Campo&gt;::&lt;Valor&gt;</code>. Si el nombre del valor contiene espacios, ponlo entre
+                    comillas: <code>Rec.Estado::"En Reparación"</code>.
+                </div>
             </div>
 
             <a href="../ejercicios.html" class="btn btn-secondary"
-                style="margin-top: 40px; display: inline-block;">&larr; Volver a Ejercicios</a>
+                style="margin-top: 10px; margin-bottom: 60px; display: inline-block;">&larr; Volver a Ejercicios</a>
         </div>
     </main>
 

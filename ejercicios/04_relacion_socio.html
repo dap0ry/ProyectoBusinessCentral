@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio: Relations - Business Central</title>
+    <title>Ejercicio: TableRelations - Business Central</title>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="../ejercicios.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
@@ -42,6 +42,195 @@
             border-radius: 8px;
             margin-bottom: 2rem;
         }
+
+        /* Contexto previo */
+        .prev-context {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 28px;
+            margin-bottom: 40px;
+        }
+
+        .prev-context .prev-label {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .prev-context h4 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+        }
+
+        .prev-context ul {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .prev-context ul li {
+            margin-bottom: 4px;
+        }
+
+        /* Schema diagram */
+        .schema-diagram {
+            background: #1e1e1e;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 24px 28px;
+            margin: 20px 0 28px;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 0.88rem;
+            line-height: 2;
+            color: #d4d4d4;
+        }
+
+        .schema-diagram .tbl {
+            color: #61afef;
+            font-weight: bold;
+        }
+
+        .schema-diagram .arrow {
+            color: #c678dd;
+        }
+
+        .schema-diagram .fk {
+            color: #98c379;
+        }
+
+        .schema-diagram .note {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        /* Exercise block */
+        .exercise-block {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .exercise-block .exercise-number {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-blue);
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .exercise-block h3 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .badge-section {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 0.78rem;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* IDE */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info strong {
+            color: var(--primary-blue);
+        }
+
+        .alert-warn {
+            background-color: rgba(234, 179, 8, 0.08);
+            border-left: 4px solid #eab308;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warn strong {
+            color: #eab308;
+        }
     </style>
 </head>
 
@@ -62,38 +251,221 @@
         <div class="exercise-header" style="margin-bottom: 30px;">
             <p
                 style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
-                EJERCICIO 04</p>
-            <h1>Relations: Socio y Préstamo</h1>
+                EJERCICIO 04 · TABLERELATIONS</p>
+            <h1>TableRelations</h1>
             <span class="diff-badge diff-medium"
                 style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 5/10</span>
         </div>
 
         <div class="exercise-content">
-            <div class="goal">
-                <strong>Objetivo:</strong> Vincular una tabla de préstamos con la tabla maestra de clientes (Socios) de
-                Business Central.
+
+            <!-- Contexto previo -->
+            <div class="prev-context">
+                <div class="prev-label">Ejercicios anteriores</div>
+                <h4>¿Qué tienes construido hasta ahora?</h4>
+                <ul>
+                    <li>Enum <code>"Rental Status"</code> con los estados de la maquinaria, extensible con
+                        <code>"Vendido"</code>.
+                    </li>
+                    <li>Tabla <code>"Maquinaria"</code> (ID 50100): campos <code>"No."</code>,
+                        <code>"Descripcion"</code>, <code>"Estado"</code>, <code>"Categoria"</code>,
+                        <code>"Fecha Alta"</code>. PK sobre <code>"No."</code>, SK sobre <code>"Estado"</code> y
+                        <code>"Categoria"</code>.
+                    </li>
+                    <li>Tabla <code>"Linea Alquiler"</code> (ID 50101): PK compuesta <code>"No. Alquiler"</code> +
+                        <code>"No. Linea"</code>, SK sobre <code>"No. Maquina"</code>.
+                    </li>
+                    <li>Tabla <code>"Historial Estado Maquina"</code> (ID 50102): PK con <code>AutoIncrement</code>, SK
+                        con <code>MaintainSiftIndex</code>.</li>
+                    <li>Pages <code>"Maquinaria List"</code> y <code>"Maquinaria Card"</code> con
+                        <code>OnValidate</code> y acción de filtro.
+                    </li>
+                </ul>
             </div>
 
-            <h2>Instrucciones</h2>
-            <ul>
-                <li>Crea la tabla <code>Book Loan</code> con ID <code>50103</code>.</li>
-                <li>Crea un campo <code>Customer No.</code> (Code[20]).</li>
-                <li>Añade la propiedad <code>TableRelation</code> para que este campo solo permita elegir valores que
-                    existan en la tabla <code>Customer</code>.</li>
-                <li>Recuerda que en la tabla Customer, el campo clave es <code>"No."</code>.</li>
-            </ul>
+            <!-- Diagrama de relaciones -->
+            <h2>Modelo de datos actual</h2>
+            <p>Antes de empezar, visualiza cómo quedarán conectadas las tablas una vez añadas las relaciones:</p>
 
-            <h2>Fragmento de AL</h2>
-            <div class="ide-code">
-                <pre><code><span class="cmd">field</span>(2; "Customer No."; Code[20])
+            <div class="schema-diagram">
+                <span class="tbl">Maquinaria</span> <span class="note">("No." PK)</span>
+                <span class="arrow">▲ ▲</span>
+                <span class="arrow">│ └──────────────────────</span> <span class="fk">"No. Maquina"</span> <span
+                    class="arrow">──►</span> <span class="tbl">Historial Estado Maquina</span>
+                <span class="arrow">│</span>
+                <span class="fk">"No. Maquina"</span> <span class="arrow">──►</span> <span class="tbl">Linea
+                    Alquiler</span> <span class="note">(PK compuesta)</span>
+                <span class="arrow">▲</span>
+                <span class="fk">"No. Alquiler"</span> <span class="arrow">──►</span> <span class="tbl">Cabecera
+                    Alquiler</span> <span class="note">(nueva)</span>
+            </div>
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 1 – TableRelation simple en Linea Alquiler
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 01</div>
+                <div class="badge-section">TableRelation simple</div>
+                <h3>Vincula Linea Alquiler con Maquinaria</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Añadir integridad referencial al campo <code>"No. Maquina"</code> de
+                    la tabla <code>"Linea Alquiler"</code>, de forma que solo se puedan introducir máquinas que
+                    existan realmente en la tabla <code>"Maquinaria"</code>.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Abre <code>LineaAlquiler.Table.al</code>.</li>
+                    <li>Al campo <code>"No. Maquina"</code> (Code[20]) añádele la propiedad
+                        <code>TableRelation = "Maquinaria";</code> dentro de sus llaves.
+                    </li>
+                    <li>Asegúrate de que <code>ValidateTableRelation</code> queda en su valor por defecto
+                        (<code>true</code>): no hace falta declararlo, pero entiende qué implica.</li>
+                    <li>Compila y verifica que el campo genera la lupa de búsqueda en la page de líneas.</li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — LineaAlquiler.Table.al (fragmento)</span></div>
+                    <pre><code>        <span class="cmd">field</span>(<span class="var">3</span>; <span class="string">"No. Maquina"</span>; <span class="param">Code</span>[20])
+        {
+            TableRelation = <span class="string">"Maquinaria"</span>; <span class="comment">// solo acepta "No." que existan en Maquinaria</span>
+        }</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> El tipo y tamaño del campo (<code>Code[20]</code>) debe coincidir
+                    exactamente con el de la PK de la tabla relacionada. Si difieren, el compilador lanzará un error.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 2 – Nueva tabla Cabecera Alquiler
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 02</div>
+                <div class="badge-section">Nueva tabla + TableRelation</div>
+                <h3>Crea la tabla Cabecera Alquiler y vincúlala</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Crear la tabla cabecera del alquiler y conectarla con
+                    <code>"Linea Alquiler"</code> usando <code>TableRelation</code>, cerrando así el modelo
+                    cabecera → líneas que ya tienes en los ejercicios anteriores.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea <code>CabeceraAlquiler.Table.al</code> con ID <code>50103</code> y nombre
+                        <code>"Cabecera Alquiler"</code>.
+                    </li>
+                    <li>Campos: <code>"No."</code> (Code[20]), <code>"Descripcion"</code> (Text[100]),
+                        <code>"Fecha Inicio"</code> (Date), <code>"Fecha Fin"</code> (Date) y
+                        <code>"Estado"</code> (Enum <code>"Rental Status"</code>).
+                    </li>
+                    <li>PK simple sobre <code>"No."</code>.</li>
+                    <li>Ahora vuelve a <code>LineaAlquiler.Table.al</code> y añade
+                        <code>TableRelation = "Cabecera Alquiler";</code> al campo <code>"No. Alquiler"</code>,
+                        de modo que cada línea deba pertenecer a una cabecera existente.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — CabeceraAlquiler.Table.al</span></div>
+                    <pre><code><span class="cmd">table</span> <span class="var">50103</span> <span class="string">"Cabecera Alquiler"</span>
 {
-    <span class="string">// Vincula este campo con la tabla Customer</span>
-    TableRelation = Customer."No.";
+    fields
+    {
+        <span class="cmd">field</span>(<span class="var">1</span>; <span class="string">"No."</span>;          <span class="param">Code</span>[20])              { }
+        <span class="cmd">field</span>(<span class="var">2</span>; <span class="string">"Descripcion"</span>;  <span class="param">Text</span>[100])             { }
+        <span class="cmd">field</span>(<span class="var">3</span>; <span class="string">"Fecha Inicio"</span>; <span class="param">Date</span>)                  { }
+        <span class="cmd">field</span>(<span class="var">4</span>; <span class="string">"Fecha Fin"</span>;    <span class="param">Date</span>)                  { }
+        <span class="cmd">field</span>(<span class="var">5</span>; <span class="string">"Estado"</span>;       <span class="param">Enum</span> <span class="string">"Rental Status"</span>) { }
+    }
+    keys
+    {
+        <span class="cmd">key</span>(PK; <span class="string">"No."</span>) { }
+    }
 }</code></pre>
+                </div>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — LineaAlquiler.Table.al (campo actualizado)</span>
+                    </div>
+                    <pre><code>        <span class="cmd">field</span>(<span class="var">1</span>; <span class="string">"No. Alquiler"</span>; <span class="param">Code</span>[20])
+        {
+            TableRelation = <span class="string">"Cabecera Alquiler"</span>; <span class="comment">// debe existir en la cabecera</span>
+        }</code></pre>
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 3 – TableRelation condicional en Historial
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 03</div>
+                <div class="badge-section">TableRelation condicional</div>
+                <h3>Relación condicional en el Historial de Estado</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Ampliar la tabla <code>"Historial Estado Maquina"</code> con un campo
+                    <code>"Tipo Origen"</code> (Option) que indique si el cambio viene de un alquiler o de una
+                    revisión manual. Según el tipo, el campo <code>"No. Origen"</code> apuntará a
+                    <code>"Cabecera Alquiler"</code> o quedará libre.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Abre <code>HistorialEstado.Table.al</code> y añade dos campos nuevos:
+                        <code>"Tipo Origen"</code> (Option con valores <code>Alquiler</code> y <code>Manual</code>)
+                        y <code>"No. Origen"</code> (Code[20]).
+                    </li>
+                    <li>En el campo <code>"No. Origen"</code> configura una <code>TableRelation</code> condicional:
+                        si <code>"Tipo Origen"</code> = <code>Alquiler</code>, relacionarlo con
+                        <code>"Cabecera Alquiler"</code>; en caso contrario no aplicar relación.
+                    </li>
+                    <li>Cuando <code>"Tipo Origen"</code> = <code>Manual</code>, el campo debe poder dejarse vacío
+                        sin error: usa <code>ValidateTableRelation = false</code> fuera del bloque condicional para
+                        cubrirlo.</li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — HistorialEstado.Table.al (campos nuevos)</span>
+                    </div>
+                    <pre><code>        <span class="cmd">field</span>(<span class="var">6</span>; <span class="string">"Tipo Origen"</span>; <span class="param">Option</span>)
+        {
+            OptionMembers = Alquiler,Manual;
+            OptionCaption = <span class="string">'Alquiler,Manual'</span>;
+        }
+        <span class="cmd">field</span>(<span class="var">7</span>; <span class="string">"No. Origen"</span>; <span class="param">Code</span>[20])
+        {
+            ValidateTableRelation = <span class="param">false</span>;
+            TableRelation = <span class="cmd">if</span> (<span class="string">"Tipo Origen"</span> = <span class="cmd">const</span>(Alquiler)) <span class="string">"Cabecera Alquiler"</span>;
+            <span class="comment">// Si Tipo Origen = Manual no se valida contra ninguna tabla</span>
+        }</code></pre>
+                </div>
+
+                <div class="alert-warn">
+                    <strong>⚠️ Ojo:</strong> <code>ValidateTableRelation = false</code> desactiva la comprobación
+                    de integridad referencial para <em>todos</em> los valores del campo. Úsalo solo cuando hay
+                    casos legítimos en los que el valor no necesita existir en ninguna tabla.
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Bonus:</strong> Vuelve al trigger <code>OnValidate</code> del campo
+                    <code>"Estado"</code> en <code>MaquinariaCard.Page.al</code>. Ahora que el historial tiene
+                    <code>"Tipo Origen"</code> y <code>"No. Origen"</code>, ¿podrías rellenarlos automáticamente
+                    al insertar la fila de historial? Pista: si la máquina tiene líneas en
+                    <code>"Linea Alquiler"</code>, el tipo será <code>Alquiler</code> y el origen será el
+                    <code>"No. Alquiler"</code> de la última línea activa.
+                </div>
             </div>
 
             <a href="../ejercicios.html" class="btn btn-secondary"
-                style="margin-top: 40px; display: inline-block;">&larr; Volver a Ejercicios</a>
+                style="margin-top: 10px; margin-bottom: 60px; display: inline-block;">&larr; Volver a Ejercicios</a>
         </div>
     </main>
 

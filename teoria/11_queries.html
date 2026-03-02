@@ -38,6 +38,114 @@
         .theory-content li {
             margin-bottom: 0.5rem;
         }
+
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+
+        .alert-info ul {
+            margin-bottom: 0 !important;
+        }
+
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warning h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
     </style>
 </head>
 
@@ -65,43 +173,259 @@
         </div>
 
         <div class="theory-content">
-            <p>En el mundo real con más de 10 millones de líneas de almacén, una <strong>Query</strong> es el único
-                objeto de AL capaz de interactuar directamente en crudo, de forma brutal y veloz con el verdadero gestor
-                de base de datos final (el motor SQL).</p>
 
-            <h2>Rendimiento puro frente a Pages</h2>
-            <p>Si quieres recolectar datos a mano usando el viejo estilo "abro un Récord mediante bucle de AL -> si pasa
-                mis filtros manuales, lo guardo -> actualizo mi total", estás ejecutando muchísimos ciclos del
-                procesador y memoria RAM (con <code>SetFilter</code> y <code>FindSet()</code>). Esto destruirá las
-                instancias del servidor a escala.</p>
-            <p>Una Query toma todo lo que le has definido (unas 5 o 6 tablas a unir simultáneamente) y compacta la
-                petición de información en *1 sola y gigante orden SQL nativa*. Se la encarga al motor y SQL retorna las
-                tablas trituradas y pre-calculadas infinitamente más rápido en 0.2 segundos.</p>
+            <p>En el mundo real con millones de registros, una <strong>Query</strong> es el único objeto de AL capaz de
+                interactuar directamente con el motor SQL de forma rápida y eficiente, devolviendo datos ya agrupados y
+                calculados sin necesidad de recorrerlos uno a uno desde AL.</p>
 
-            <h2>Funciones Analíticas (Agrupación)</h2>
-            <p>La mayor ventaja es definir que *ciertas columnas las sume SQL solito* (`Method = Sum;`) mientras agrupa
-                el desglose en un método inigualable en AL, como por ejemplo: "Quiero saber cuánto se ha vendido pero
-                devuélvemelo agrupado por Mes y dentro del mes por el Código del Vendedor." BC es incapaz en lenguaje
-                procedimental de hacer sumas bidimensionales en un microsegundo, pero las Queries lo hacen de facto.</p>
+            <!-- ESTRUCTURA BASE -->
+            <h2>Estructura base de una Query</h2>
+            <p>Una Query se declara como un objeto independiente con su propio ID, igual que una tabla o una página:</p>
 
             <div class="ide-code">
-                <pre><code><span class="cmd">query</span> <span class="var">50100</span> "Ventas Por Almacen"
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">query</span> <span class="var">50100</span> <span class="string">"Mi Primera Query"</span>
 {
+    Caption   = <span class="string">'Mi Primera Query'</span>;
+    QueryType = Normal;
+
     elements
     {
-        <span class="cmd">dataitem</span>(Venta; "Sales Invoice Header")
+        <span class="cmd">dataitem</span>(Socio; Socio)  <span class="comment">// "Lee la tabla Socio"</span>
         {
-            <span class="string">// ¡Agrúpalo por aquí!</span>
-            <span class="cmd">column</span>(Location_Code; "Location Code") { }
-            
-            <span class="cmd">column</span>(TotalEuros; "Amount")
+            <span class="cmd">column</span>(Num_Socio; <span class="string">"No."</span>)   <span class="comment">// "Quiero ver el campo No."</span>
             {
-                <span class="string">// Esta magia pide a SQL que suma, evitando el bucle loop de AL en RAM.</span>
-                Method = Sum;
+                Caption = <span class="string">'Número de Socio'</span>;
+            }
+            <span class="cmd">column</span>(Nombre; Nombre)      <span class="comment">// "Quiero ver el campo Nombre"</span>
+            {
+                Caption = <span class="string">'Nombre'</span>;
             }
         }
     }
 }</code></pre>
+            </div>
+
+            <!-- QUÉ ES -->
+            <h2>¿Qué es una Query?</h2>
+            <p>Imagina que tienes una lista de socios abierta en pantalla y necesitas saber: <strong>¿cuántos días en
+                    total lleva prestando libros cada socio?</strong> Para responder a eso, tendrías que mirar cada
+                préstamo de cada socio, sumar los días uno a uno y apuntarlo en algún sitio. Con 500 socios y 3.000
+                préstamos, eso es inviable a mano.</p>
+
+            <p>Una Query hace ese trabajo por ti: recorre los datos, los agrupa y calcula los totales de forma
+                automática y muy eficiente, todo desde código AL, sin pantallas ni botones.</p>
+
+            <!-- QUERY VS PAGE -->
+            <h2>Query vs Page — ¿cuándo usar cada uno?</h2>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Situación</th>
+                        <th>Usa esto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>El usuario necesita ver y editar registros</td>
+                        <td><code>Page</code></td>
+                    </tr>
+                    <tr>
+                        <td>Necesitas calcular totales o agrupar datos</td>
+                        <td><code>Query</code></td>
+                    </tr>
+                    <tr>
+                        <td>Quieres datos para un proceso en segundo plano</td>
+                        <td><code>Query</code></td>
+                    </tr>
+                    <tr>
+                        <td>Necesitas mostrar un listado con filtros al usuario</td>
+                        <td><code>Page</code></td>
+                    </tr>
+                    <tr>
+                        <td>Quieres saber cuántos préstamos tiene cada socio</td>
+                        <td><code>Query</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- RENDIMIENTO -->
+            <h2>Rendimiento puro frente a Pages</h2>
+            <p>Si recolectas datos a mano con el estilo clásico de AL (abrir un Record mediante bucle → si pasa mis
+                filtros lo guardo → actualizo mi total), estás ejecutando muchos ciclos de procesador y memoria RAM con
+                <code>SetFilter</code> y <code>FindSet()</code>. Esto destruirá las instancias del servidor a escala.
+            </p>
+
+            <p>Una Query toma todo lo que le has definido (varias tablas a unir simultáneamente) y compacta la petición
+                en <strong>una sola orden SQL nativa</strong>. SQL retorna las tablas ya calculadas infinitamente más
+                rápido.</p>
+
+            <p>Piénsalo así: una <strong>Page</strong> es como una ventanilla de atención al cliente. Una
+                <strong>Query</strong> es como el empleado del almacén que va, cuenta todo el stock y te trae el número
+                exacto sin interrupciones.
+            </p>
+
+            <!-- MÉTODOS DE AGRUPACIÓN -->
+            <h2>Métodos de agrupación (Method)</h2>
+            <p>La clave de un Query está en la propiedad <code>Method</code>. Cuando la pones en una columna numérica,
+                le dices a BC que no te traiga cada valor por separado, sino que los agregue. Cuando usas
+                <code>Method</code> en una columna, el Query agrupa automáticamente el resultado por todas las demás
+                columnas sin <code>Method</code>.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Qué hace</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Method = Sum</code></td>
+                        <td>Suma todos los valores de esa columna</td>
+                    </tr>
+                    <tr>
+                        <td><code>Method = Count</code></td>
+                        <td>Cuenta cuántas filas hay</td>
+                    </tr>
+                    <tr>
+                        <td><code>Method = Average</code></td>
+                        <td>Calcula la media de los valores</td>
+                    </tr>
+                    <tr>
+                        <td><code>Method = Min</code></td>
+                        <td>Devuelve el valor más pequeño</td>
+                    </tr>
+                    <tr>
+                        <td><code>Method = Max</code></td>
+                        <td>Devuelve el valor más grande</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">query</span> <span class="var">50100</span> <span class="string">"Ventas Por Almacen"</span>
+{
+    elements
+    {
+        <span class="cmd">dataitem</span>(Venta; <span class="string">"Sales Invoice Header"</span>)
+        {
+            <span class="cmd">column</span>(Location_Code; <span class="string">"Location Code"</span>) { }  <span class="comment">// columna de agrupación</span>
+
+            <span class="cmd">column</span>(TotalEuros; <span class="string">"Amount"</span>)
+            {
+                Method = Sum;  <span class="comment">// SQL suma directamente, sin bucles en AL</span>
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <!-- EJEMPLO CON JOIN -->
+            <h2>Ejemplo completo: días de préstamo por socio</h2>
+            <p>Una Query que une dos tablas y calcula totales. Las columnas sin <code>Method</code> son las claves de
+                agrupación; BC agrupa los resultados por ellas automáticamente:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">query</span> <span class="var">50101</span> <span class="string">"Dias Totales Prestamo por Socio"</span>
+{
+    Caption   = <span class="string">'Días Totales de Préstamo por Socio'</span>;
+    QueryType = Normal;
+
+    elements
+    {
+        <span class="cmd">dataitem</span>(Socio; Socio)
+        {
+            <span class="comment">// Sin Method → claves de agrupación</span>
+            <span class="cmd">column</span>(Num_Socio; <span class="string">"No."</span>)     { Caption = <span class="string">'Nº Socio'</span>; }
+            <span class="cmd">column</span>(Nombre_Socio; Nombre)   { Caption = <span class="string">'Nombre'</span>; }
+
+            <span class="cmd">dataitem</span>(LineaPrestamo; <span class="string">"Linea Prestamo"</span>)
+            {
+                <span class="comment">// Enlace entre tablas: cada línea con su socio</span>
+                DataItemLink = <span class="string">"No. Socio"</span> = Socio.<span class="string">"No."</span>;
+
+                <span class="comment">// LeftOuterJoin: incluye socios sin préstamos (aparecen con 0)</span>
+                SqlJoinType  = LeftOuterJoin;
+
+                <span class="cmd">column</span>(Total_Dias; <span class="string">"Dias Prestamo"</span>)
+                {
+                    Caption = <span class="string">'Total Días'</span>;
+                    Method  = Sum;    <span class="comment">// suma todos los días por socio</span>
+                }
+                <span class="cmd">column</span>(Num_Prestamos; <span class="string">"No. Prestamo"</span>)
+                {
+                    Caption = <span class="string">'Número de Préstamos'</span>;
+                    Method  = Count;  <span class="comment">// cuenta cuántos préstamos tiene cada socio</span>
+                }
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <!-- USO DESDE CÓDIGO -->
+            <h2>Usar una Query desde código AL</h2>
+            <p>Una vez definida la Query, se usa desde un Codeunit siguiendo siempre el mismo flujo: filtrar → abrir →
+                leer → cerrar.</p>
+
+            <div class="alert-warning">
+                <h3>⚠️ Orden obligatorio</h3>
+                <p style="margin: 0;">Los filtros con <code>SetFilter</code> se deben poner <strong>antes</strong> de
+                    <code>Open()</code>. Si los pones después, ya no tienen efecto porque BC ya ha traído los datos.
+                </p>
+            </div>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">procedure</span> MostrarDiasPorSocio()
+<span class="cmd">var</span>
+    QDias  : Query <span class="string">"Dias Totales Prestamo por Socio"</span>;
+    Mensaje: <span class="param">Text</span>;
+<span class="cmd">begin</span>
+    <span class="comment">// Paso 1: aplicar filtros ANTES de abrir</span>
+    QDias.SetFilter(Num_Socio, <span class="string">'S001..S050'</span>);
+
+    <span class="comment">// Paso 2: abrir la Query (BC va a buscar los datos en este momento)</span>
+    QDias.Open();
+
+    <span class="comment">// Paso 3: recorrer los resultados fila a fila</span>
+    <span class="cmd">while</span> QDias.Read() <span class="cmd">do begin</span>
+        Mensaje := StrSubstNo(
+            <span class="string">'Socio: %1 | Nombre: %2 | Días: %3 | Préstamos: %4'</span>,
+            QDias.Num_Socio,
+            QDias.Nombre_Socio,
+            QDias.Total_Dias,
+            QDias.Num_Prestamos
+        );
+        Message(Mensaje);
+    <span class="cmd">end</span>;
+
+    <span class="comment">// Paso 4: cerrar siempre al terminar</span>
+    QDias.Close();
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <!-- TIPS -->
+            <div class="alert-info">
+                <h3>💡 Tips</h3>
+                <ul>
+                    <li>Una Query <strong>no tiene pantalla</strong>. Solo lee datos y los devuelve ya calculados. Para
+                        mostrarlos al usuario usa una Page con <code>SourceTableTemporary = true</code>.</li>
+                    <li>Las columnas <strong>sin</strong> <code>Method</code> son las claves de agrupación. Las columnas
+                        <strong>con</strong> <code>Method</code> son los valores calculados.
+                    </li>
+                    <li><code>SqlJoinType = LeftOuterJoin</code> incluye registros del padre aunque no tengan hijos
+                        (aparecen con 0 o vacío). El valor por defecto es <code>InnerJoin</code>, que los excluye.</li>
+                    <li>Siempre llama a <code>QDias.Close()</code> al terminar. Es una buena práctica que libera
+                        recursos en el servidor.</li>
+                    <li>Usa Queries cuando necesites <strong>rendimiento a escala</strong>: agrupaciones, sumas de
+                        millones de registros o uniones de varias tablas simultáneamente.</li>
+                </ul>
             </div>
 
             <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;

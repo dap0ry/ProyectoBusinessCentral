@@ -38,6 +38,115 @@
         .theory-content li {
             margin-bottom: 0.5rem;
         }
+
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+
+        .alert-info ul {
+            margin-bottom: 0 !important;
+        }
+
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warning h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+
+        /* IDE Styles AL */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
     </style>
 </head>
 
@@ -65,43 +174,175 @@
         </div>
 
         <div class="theory-content">
+
             <p>Un <strong>FlowFilter</strong> (Filtro de Flujo) es el "mejor amigo pero independiente" de un FlowField.
                 El FlowFilter es un campo especial de tu tabla, pero es como un campo "fantasma": no guarda datos de
                 verdad para almacenarlos permanentemente.</p>
 
+            <!-- EJEMPLO RÁPIDO -->
+            <h2>Ejemplo rápido</h2>
+            <p>Un FlowFilter captura un rango de fechas y se lo pasa al FlowField para que filtre su cálculo:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="comment">// 1. El campo "fantasma" que atrapa la fecha del usuario</span>
+<span class="cmd">field</span>(<span class="var">100</span>; <span class="string">"Date Filter"</span>; <span class="param">Date</span>)
+{
+    FieldClass = FlowFilter;
+}
+
+<span class="comment">// 2. El FlowField que usa ese filtro en su fórmula</span>
+<span class="cmd">field</span>(<span class="var">101</span>; <span class="string">"Ventas Netas"</span>; <span class="param">Decimal</span>)
+{
+    FieldClass  = FlowField;
+    CalcFormula = <span class="param">sum</span>(<span class="string">"Sales Invoice Line"</span>.Amount
+                      <span class="cmd">where</span> (<span class="string">"Sell-to Customer No."</span> = <span class="cmd">field</span>(<span class="string">"No."</span>),
+                             <span class="string">"Posting Date"</span>         = <span class="cmd">field</span>(<span class="string">"Date Filter"</span>))); <span class="comment">// FlowFilter inyectado aquí</span>
+}</code></pre>
+            </div>
+
+            <!-- QUÉ SON -->
             <h2>¿Qué son?</h2>
             <p>Son campos de la tabla que sirven únicamente para <strong>recibir parámetros y filtros dinámicos desde la
                     pantalla del usuario</strong> con el propósito de dárselos a un FlowField para que la fórmula cambie
                 según la situación y "fluya" a través de él.</p>
 
+            <p>A diferencia de un campo normal que almacena valores en una base de datos, un FlowFilter es un campo
+                <em>transitorio</em> cuya única función es capturar criterios de filtrado para inyectarlos en la lógica
+                de cálculo de los FlowFields.</p>
+
+            <!-- NATURALEZA TÉCNICA -->
+            <h2>Naturaleza y comportamiento técnico</h2>
+            <ul>
+                <li><strong>No persistencia:</strong> Los valores que un usuario introduce en un FlowFilter no se
+                    guardan en el registro. Solo existen mientras dura la sesión o la vista actual.</li>
+                <li><strong>Uso estructural:</strong> Se definen en la tabla con <code>FieldClass = FlowFilter</code>,
+                    lo que permite que aparezcan en la interfaz de usuario como filtros de página y sean accesibles
+                    desde código AL mediante <code>SetRange</code> o <code>SetFilter</code>.</li>
+                <li><strong>Puente de cálculo:</strong> Actúan como un "cable de conexión" entre la interfaz y el motor
+                    de cálculo. Permiten que una misma fórmula devuelva resultados distintos según el contexto de
+                    filtrado (por fecha, por almacén, por proyecto...).</li>
+            </ul>
+
+            <!-- CÓMO MODIFICAN EL FLOWFIELD -->
             <h2>¿Cómo modifican el resultado de un FlowField?</h2>
             <p>Imagina que tienes un <strong>FlowField</strong> que es "Deuda Total". Cuando entras a ver al Cliente, te
                 dice "Nos debe 5.000€". Bien, usando la directiva <code>Sum(...)</code> en AL.</p>
-            <p>Pero ¿qué pasa si el contable quiere saber: "Cuánto nos empezó a deber <em>este mes específico</em>
+            <p>Pero ¿qué pasa si el contable quiere saber: "¿Cuánto nos empezó a deber <em>este mes específico</em>
                 (Enero)"?</p>
-            <p>Para esto, el programador diseña un <strong>FlowFilter</strong> de tipo fecha llamado "Filtro Fecha". En
+            <p>Para esto, el programador diseña un <strong>FlowFilter</strong> de tipo fecha llamado "Date Filter". En
                 el código AL del FlowField "Deuda Total", le dice a la fórmula:
                 <code>Sum(Facturas donde "Fecha Emisión" = mi FlowFilter)</code>.</p>
-            <p>Así, el usuario, al ver la ficha del cliente en pantalla, le pone un filtro de fecha a la página (Enero
-                1..Enero 31). El <strong>FlowFilter</strong> "atrapa" ese mes, se lo pasa al FlowField, y en décimas de
-                segundo la "Suma" que valía 5.000€ baja mágicamente a 800€, calculando únicamente los registros
-                pertenecientes a enero.</p>
+            <p>Así, el usuario, al ver la ficha del cliente en pantalla, le pone un filtro de fecha (Enero 1..Enero 31).
+                El FlowFilter "atrapa" ese rango, se lo pasa al FlowField, y en décimas de segundo la "Suma" que valía
+                5.000€ baja mágicamente a 800€, calculando únicamente los registros pertenecientes a enero.</p>
+
+            <!-- TIPOS COMUNES -->
+            <h2>Tipos y escenarios comunes</h2>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Tipo de FlowFilter</th>
+                        <th>Uso habitual</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Date Filter</strong> (Periodo)</td>
+                        <td>El más extendido. Permite análisis temporales sin duplicar datos.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Global Dimensions</strong></td>
+                        <td>Filtra resultados financieros por departamentos o centros de coste.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Location Filter</strong></td>
+                        <td>Filtra existencias de inventario por un almacén concreto.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- DEFINICIÓN EN TABLA -->
+            <h2>1. Definición en la tabla</h2>
+            <p>El FlowFilter se declara como un campo más, pero con <code>FieldClass = FlowFilter</code>. No ocupa
+                espacio en SQL, es solo una "ventana" de filtrado:</p>
 
             <div class="ide-code">
-                <pre><code><span class="string">// 1. El campo invisible que atrapa la fecha</span>
-<span class="cmd">field</span>(55; "Date Filter"; Date)
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">field</span>(<span class="var">100</span>; <span class="string">"Date Filter"</span>; <span class="param">Date</span>)
 {
     FieldClass = FlowFilter;
-}
-
-<span class="string">// 2. El FlowField mágico modificado en vivo</span>
-<span class="cmd">field</span>(50; "Deuda Total"; Decimal)
-{
-    FieldClass = FlowField;
-    CalcFormula = Sum("Líneas de Compra".Cantidad 
-                      where("Código Cliente" = field("No."),
-                            "Posting Date" = field("Date Filter"))); <span class="string">// AQUÍ ENTRA EN ACCIÓN</span>
+    Caption    = <span class="string">'Rango de Fecha de Análisis'</span>;
 }</code></pre>
+            </div>
+
+            <!-- INYECCIÓN EN FLOWFIELD -->
+            <h2>2. Inyección en la fórmula del FlowField</h2>
+            <p>El FlowFilter solo cobra sentido cuando se menciona dentro de la propiedad <code>where</code> de un
+                FlowField. El FlowField de ventas usará el valor actual del "Date Filter":</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">field</span>(<span class="var">101</span>; <span class="string">"Ventas Netas"</span>; <span class="param">Decimal</span>)
+{
+    FieldClass  = FlowField;
+    CalcFormula = <span class="param">sum</span>(<span class="string">"Sales Invoice Line"</span>.Amount
+                      <span class="cmd">where</span> (<span class="string">"Sell-to Customer No."</span> = <span class="cmd">field</span>(<span class="string">"No."</span>),
+                             <span class="string">"Posting Date"</span>         = <span class="cmd">field</span>(<span class="string">"Date Filter"</span>))); <span class="comment">// FlowFilter inyectado aquí</span>
+}</code></pre>
+            </div>
+
+            <!-- USO DESDE CÓDIGO -->
+            <h2>3. Aplicación desde código AL</h2>
+            <p>Los FlowFilters también se pueden aplicar desde código usando <code>SetRange</code>, lo que permite
+                comparativas dinámicas. Los filtros se deben aplicar <strong>antes</strong> de llamar a
+                <code>CalcFields</code>:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">procedure</span> ComparativaVentas(CustomerNo: <span class="param">Code</span>[20])
+<span class="cmd">var</span>
+    Cust         : Record Customer;
+    VentasEnero  : <span class="param">Decimal</span>;
+    VentasFebrero: <span class="param">Decimal</span>;
+<span class="cmd">begin</span>
+    Cust.Get(CustomerNo);
+
+    <span class="comment">// Filtramos para Enero</span>
+    Cust.SetRange(<span class="string">"Date Filter"</span>, <span class="var">20240101D</span>, <span class="var">20240131D</span>);
+    Cust.CalcFields(<span class="string">"Ventas Netas"</span>);
+    VentasEnero := Cust.<span class="string">"Ventas Netas"</span>;
+
+    <span class="comment">// Cambiamos el FlowFilter para Febrero</span>
+    Cust.SetRange(<span class="string">"Date Filter"</span>, <span class="var">20240201D</span>, <span class="var">20240229D</span>);
+    Cust.CalcFields(<span class="string">"Ventas Netas"</span>);
+    VentasFebrero := Cust.<span class="string">"Ventas Netas"</span>;
+
+    Message(<span class="string">'Comparativa: Enero (%1) vs Febrero (%2)'</span>, VentasEnero, VentasFebrero);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <div class="alert-warning">
+                <h3>⚠️ Aviso importante</h3>
+                <p style="margin: 0;">Los filtros con <code>SetRange</code> se deben poner <strong>antes</strong> de
+                    <code>CalcFields</code>. Si los pones después, ya no tienen efecto porque BC ya ha calculado el
+                    valor sin el filtro.</p>
+            </div>
+
+            <!-- TIPS -->
+            <div class="alert-info">
+                <h3>💡 Tips</h3>
+                <ul>
+                    <li>Un FlowFilter <strong>nunca almacena datos</strong> en la base de datos. Solo existe durante la
+                        sesión activa.</li>
+                    <li>Solo tiene sentido si está referenciado dentro de la cláusula <code>where</code> de al menos un
+                        FlowField.</li>
+                    <li>Permiten que una misma fórmula devuelva resultados radicalmente distintos según el contexto de
+                        filtrado, sin duplicar campos ni tablas.</li>
+                    <li>El uso más habitual es el <strong>Date Filter</strong> para análisis por periodo: mes,
+                        trimestre, año fiscal...</li>
+                </ul>
             </div>
 
             <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;

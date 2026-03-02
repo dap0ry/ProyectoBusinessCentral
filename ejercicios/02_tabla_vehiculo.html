@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio: Tablas - Business Central</title>
+    <title>Ejercicio: Enum en Page - Business Central</title>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="../ejercicios.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
@@ -42,6 +42,164 @@
             border-radius: 8px;
             margin-bottom: 2rem;
         }
+
+        /* Contexto previo */
+        .prev-context {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 28px;
+            margin-bottom: 40px;
+        }
+
+        .prev-context .prev-label {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .prev-context h4 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+        }
+
+        .prev-context ul {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .prev-context ul li {
+            margin-bottom: 4px;
+        }
+
+        /* Exercise block */
+        .exercise-block {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .exercise-block .exercise-number {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-blue);
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .exercise-block h3 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .badge-section {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 0.78rem;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* IDE */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info strong {
+            color: var(--primary-blue);
+        }
+
+        .alert-warn {
+            background-color: rgba(234, 179, 8, 0.08);
+            border-left: 4px solid #eab308;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warn strong {
+            color: #eab308;
+        }
     </style>
 </head>
 
@@ -62,49 +220,215 @@
         <div class="exercise-header" style="margin-bottom: 30px;">
             <p
                 style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
-                EJERCICIO 02</p>
-            <h1>Tablas: Ficha de Vehículo</h1>
+                EJERCICIO 02 · ENUMS</p>
+            <h1>Enum en una Page</h1>
             <span class="diff-badge diff-easy"
                 style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 3/10</span>
         </div>
 
         <div class="exercise-content">
-            <div class="goal">
-                <strong>Objetivo:</strong> Crear una tabla técnica para gestionar una flota de vehículos, utilizando
-                diversos tipos de datos de AL.
+
+            <!-- Qué se hizo antes -->
+            <div class="prev-context">
+                <div class="prev-label">Ejercicio anterior</div>
+                <h4>¿Qué construiste en el Ejercicio 01?</h4>
+                <ul>
+                    <li>El Enum <code>"Rental Status"</code> (ID 50100) con valores 0 → 40, extensible.</li>
+                    <li>Una <code>enumextension</code> que añadía el valor <code>50: "Vendido"</code>.</li>
+                    <li>La tabla <code>"Maquinaria"</code> (ID 50100) con los campos <code>"No."</code>,
+                        <code>"Descripcion"</code> y <code>"Estado"</code>.
+                    </li>
+                    <li>Un bloque <code>if</code> que comprobaba el estado del registro con
+                        <code>Rec.Estado::Alquilado</code>.
+                    </li>
+                </ul>
             </div>
 
-            <h2>Instrucciones</h2>
-            <ul>
-                <li>Crea la tabla <code>Vehicle</code> con ID <code>50101</code>.</li>
-                <li>Debes incluir los siguientes campos:
-                    <ul>
-                        <li><strong>Matrícula:</strong> Code[20]</li>
-                        <li><strong>Modelo:</strong> Text[100]</li>
-                        <li><strong>Fecha de Matrículación:</strong> Date</li>
-                        <li><strong>Kilometraje:</strong> Decimal</li>
-                        <li><strong>Es Eléctrico:</strong> Boolean</li>
-                    </ul>
-                </li>
-            </ul>
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 1 – Page de lista
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 01</div>
+                <div class="badge-section">Page · List</div>
+                <h3>Crea la página de lista de Maquinaria</h3>
 
-            <h2>Esquema de la Tabla</h2>
-            <div class="ide-code">
-                <pre><code><span class="cmd">table</span> <span class="var">50101</span> Vehicle
+                <div class="goal">
+                    <strong>Objetivo:</strong> Exponer la tabla <code>"Maquinaria"</code> al usuario final creando una
+                    <code>Page</code> de tipo <code>List</code> que muestre sus tres campos, incluido el Enum
+                    <code>"Estado"</code>.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea un archivo <code>MaquinariaList.Page.al</code>.</li>
+                    <li>La página debe tener el ID <code>50100</code>, nombre <code>"Maquinaria List"</code> y
+                        <code>PageType = List</code>.
+                    </li>
+                    <li>Enlázala a la tabla <code>"Maquinaria"</code> mediante la propiedad <code>SourceTable</code>.
+                    </li>
+                    <li>Dentro del área <code>content</code> añade un <code>repeater</code> con los tres campos:
+                        <code>"No."</code>, <code>"Descripcion"</code> y <code>"Estado"</code>.
+                    </li>
+                    <li>El campo <code>"Estado"</code> debe mostrarse como un <code>field</code> normal; Business
+                        Central
+                        renderizará el Enum como un desplegable automáticamente.</li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — MaquinariaList.Page.al</span></div>
+                    <pre><code><span class="cmd">page</span> <span class="var">50100</span> <span class="string">"Maquinaria List"</span>
 {
-    DataClassification = ToBeClassified;
-    
-    fields
+    PageType   = <span class="param">List</span>;
+    SourceTable = <span class="string">"Maquinaria"</span>;
+    UsageCategory = <span class="param">Lists</span>;
+    ApplicationArea = <span class="param">All</span>;
+
+    layout
     {
-        <span class="cmd">field</span>(1; "Plate No."; Code[20]) { Caption = 'Matrícula'; }
-        <span class="cmd">field</span>(2; Description; Text[100]) { Caption = 'Modelo'; }
-        <span class="string">// Implementa los campos restantes...</span>
+        area(content)
+        {
+            repeater(General)
+            {
+                <span class="cmd">field</span>(<span class="string">"No."</span>;         Rec.<span class="string">"No."</span>)         { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Descripcion"</span>; Rec.<span class="string">"Descripcion"</span>) { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Estado"</span>;      Rec.<span class="string">"Estado"</span>)      { ApplicationArea = <span class="param">All</span>; }
+            }
+        }
     }
 }</code></pre>
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 2 – Page de ficha
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 02</div>
+                <div class="badge-section">Page · Card</div>
+                <h3>Crea la ficha de Maquinaria</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Crear una página de tipo <code>Card</code> para ver y editar el detalle
+                    de cada máquina, añadiendo un trigger <code>OnValidate</code> sobre el campo <code>"Estado"</code>
+                    que muestre un aviso cuando la máquina pase a estado <em>Retirado</em>.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea <code>MaquinariaCard.Page.al</code> con ID <code>50101</code> y
+                        <code>PageType = Card</code>.
+                    </li>
+                    <li>Usa la misma <code>SourceTable = "Maquinaria"</code>.</li>
+                    <li>En el <code>layout</code>, crea una <code>group(General)</code> con los tres campos.</li>
+                    <li>En el campo <code>"Estado"</code>, añade un trigger <code>OnValidate</code> que compruebe
+                        <code>Rec.Estado = Rec.Estado::Retirado</code> y muestre el mensaje:
+                        <em>'Atención: esta máquina ha sido retirada del parque.'</em>
+                    </li>
+                    <li>Conecta la ficha desde la lista añadiendo la propiedad <code>DrillDownPageId</code> en la tabla
+                        <code>"Maquinaria"</code> con el valor <code>"Maquinaria Card"</code>.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — MaquinariaCard.Page.al</span></div>
+                    <pre><code><span class="cmd">page</span> <span class="var">50101</span> <span class="string">"Maquinaria Card"</span>
+{
+    PageType    = <span class="param">Card</span>;
+    SourceTable = <span class="string">"Maquinaria"</span>;
+    UsageCategory = <span class="param">None</span>;
+
+    layout
+    {
+        area(content)
+        {
+            group(General)
+            {
+                <span class="cmd">field</span>(<span class="string">"No."</span>;         Rec.<span class="string">"No."</span>)         { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Descripcion"</span>; Rec.<span class="string">"Descripcion"</span>) { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Estado"</span>;      Rec.<span class="string">"Estado"</span>)
+                {
+                    ApplicationArea = <span class="param">All</span>;
+                    trigger OnValidate()
+                    <span class="cmd">begin</span>
+                        <span class="cmd">if</span> Rec.Estado = Rec.Estado::Retirado <span class="cmd">then</span>
+                            <span class="param">Message</span>(<span class="string">'Atención: esta máquina ha sido retirada del parque.'</span>);
+                    <span class="cmd">end</span>;
+                }
+            }
+        }
+    }
+}</code></pre>
+                </div>
+
+                <div class="alert-warn">
+                    <strong>⚠️ Ojo:</strong> El trigger <code>OnValidate</code> se ejecuta al confirmar el cambio de
+                    valor en el campo, no al abrir la ficha. Si necesitas validar al cargar el registro, usa
+                    <code>OnAfterGetRecord</code> en la page.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 3 – Filtrar por estado
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 03</div>
+                <div class="badge-section">Filtros con Enum</div>
+                <h3>Filtra la lista por Estado</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Añadir una acción en la página <code>"Maquinaria List"</code> que aplique
+                    un filtro sobre el campo <code>"Estado"</code> para mostrar únicamente las máquinas
+                    <em>Disponibles</em>.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Abre <code>MaquinariaList.Page.al</code> y añade una sección <code>actions</code>.</li>
+                    <li>Dentro de un <code>area(processing)</code> crea una <code>action</code> llamada
+                        <code>SoloDisponibles</code> con caption <em>'Ver solo Disponibles'</em>.
+                    </li>
+                    <li>En el trigger <code>OnAction</code> usa <code>Rec.SetRange</code> para filtrar el campo
+                        <code>"Estado"</code> al valor <code>"Rental Status"::Disponible</code>.
+                    </li>
+                    <li>Llama a <code>CurrPage.Update(false)</code> al final para refrescar la vista.</li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — fragmento dentro de MaquinariaList.Page.al</span>
+                    </div>
+                    <pre><code>actions
+{
+    area(processing)
+    {
+        action(SoloDisponibles)
+        {
+            ApplicationArea = <span class="param">All</span>;
+            Caption         = <span class="string">'Ver solo Disponibles'</span>;
+            Image           = <span class="param">Filter</span>;
+            trigger OnAction()
+            <span class="cmd">begin</span>
+                Rec.SetRange(Estado, <span class="string">"Rental Status"</span>::Disponible);
+                CurrPage.Update(<span class="param">false</span>);
+            <span class="cmd">end</span>;
+        }
+    }
+}</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> Para quitar el filtro y volver a ver todos los registros puedes usar
+                    <code>Rec.SetRange(Estado)</code> sin segundo argumento, o añadir una segunda acción
+                    <code>LimpiarFiltro</code> que llame a <code>Rec.Reset()</code>.
+                </div>
             </div>
 
             <a href="../ejercicios.html" class="btn btn-secondary"
-                style="margin-top: 40px; display: inline-block;">&larr; Volver a Ejercicios</a>
+                style="margin-top: 10px; margin-bottom: 60px; display: inline-block;">&larr; Volver a Ejercicios</a>
         </div>
     </main>
 

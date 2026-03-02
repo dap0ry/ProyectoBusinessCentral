@@ -25,6 +25,13 @@
             font-family: 'Outfit';
         }
 
+        .theory-content h3 {
+            color: var(--text-white);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit';
+        }
+
         .theory-content p {
             margin-bottom: 1.5rem;
         }
@@ -37,6 +44,114 @@
 
         .theory-content li {
             margin-bottom: 0.5rem;
+        }
+
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+
+        .alert-info ul {
+            margin-bottom: 0 !important;
+        }
+
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warning h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
         }
     </style>
 </head>
@@ -65,40 +180,266 @@
         </div>
 
         <div class="theory-content">
-            <p>Los <strong>Reports</strong> (Informes) son los objetos más complejos de construir visualmente dentro de
-                Business Central. Son los motores que generan los PDFs comerciales finales que verá el socio o cliente
-                (facturas con logotipo, albaranes, listados contables mensuales a enviar).</p>
 
-            <h2>La Arquitectura de un Report</h2>
-            <p>Se dividen en dos capas totalmente distintas:</p>
-            <ul>
-                <li><strong>El Dataset (El AL code):</strong> La programación en texto que decide *qué datos* exactos de
-                    base de datos extraemos, iteramos y preparamos. Es la cocina que recolecta los ingredientes.</li>
-                <li><strong>El Layout (El diseño visual Word/RDLC, HTML):</strong> Una vez los datos están compilados y
-                    limpios como variables separadas en memoria, se inyectan dentro de una plantilla vacía para que sean
-                    dibujados en un papel virtual con tablas y letras en negrita.</li>
-            </ul>
+            <p>Los <strong>Reports</strong> son los objetos que generan los documentos finales que verá el usuario: PDFs
+                comerciales, facturas con logotipo, albaranes, listados contables mensuales. Si una Query consulta datos
+                internamente, un Report los <strong>presenta al usuario en un documento imprimible o
+                    exportable</strong>.</p>
 
-            <h2>¿Qué es un DataItem?</h2>
-            <p>Un <code>DataItem</code> es una tabla de origen que se usará en el informe. Al definir un Report en AL,
-                escribimos una serie de bloques DataItem.</p>
-            <p>Si yo quiero sacar un listado de "Todos Los Clientes", yo declaro el
-                <code>DataItem(Customer; Customer)</code>. Automáticamente el motor coge a mi tabla `Customer` y empieza
-                a <strong>iterar una por una</strong> de forma implícita e invisible miles de veces. Por cada ciclo,
-                recoge las `column` (columnas o variables) que yo le ordené que publicase desde esa tabla, las etiqueta,
-                y las avienta al <em>Layout</em> para ser dibujadas de la nada en esa página.</p>
+            <!-- ESTRUCTURA BASE -->
+            <h2>Estructura base de un Report</h2>
+            <p>Un Report en AL tiene cuatro secciones principales:</p>
 
             <div class="ide-code">
-                <pre><code><span class="cmd">dataset</span>
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">report</span> <span class="var">50100</span> <span class="string">"Lista de Socios"</span>
 {
-    <span class="string">// Lo que declare aquí, será un "bucle infinito" sobre los clientes</span>
-    <span class="cmd">dataitem</span>(Venta; "Customer")
+    Caption         = <span class="string">'Listado de Socios'</span>;
+    UsageCategory   = ReportsAndAnalysis;
+    ApplicationArea = All;
+
+    <span class="comment">// 1. Dataset: qué datos se leen y cómo</span>
+    dataset
     {
-        <span class="string">// Solo quiero exportar a mi Word/PDF el Nombre de esta iteración. Nada más.</span>
-        <span class="cmd">column</span>(NombreCliente; "Name") { }
-        <span class="cmd">column</span>(DeudaActual; "Balance (LCY)") { }
+        <span class="cmd">dataitem</span>(Socio; Socio)
+        {
+            <span class="cmd">column</span>(No_Socio;  <span class="string">"No."</span>)    { Caption = <span class="string">'Número'</span>; }
+            <span class="cmd">column</span>(Nombre;    Nombre)  { Caption = <span class="string">'Nombre'</span>; }
+            <span class="cmd">column</span>(Email;     Email)   { Caption = <span class="string">'Email'</span>; }
+        }
+    }
+
+    <span class="comment">// 2. RequestPage: pantalla previa de filtros (opcional)</span>
+    requestpage { }
+
+    <span class="comment">// 3. Rendering: qué layout visual usar</span>
+    rendering
+    {
+        layout(RDLCLayout)
+        {
+            Type       = RDLC;
+            LayoutFile = <span class="string">'src/layouts/ListaSocios.rdlc'</span>;
+        }
     }
 }</code></pre>
+            </div>
+
+            <!-- ARQUITECTURA -->
+            <h2>La arquitectura de un Report</h2>
+            <p>Se divide en dos capas totalmente distintas:</p>
+            <ul>
+                <li><strong>El Dataset (código AL):</strong> Decide qué datos exactos de la base de datos se extraen,
+                    iteran y preparan. Es la cocina que recolecta los ingredientes.</li>
+                <li><strong>El Layout (diseño Word/RDLC/HTML):</strong> Una vez los datos están compilados y limpios en
+                    memoria, se inyectan dentro de una plantilla visual para ser dibujados en un papel virtual con
+                    tablas, logos y texto formateado.</li>
+            </ul>
+
+            <!-- DATAITEM -->
+            <h2>¿Qué es un DataItem?</h2>
+            <p>Un <code>DataItem</code> representa una tabla de BC desde la que vas a leer datos para el informe. Lo más
+                importante: <strong>un DataItem funciona como un bucle automático</strong>. BC recorre todos los
+                registros de esa tabla (con los filtros que definas) y por cada registro ejecuta el bloque de contenido
+                del informe una vez.</p>
+
+            <p>Imagina que tienes 200 socios. Si creas un DataItem sobre esa tabla, BC recorrerá cada uno
+                automáticamente sin que tú tengas que escribir ningún bucle ni contador.</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">dataset</span>
+{
+    <span class="cmd">dataitem</span>(Socio; Socio)  <span class="comment">// NombreLogico ; NombreFisicoTabla</span>
+    {
+        <span class="comment">// Las columnas son los campos que quieres usar en el diseño</span>
+        <span class="cmd">column</span>(No_Socio; <span class="string">"No."</span>)  { Caption = <span class="string">'Número de Socio'</span>; }
+        <span class="cmd">column</span>(Nombre;   Nombre) { Caption = <span class="string">'Nombre'</span>; }
+        <span class="cmd">column</span>(Email;    Email)  { Caption = <span class="string">'Correo Electrónico'</span>; }
+    }
+}</code></pre>
+            </div>
+
+            <!-- TRIGGERS DEL DATAITEM -->
+            <h2>Triggers de un DataItem</h2>
+            <p>Cada DataItem tiene tres triggers donde puedes añadir lógica propia:</p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Trigger</th>
+                        <th>Cuándo se ejecuta</th>
+                        <th>Para qué sirve</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>OnPreDataItem()</code></td>
+                        <td>Una sola vez, antes de empezar a leer</td>
+                        <td>Establecer filtros, ordenar los datos</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnAfterGetRecord()</code></td>
+                        <td>En cada registro leído</td>
+                        <td>Calcular valores, transformar texto, acumular totales</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnPostDataItem()</code></td>
+                        <td>Una sola vez, al terminar todos los registros</td>
+                        <td>Mostrar subtotales, hacer limpieza de variables</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">dataitem</span>(Socio; Socio)
+{
+    <span class="cmd">column</span>(No_Socio;        <span class="string">"No."</span>)       { }
+    <span class="cmd">column</span>(Nombre_Socio;    Nombre)     { }
+    <span class="cmd">column</span>(Dias_Como_Socio; DiasComoSocio) { }  <span class="comment">// columna calculada con variable</span>
+
+    <span class="cmd">trigger</span> <span class="param">OnPreDataItem</span>()
+    <span class="cmd">begin</span>
+        SetCurrentKey(Nombre);  <span class="comment">// ordenamos por nombre antes de leer</span>
+    <span class="cmd">end</span>;
+
+    <span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+    <span class="cmd">begin</span>
+        <span class="comment">// Calculamos los días como socio por cada registro</span>
+        DiasComoSocio := Today() - <span class="string">"Fecha Alta"</span>;
+
+        <span class="comment">// Si no tiene teléfono, ponemos un texto amable</span>
+        <span class="cmd">if</span> Telefono = <span class="string">''</span> <span class="cmd">then</span>
+            Telefono := <span class="string">'No registrado'</span>;
+    <span class="cmd">end</span>;
+}
+
+<span class="cmd">var</span>
+    DiasComoSocio: <span class="param">Integer</span>;  <span class="comment">// variable global del Report</span></code></pre>
+            </div>
+
+            <!-- JERARQUÍA -->
+            <h2>Jerarquía de DataItems — Anidación</h2>
+            <p>Un informe de una sola tabla está bien para listados simples. Pero en la realidad casi siempre quieres
+                mostrar <strong>datos relacionados</strong>: un socio y todos sus préstamos, o una factura con todas sus
+                líneas.</p>
+
+            <p>Para eso puedes <strong>anidar DataItems</strong>: poner un DataItem dentro de otro. El DataItem interior
+                (hijo) se repetirá automáticamente dentro del contexto del exterior (padre). BC sabe qué préstamos
+                pertenecen a qué socio porque tú le indicas el campo de enlace con <code>DataItemLink</code>.</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">dataitem</span>(Socio; Socio)              <span class="comment">// NIVEL 1 - Padre</span>
+{
+    <span class="cmd">column</span>(Socio_No;     <span class="string">"No."</span>) { }
+    <span class="cmd">column</span>(Socio_Nombre; Nombre) { }
+
+    <span class="cmd">dataitem</span>(Prestamo; Prestamo)    <span class="comment">// NIVEL 2 - Hijo (va DENTRO del padre)</span>
+    {
+        <span class="comment">// Para cada socio, solo lee los préstamos donde "No. Socio" coincida</span>
+        DataItemLink = <span class="string">"No. Socio"</span> = FIELD(<span class="string">"No."</span>);
+
+        <span class="cmd">column</span>(Prestamo_No;   <span class="string">"No."</span>)          { }
+        <span class="cmd">column</span>(Prestamo_Dias; <span class="string">"Dias Prestamo"</span>) { }
+
+        <span class="cmd">dataitem</span>(Linea; <span class="string">"Linea Prestamo"</span>)  <span class="comment">// NIVEL 3 - Nieto</span>
+        {
+            DataItemLink = <span class="string">"No. Prestamo"</span> = FIELD(<span class="string">"No."</span>);
+
+            <span class="cmd">column</span>(Linea_Libro;    <span class="string">"Titulo Libro"</span>) { }
+            <span class="cmd">column</span>(Linea_Devuelto; Devuelto)       { }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <!-- ORDENAR DATAITEMS -->
+            <h2>Ordenar los datos en cada nivel</h2>
+            <p>Puedes controlar el orden en que aparecen los datos usando <code>SetCurrentKey</code> dentro de
+                <code>OnPreDataItem()</code> y <code>SetAscending</code> para la dirección:
+            </p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">dataitem</span>(Socio; Socio)
+{
+    <span class="cmd">trigger</span> <span class="param">OnPreDataItem</span>()
+    <span class="cmd">begin</span>
+        SetCurrentKey(Nombre);  <span class="comment">// socios ordenados de la A a la Z</span>
+    <span class="cmd">end</span>;
+
+    <span class="cmd">dataitem</span>(Prestamo; Prestamo)
+    {
+        DataItemLink = <span class="string">"No. Socio"</span> = FIELD(<span class="string">"No."</span>);
+
+        <span class="cmd">trigger</span> <span class="param">OnPreDataItem</span>()
+        <span class="cmd">begin</span>
+            SetCurrentKey(<span class="string">"Fecha Inicio"</span>);
+            SetAscending(<span class="string">"Fecha Inicio"</span>, <span class="param">false</span>);  <span class="comment">// false = descendente (más recientes primero)</span>
+        <span class="cmd">end</span>;
+    }
+}</code></pre>
+            </div>
+
+            <!-- TRIGGERS GLOBALES -->
+            <h2>Triggers globales del Report</h2>
+            <p>Además de los triggers de cada DataItem, el Report tiene dos triggers globales que se ejecutan una sola
+                vez:</p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Trigger</th>
+                        <th>Cuándo se ejecuta</th>
+                        <th>Uso típico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>OnPreReport()</code></td>
+                        <td>Una vez antes de procesar cualquier dato</td>
+                        <td>Validar opciones del usuario, comprobar fechas</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnPostReport()</code></td>
+                        <td>Una vez cuando el informe ha terminado</td>
+                        <td>Mostrar mensaje de confirmación, registrar la ejecución</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">trigger</span> <span class="param">OnPreReport</span>()
+<span class="cmd">begin</span>
+    <span class="comment">// Validamos que la fecha "Desde" no sea posterior a "Hasta"</span>
+    <span class="cmd">if</span> (FechaDesde <> <span class="var">0D</span>) <span class="cmd">and</span> (FechaHasta <> <span class="var">0D</span>) <span class="cmd">then</span>
+        <span class="cmd">if</span> FechaDesde > FechaHasta <span class="cmd">then</span>
+            Error(<span class="string">'La fecha "Desde" no puede ser posterior a la fecha "Hasta".'</span>);
+<span class="cmd">end</span>;
+
+<span class="cmd">trigger</span> <span class="param">OnPostReport</span>()
+<span class="cmd">begin</span>
+    Message(<span class="string">'Informe generado correctamente.'</span>);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <!-- TIPS -->
+            <div class="alert-info">
+                <h3>💡 Tips</h3>
+                <ul>
+                    <li>Un DataItem es un <strong>bucle automático</strong>: BC recorre todos los registros de la tabla
+                        por ti, no tienes que escribir ningún <code>FindSet</code> ni <code>Next</code>.</li>
+                    <li>Usa <code>OnPreDataItem</code> para filtrar y ordenar, y <code>OnAfterGetRecord</code> para
+                        calcular. Nunca al revés: filtrar en <code>OnAfterGetRecord</code> es ineficiente.</li>
+                    <li><code>DataItemLink</code> es el equivalente al <code>SubPageLink</code> de las pages: conecta el
+                        DataItem hijo con el padre.</li>
+                    <li><code>DataItemTableFilter</code> permite aplicar un filtro fijo al DataItem que el usuario no
+                        puede cambiar (similar a <code>SourceTableView</code> en pages).</li>
+                    <li>Las variables declaradas en el Report son <strong>globales</strong>: accesibles desde cualquier
+                        trigger y cualquier DataItem.</li>
+                </ul>
             </div>
 
             <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;

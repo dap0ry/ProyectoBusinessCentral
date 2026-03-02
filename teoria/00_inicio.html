@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio en AL - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content h3 {
+            color: var(--text-white);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .theory-content ul,
+        .theory-content ol {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+        }
+
+        .theory-content ul {
+            list-style-type: square;
+        }
+
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+
+        .alert-info ul {
+            margin-bottom: 0 !important;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .alert-info li {
+            margin-bottom: 0.5rem;
+        }
+
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warning h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+
+        /* Step numbers */
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: #fff;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-header h2 {
+            margin: 0;
+        }
+
+        /* Keyboard shortcut badges */
+        kbd {
+            display: inline-block;
+            background: #2d2d2d;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 0.88rem;
+            color: #e5c07b;
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        /* IDE Styles AL */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot.red {
+            background: #ff5f57;
+        }
+
+        .dot.yellow {
+            background: #febc2e;
+        }
+
+        .dot.green {
+            background: #28c840;
+        }
+
+        .ide-header .title {
+            color: #888888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            margin-left: 4px;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .ide-code .key {
+            color: #e06c75;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-section" style="padding-top: 100px;">
+        <div class="theory-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                Primer Contacto</p>
+            <h1>Inicio de un Proyecto AL</h1>
+            <span class="diff-badge diff-easy"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 1/10</span>
+        </div>
+
+        <div class="theory-content">
+
+            <p>Antes de escribir una sola línea de código AL necesitas preparar el entorno de desarrollo. En esta guía
+                verás paso a paso cómo instalar las extensiones necesarias en VS Code y arrancar tu primer proyecto
+                desde cero.</p>
+
+            <!-- EXTENSIONES -->
+            <div class="step-header">
+                <span class="step-number">1</span>
+                <h2>Instalar extensiones en VS Code</h2>
+            </div>
+
+            <p>Abre VS Code y ve al panel de extensiones con <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>.
+                Necesitarás instalar las siguientes dos extensiones oficiales de Microsoft:</p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Extensión</th>
+                        <th>Publicada por</th>
+                        <th>Para qué sirve</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>AL Language</strong></td>
+                        <td>Microsoft</td>
+                        <td>Soporte completo del lenguaje AL: sintaxis, snippets, IntelliSense, compilación y debug</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AL Language Extension Pack</strong></td>
+                        <td>Microsoft</td>
+                        <td>Paquete adicional con herramientas extra para el desarrollo en Business Central</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert-warning">
+                <h3>⚠️ Asegúrate de que el contenedor está arrancado</h3>
+                <p style="margin: 0;">Antes de avanzar a los pasos siguientes, el contenedor de Business Central debe
+                    estar en ejecución. Si no lo está, ábrelo con PowerShell como administrador y ejecuta
+                    <code>Start-BcContainer bccontainer</code>.
+                </p>
+            </div>
+
+            <!-- AL: GO -->
+            <div class="step-header">
+                <span class="step-number">2</span>
+                <h2>Crear el proyecto: AL: Go</h2>
+            </div>
+
+            <p>Con la extensión AL instalada, abre la <strong>Paleta de comandos</strong> con
+                <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> y escribe:
+            </p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                        class="dot green"></span><span class="title">Paleta de comandos — VS Code</span></div>
+                <pre><code><span class="string">AL: Go!</span></code></pre>
+            </div>
+
+            <p>VS Code te pedirá:</p>
+            <ol>
+                <li>Una <strong>carpeta de destino</strong> donde se creará el proyecto.</li>
+                <li>La <strong>versión del servidor</strong> (elige la que coincida con tu contenedor, normalmente
+                    <code>6.0</code> para BC22+ o <code>Latest</code>).
+                </li>
+            </ol>
+
+            <p>Esto genera automáticamente la estructura base del proyecto:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                        class="dot green"></span><span class="title">Explorador — Estructura del proyecto</span></div>
+                <pre><code>📁 MiProyectoAL/
+   ├── <span class="string">.vscode/</span>
+   │   └── <span class="var">launch.json</span>        <span class="comment">// configuración de conexión al servidor BC</span>
+   ├── <span class="string">app.json</span>               <span class="comment">// metadatos del proyecto (ID, nombre, versión, dependencias)</span>
+   └── <span class="string">HelloWorld.al</span>          <span class="comment">// fichero de ejemplo con una Page de prueba</span></code></pre>
+            </div>
+
+            <!-- APP.JSON -->
+            <h2>El fichero app.json</h2>
+            <p>Es el <strong>manifiesto del proyecto</strong>. Define su identidad y dependencias. Los campos más
+                importantes:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">app.json</span></div>
+                <pre><code>{
+    <span class="key">"id"</span>:                <span class="string">"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"</span>,  <span class="comment">// GUID único del proyecto (no tocar)</span>
+    <span class="key">"name"</span>:              <span class="string">"MiProyecto"</span>,
+    <span class="key">"publisher"</span>:         <span class="string">"TuNombre"</span>,
+    <span class="key">"version"</span>:           <span class="string">"1.0.0.0"</span>,
+    <span class="key">"idRanges"</span>: [{ <span class="key">"from"</span>: <span class="var">50100</span>, <span class="key">"to"</span>: <span class="var">50999</span> }],   <span class="comment">// rango de IDs que puedes usar</span>
+    <span class="key">"runtime"</span>:           <span class="string">"12.0"</span>,
+    <span class="key">"platform"</span>:          <span class="string">"22.0.0.0"</span>,
+    <span class="key">"application"</span>:       <span class="string">"22.0.0.0"</span>,
+    <span class="key">"dependencies"</span>:      []
+}</code></pre>
+            </div>
+
+            <!-- LAUNCH.JSON -->
+            <h2>El fichero launch.json</h2>
+            <p>Indica a VS Code <strong>cómo y dónde publicar</strong> la extensión. Debes configurarlo para que apunte
+                a tu contenedor local:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">.vscode/launch.json</span></div>
+                <pre><code>{
+    <span class="key">"version"</span>: <span class="string">"0.2.0"</span>,
+    <span class="key">"configurations"</span>: [
+        {
+            <span class="key">"name"</span>:          <span class="string">"Publicar en contenedor local"</span>,
+            <span class="key">"request"</span>:       <span class="string">"launch"</span>,
+            <span class="key">"type"</span>:          <span class="string">"al"</span>,
+            <span class="key">"environmentType"</span>: <span class="string">"OnPrem"</span>,
+            <span class="key">"server"</span>:        <span class="string">"http://bccontainer"</span>,               <span class="comment">// nombre del contenedor</span>
+            <span class="key">"serverInstance"</span>: <span class="string">"BC"</span>,
+            <span class="key">"authentication"</span>: <span class="string">"UserPassword"</span>,
+            <span class="key">"startupObjectId"</span>: <span class="var">22</span>,
+            <span class="key">"startupObjectType"</span>: <span class="string">"Page"</span>
+        }
+    ]
+}</code></pre>
+            </div>
+
+            <!-- DOWNLOAD SYMBOLS -->
+            <div class="step-header">
+                <span class="step-number">3</span>
+                <h2>Descargar los símbolos: AL: Download Symbols</h2>
+            </div>
+
+            <p>Los <strong>símbolos</strong> son los metadatos de todas las tablas, páginas y codeunits base de
+                Business Central. Sin ellos, IntelliSense no puede sugerirte nombres de tabla ni propiedades. Es el
+                paso más importante antes de empezar a escribir código.</p>
+
+            <p>Abre la Paleta de comandos con <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> y escribe:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                        class="dot green"></span><span class="title">Paleta de comandos — VS Code</span></div>
+                <pre><code><span class="string">AL: Download Symbols</span></code></pre>
+            </div>
+
+            <p>VS Code se conectará al contenedor y descargará los símbolos en la carpeta <code>.alpackages/</code>
+                del proyecto. Cuando termine verás los ficheros <code>.app</code> de las librerías base de BC:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                        class="dot green"></span><span class="title">Explorador</span></div>
+                <pre><code>📁 .alpackages/
+   ├── <span class="string">Microsoft_Application_22.0.0.0.app</span>
+   ├── <span class="string">Microsoft_Base Application_22.0.0.0.app</span>
+   └── <span class="string">Microsoft_System_22.0.0.0.app</span></code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 ¿Qué pasa si falla la descarga?</h3>
+                <ul>
+                    <li>Comprueba que el contenedor está corriendo: <code>Start-BcContainer bccontainer</code>.</li>
+                    <li>Verifica que el <code>server</code> en <code>launch.json</code> coincide exactamente con el
+                        nombre de tu contenedor.</li>
+                    <li>Si pide credenciales, usa las mismas que pusiste al crear el contenedor.</li>
+                </ul>
+            </div>
+
+            <!-- SNIPPETS -->
+            <div class="step-header">
+                <span class="step-number">4</span>
+                <h2>Usar snippets para crear objetos</h2>
+            </div>
+
+            <p>La extensión AL incluye <strong>snippets</strong> (plantillas de código) que te generan la estructura
+                completa de cualquier objeto con solo escribir su prefijo y pulsar <kbd>Tab</kbd>. Los más usados:</p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Escribe en el editor...</th>
+                        <th>Y obtiene...</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><kbd>ttable</kbd> + <kbd>Tab</kbd></td>
+                        <td>Plantilla completa de una tabla AL</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>tpage</kbd> + <kbd>Tab</kbd></td>
+                        <td>Plantilla de una page (card, list...)</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>tenum</kbd> + <kbd>Tab</kbd></td>
+                        <td>Plantilla de un enum AL</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>tcodeunit</kbd> + <kbd>Tab</kbd></td>
+                        <td>Plantilla de un codeunit</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>tfield</kbd> + <kbd>Tab</kbd></td>
+                        <td>Declaración de un campo dentro de una tabla</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>tprocedure</kbd> + <kbd>Tab</kbd></td>
+                        <td>Declaración de un procedimiento AL</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- PUBLICAR -->
+            <div class="step-header">
+                <span class="step-number">5</span>
+                <h2>Compilar y publicar: AL: Publish</h2>
+            </div>
+
+            <p>Una vez tienes código escrito, puedes compilar y publicar la extensión en el contenedor con:</p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Acción</th>
+                        <th>Atajo</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Publish (con debug)</strong></td>
+                        <td><kbd>F5</kbd></td>
+                        <td>Compila, publica y abre BC en el navegador con el debugger activo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Publish (sin debug)</strong></td>
+                        <td><kbd>Ctrl</kbd> + <kbd>F5</kbd></td>
+                        <td>Compila y publica sin abrir el debugger. Más rápido para pruebas rápidas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Build solo</strong></td>
+                        <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd></td>
+                        <td>Solo comprueba errores de compilación, no publica en el servidor</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                        class="dot green"></span><span class="title">Paleta de comandos — alternativa</span></div>
+                <pre><code><span class="string">AL: Publish</span>          <span class="comment">// equivalente a F5</span>
+<span class="string">AL: Publish Without Debugging</span>  <span class="comment">// equivalente a Ctrl+F5</span></code></pre>
+            </div>
+
+            <!-- FLUJO DE TRABAJO -->
+            <h2>Flujo de trabajo típico</h2>
+            <p>Este es el orden habitual al empezar o reanudar el trabajo en cualquier sesión:</p>
+
+            <ol>
+                <li>Arrancar el contenedor si no está corriendo:
+                    <div class="ide-code">
+                        <div class="ide-header"><span class="dot red"></span><span class="dot yellow"></span><span
+                                class="dot green"></span><span class="title">Administrador: PowerShell</span></div>
+                        <pre><code><span class="cmd">Start-BcContainer</span> bccontainer</code></pre>
+                    </div>
+                </li>
+                <li>Abrir la carpeta del proyecto en VS Code: <kbd>Ctrl</kbd> + <kbd>K</kbd>, <kbd>Ctrl</kbd> +
+                    <kbd>O</kbd></li>
+                <li>Descargar símbolos si es la primera vez o si BC se actualizó: <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +
+                    <kbd>P</kbd> → <code>AL: Download Symbols</code></li>
+                <li>Escribir código usando snippets (<kbd>ttable</kbd>, <kbd>tpage</kbd>…)</li>
+                <li>Publicar y probar con <kbd>F5</kbd></li>
+                <li>Iterar: corregir errores → publicar de nuevo con <kbd>Ctrl</kbd> + <kbd>F5</kbd></li>
+            </ol>
+
+            <!-- RESUMEN DE COMANDOS -->
+            <h2>Resumen de comandos AL en la Paleta</h2>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Comando (Paleta)</th>
+                        <th>Atajo</th>
+                        <th>Para qué</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>AL: Go!</code></td>
+                        <td>—</td>
+                        <td>Crear un proyecto AL desde cero</td>
+                    </tr>
+                    <tr>
+                        <td><code>AL: Download Symbols</code></td>
+                        <td>—</td>
+                        <td>Descargar los metadatos de BC para IntelliSense</td>
+                    </tr>
+                    <tr>
+                        <td><code>AL: Publish</code></td>
+                        <td><kbd>F5</kbd></td>
+                        <td>Compilar, publicar y abrir con debug</td>
+                    </tr>
+                    <tr>
+                        <td><code>AL: Publish Without Debugging</code></td>
+                        <td><kbd>Ctrl</kbd> + <kbd>F5</kbd></td>
+                        <td>Compilar y publicar sin debug</td>
+                    </tr>
+                    <tr>
+                        <td><code>AL: Build</code></td>
+                        <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd></td>
+                        <td>Solo compilar (sin publicar)</td>
+                    </tr>
+                    <tr>
+                        <td><code>AL: Open Designer</code></td>
+                        <td>—</td>
+                        <td>Abrir el diseñador visual de Pages/Reports</td>
+                    </tr>
+                    <tr>
+                        <td><code>AL: Clear Credentials Cache</code></td>
+                        <td>—</td>
+                        <td>Borrar las credenciales guardadas si cambiaron</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert-info">
+                <h3>💡 Tips</h3>
+                <ul>
+                    <li>Si IntelliSense no funciona, lo primero es siempre <code>AL: Download Symbols</code> de nuevo.
+                    </li>
+                    <li>Usa <kbd>Ctrl</kbd> + <kbd>F5</kbd> para el 90% de las publicaciones: es más rápido que
+                        <kbd>F5</kbd> porque no abre el debugger.</li>
+                    <li>Si el nombre del contenedor en <code>launch.json</code> no coincide con el real, nada
+                        funcionará. Verifica con <code>Get-BcContainers</code> en PowerShell.</li>
+                    <li>Guarda todos los ficheros antes de publicar: <kbd>Ctrl</kbd> + <kbd>K</kbd> + <kbd>S</kbd>.</li>
+                    <li>El campo <code>idRanges</code> en <code>app.json</code> reserva los IDs que puedes usar. Para
+                        desarrollo propio, usa el rango <code>50100–50999</code>.</li>
+                </ul>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

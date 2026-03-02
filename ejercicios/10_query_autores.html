@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio: Queries - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../ejercicios.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .exercise-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .exercise-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .exercise-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .exercise-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .exercise-content .goal {
+            background: rgba(0, 123, 255, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        /* Contexto previo */
+        .prev-context {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 28px;
+            margin-bottom: 40px;
+        }
+
+        .prev-context .prev-label {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .prev-context h4 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+        }
+
+        .prev-context ul {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .prev-context ul li {
+            margin-bottom: 4px;
+        }
+
+        /* Query anatomy diagram */
+        .query-anatomy {
+            background: #141414;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0 32px;
+            font-family: Consolas, monospace;
+            font-size: 0.84rem;
+            line-height: 2;
+        }
+
+        .qa-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .qa-code {
+            color: #d4d4d4;
+            flex: 1;
+        }
+
+        .qa-code .kw {
+            color: #c678dd;
+        }
+
+        .qa-code .num {
+            color: #61afef;
+        }
+
+        .qa-code .str {
+            color: #98c379;
+        }
+
+        .qa-code .mt {
+            color: #e5c07b;
+        }
+
+        .qa-code .cm {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .qa-badge {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+
+        .qa-badge.group {
+            background: rgba(97, 175, 239, 0.15);
+            color: #61afef;
+            border: 1px solid rgba(97, 175, 239, 0.3);
+        }
+
+        .qa-badge.calc {
+            background: rgba(152, 195, 121, 0.12);
+            color: #98c379;
+            border: 1px solid rgba(152, 195, 121, 0.3);
+        }
+
+        .qa-badge.join {
+            background: rgba(198, 120, 221, 0.12);
+            color: #c678dd;
+            border: 1px solid rgba(198, 120, 221, 0.3);
+        }
+
+        .qa-badge.link {
+            background: rgba(229, 192, 123, 0.12);
+            color: #e5c07b;
+            border: 1px solid rgba(229, 192, 123, 0.3);
+        }
+
+        /* vs table */
+        .vs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .vs-table th,
+        .vs-table td {
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 10px 14px;
+            font-size: 0.9rem;
+        }
+
+        .vs-table th {
+            background: rgba(0, 0, 0, 0.4);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .vs-table td code {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.84rem;
+        }
+
+        /* Exercise block */
+        .exercise-block {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .exercise-block .exercise-number {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-blue);
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .exercise-block h3 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .badge-section {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 0.78rem;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* IDE */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info strong {
+            color: var(--primary-blue);
+        }
+
+        .alert-warn {
+            background-color: rgba(234, 179, 8, 0.08);
+            border-left: 4px solid #eab308;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warn strong {
+            color: #eab308;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html">Teoría</a></li>
+                <li><a href="../ejercicios.html" class="active">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="exercise-section" style="padding-top: 100px;">
+        <div class="exercise-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                EJERCICIO 10 · QUERIES</p>
+            <h1>Queries</h1>
+            <span class="diff-badge diff-hard"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 7/10</span>
+        </div>
+
+        <div class="exercise-content">
+
+            <!-- Contexto previo -->
+            <div class="prev-context">
+                <div class="prev-label">Ejercicios anteriores</div>
+                <h4>¿Qué tienes construido hasta ahora?</h4>
+                <ul>
+                    <li>Modelo completo: <code>"Maquinaria"</code>, <code>"Cabecera Alquiler"</code>,
+                        <code>"Linea Alquiler"</code> y <code>"Historial Estado Maquina"</code> con triggers,
+                        FlowFields, FlowFilters y TableRelations.
+                    </li>
+                    <li>Interfaz completa: pages de tipo List, Card, ListPart y CardPart con SubPageLink, FactBoxes y
+                        SourceTableView.</li>
+                    <li>Codeunit <code>"Maquinaria Stats"</code> con comparativa trimestral usando <code>SetRange</code>
+                        + <code>CalcFields</code>.</li>
+                    <li>Los FlowFields dan totales por máquina, pero <strong>no puedes ver un ranking de todas las
+                            máquinas a la vez</strong> sin recorrerlas una a una.</li>
+                </ul>
+            </div>
+
+            <p>El codeunit <code>"Maquinaria Stats"</code> del ejercicio de FlowFilters compara trimestres para
+                <em>una sola máquina</em>. Ahora el responsable de flota quiere algo diferente: ver
+                <strong>todas las máquinas ordenadas por número de alquileres</strong>, saber cuáles llevan
+                más días en total alquiladas y detectar cuáles nunca han sido alquiladas. Con
+                <code>CalcFields</code> en bucle sobre miles de registros eso sería demasiado lento.
+                Las Queries resuelven exactamente este problema.
+            </p>
+
+            <p>Antes de empezar, revisa la anatomía de una Query con el modelo del proyecto:</p>
+
+            <!-- Anatomy diagram -->
+            <div class="query-anatomy">
+                <div class="qa-row">
+                    <span class="qa-code"><span class="kw">dataitem</span>(Maquinaria; <span
+                            class="str">"Maquinaria"</span>)</span>
+                    <span class="qa-badge join">tabla raíz</span>
+                </div>
+                <div class="qa-row" style="padding-left:24px">
+                    <span class="qa-code"><span class="kw">column</span>(No_Maquina; <span class="str">"No."</span>) {
+                        }</span>
+                    <span class="qa-badge group">clave de agrupación</span>
+                </div>
+                <div class="qa-row" style="padding-left:24px">
+                    <span class="qa-code"><span class="kw">column</span>(Descripcion; <span
+                            class="str">"Descripcion"</span>) { }</span>
+                    <span class="qa-badge group">clave de agrupación</span>
+                </div>
+                <div class="qa-row" style="padding-left:24px">
+                    <span class="qa-code"><span class="kw">dataitem</span>(LineaAlquiler; <span class="str">"Linea
+                            Alquiler"</span>)</span>
+                    <span class="qa-badge join">join hijo</span>
+                </div>
+                <div class="qa-row" style="padding-left:48px">
+                    <span class="qa-code">DataItemLink = <span class="str">"No. Maquina"</span> = Maquinaria.<span
+                            class="str">"No."</span>;</span>
+                    <span class="qa-badge link">enlace entre tablas</span>
+                </div>
+                <div class="qa-row" style="padding-left:48px">
+                    <span class="qa-code">SqlJoinType = LeftOuterJoin;</span>
+                    <span class="qa-badge join">incluye sin hijos</span>
+                </div>
+                <div class="qa-row" style="padding-left:48px">
+                    <span class="qa-code"><span class="kw">column</span>(Total_Alquileres; <span class="str">"No.
+                            Linea"</span>) { <span class="mt">Method = Count</span>; }</span>
+                    <span class="qa-badge calc">valor calculado</span>
+                </div>
+                <div class="qa-row" style="padding-left:48px">
+                    <span class="qa-code"><span class="kw">column</span>(Total_Dias; <span class="str">"Dias
+                            Alquiler"</span>) { <span class="mt">Method = Sum</span>; }</span>
+                    <span class="qa-badge calc">valor calculado</span>
+                </div>
+            </div>
+
+            <p>La tabla muestra las diferencias clave entre el enfoque de FlowFields que ya usas y una Query:</p>
+
+            <table class="vs-table">
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>FlowField + CalcFields en bucle</th>
+                        <th>Query</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Resultado de todas las máquinas</td>
+                        <td>N peticiones SQL (una por máquina)</td>
+                        <td>1 sola petición SQL</td>
+                    </tr>
+                    <tr>
+                        <td>Ordenar por total de alquileres</td>
+                        <td>Requiere tabla temporal manual</td>
+                        <td>Nativo en la Query</td>
+                    </tr>
+                    <tr>
+                        <td>Máquinas sin alquileres (valor 0)</td>
+                        <td>Posible con lógica extra</td>
+                        <td><code>LeftOuterJoin</code> lo da gratis</td>
+                    </tr>
+                    <tr>
+                        <td>Rendimiento con 50.000 registros</td>
+                        <td>Lento (muchos round-trips)</td>
+                        <td>Rápido (SQL nativo)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 1 – Query simple: ranking de alquileres
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 01</div>
+                <div class="badge-section">Query · Count · Sum · LeftOuterJoin</div>
+                <h3>Ranking de máquinas por alquileres y días</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Crear una Query que una <code>"Maquinaria"</code> con
+                    <code>"Linea Alquiler"</code> y devuelva, para cada máquina, el número total de alquileres
+                    y la suma de días alquilados. El <code>LeftOuterJoin</code> garantizará que las máquinas
+                    que nunca han sido alquiladas también aparezcan con valor 0.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea <code>RankingAlquileres.Query.al</code> con ID <code>50100</code> y nombre
+                        <code>"Ranking Alquileres Maquinaria"</code>.
+                    </li>
+                    <li>El <code>dataitem</code> raíz apunta a <code>"Maquinaria"</code>. Añade como columnas
+                        de agrupación: <code>"No."</code> (alias <code>No_Maquina</code>) y
+                        <code>"Descripcion"</code> (alias <code>Descripcion</code>).
+                    </li>
+                    <li>Dentro, anida un segundo <code>dataitem</code> para <code>"Linea Alquiler"</code> con:
+                        <code>DataItemLink = "No. Maquina" = Maquinaria."No."</code> y
+                        <code>SqlJoinType = LeftOuterJoin</code>.
+                    </li>
+                    <li>En el dataitem hijo añade dos columnas calculadas: <code>"No. Linea"</code> con
+                        <code>Method = Count</code> (alias <code>Total_Alquileres</code>) y
+                        <code>"Dias Alquiler"</code> con <code>Method = Sum</code> (alias
+                        <code>Total_Dias</code>).
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — RankingAlquileres.Query.al</span></div>
+                    <pre><code><span class="cmd">query</span> <span class="var">50100</span> <span class="string">"Ranking Alquileres Maquinaria"</span>
+{
+    Caption   = <span class="string">'Ranking de Alquileres por Máquina'</span>;
+    QueryType = Normal;
+
+    elements
+    {
+        <span class="cmd">dataitem</span>(Maquinaria; <span class="string">"Maquinaria"</span>)
+        {
+            <span class="comment">// Sin Method → claves de agrupación</span>
+            <span class="cmd">column</span>(No_Maquina;  <span class="string">"No."</span>)         { Caption = <span class="string">'Nº Máquina'</span>; }
+            <span class="cmd">column</span>(Descripcion; <span class="string">"Descripcion"</span>) { Caption = <span class="string">'Descripción'</span>; }
+            <span class="cmd">column</span>(Estado;      <span class="string">"Estado"</span>)      { Caption = <span class="string">'Estado'</span>; }
+
+            <span class="cmd">dataitem</span>(LineaAlquiler; <span class="string">"Linea Alquiler"</span>)
+            {
+                DataItemLink = <span class="string">"No. Maquina"</span> = Maquinaria.<span class="string">"No."</span>;
+                SqlJoinType  = LeftOuterJoin; <span class="comment">// máquinas sin alquileres → 0</span>
+
+                <span class="cmd">column</span>(Total_Alquileres; <span class="string">"No. Linea"</span>)
+                {
+                    Caption = <span class="string">'Total Alquileres'</span>;
+                    Method  = Count;
+                }
+                <span class="cmd">column</span>(Total_Dias; <span class="string">"Dias Alquiler"</span>)
+                {
+                    Caption = <span class="string">'Total Días Alquilada'</span>;
+                    Method  = Sum;
+                }
+            }
+        }
+    }
+}</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> Las columnas <em>sin</em> <code>Method</code> son las claves
+                    de agrupación: BC agrupa una fila por cada combinación única de esos valores. Las columnas
+                    <em>con</em> <code>Method</code> son los valores calculados que SQL agrega. Si eliminas
+                    <code>LeftOuterJoin</code> (o lo dejas como <code>InnerJoin</code> por defecto), las
+                    máquinas sin ninguna línea de alquiler <strong>no aparecerán</strong> en los resultados.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 2 – Usar la Query desde el codeunit
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 02</div>
+                <div class="badge-section">Query · Open · Read · Close · SetFilter</div>
+                <h3>Consume la Query desde "Maquinaria Stats"</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Ampliar el codeunit <code>"Maquinaria Stats"</code> con un
+                    nuevo procedimiento que use la Query del ejercicio anterior para encontrar e imprimir
+                    las máquinas que superan un número mínimo de alquileres pasado como parámetro.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Abre <code>MaquinariaStats.Codeunit.al</code> y añade el procedimiento
+                        <code>MaquinasConMasAlquileres(MinAlquileres: Integer)</code>.
+                    </li>
+                    <li>Declara una variable <code>QRanking</code> de tipo
+                        <code>Query "Ranking Alquileres Maquinaria"</code>.
+                    </li>
+                    <li>Aplica el filtro <strong>antes</strong> de abrir: usa <code>QRanking.SetFilter</code>
+                        sobre la columna <code>Total_Alquileres</code> con el valor
+                        <code>'&gt;=' + Format(MinAlquileres)</code>.
+                    </li>
+                    <li>Llama a <code>QRanking.Open()</code>, recorre con <code>while QRanking.Read()</code>
+                        y muestra un <code>Message</code> por fila con el número de máquina, descripción,
+                        total de alquileres y total de días.</li>
+                    <li>Cierra con <code>QRanking.Close()</code> al terminar.</li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — MaquinariaStats.Codeunit.al (procedimiento
+                            nuevo)</span></div>
+                    <pre><code>    <span class="cmd">procedure</span> MaquinasConMasAlquileres(MinAlquileres: <span class="param">Integer</span>)
+    <span class="cmd">var</span>
+        QRanking: Query <span class="string">"Ranking Alquileres Maquinaria"</span>;
+    <span class="cmd">begin</span>
+        <span class="comment">// Paso 1: filtrar ANTES de abrir</span>
+        QRanking.SetFilter(Total_Alquileres, <span class="string">'>='</span> + Format(MinAlquileres));
+
+        <span class="comment">// Paso 2: abre → BC envía UNA sola petición SQL</span>
+        QRanking.Open();
+
+        <span class="comment">// Paso 3: recorrer resultados fila a fila</span>
+        <span class="cmd">while</span> QRanking.Read() <span class="cmd">do</span>
+            Message(
+                <span class="string">'%1 — %2\nAlquileres: %3 | Días totales: %4'</span>,
+                QRanking.No_Maquina,
+                QRanking.Descripcion,
+                QRanking.Total_Alquileres,
+                QRanking.Total_Dias
+            );
+
+        <span class="comment">// Paso 4: cerrar siempre para liberar recursos</span>
+        QRanking.Close();
+    <span class="cmd">end</span>;</code></pre>
+                </div>
+
+                <div class="alert-warn">
+                    <strong>⚠️ Recuerda:</strong> El <code>SetFilter</code> debe ir <em>siempre antes</em>
+                    de <code>Open()</code>. Una vez abierta la Query, los datos ya están traídos de SQL y
+                    los filtros posteriores no tendrán ningún efecto. Es el mismo principio que con
+                    <code>SetRange</code> + <code>CalcFields</code> en los FlowFilters.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 3 – Query con join triple: historial + cabecera
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 03</div>
+                <div class="badge-section">Query · Join triple · Average · Max</div>
+                <h3>Query de resumen de cambios de estado por máquina</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Crear una segunda Query que una <code>"Maquinaria"</code> con
+                    <code>"Historial Estado Maquina"</code> y calcule, para cada máquina, el número total de
+                    cambios de estado, la fecha del último cambio y un desglose por tipo de origen (Alquiler
+                    vs Manual) usando <code>Method = Count</code> y <code>Method = Max</code>.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea <code>ResumenHistorial.Query.al</code> con ID <code>50101</code> y nombre
+                        <code>"Resumen Historial Maquinaria"</code>.
+                    </li>
+                    <li>El <code>dataitem</code> raíz apunta a <code>"Maquinaria"</code>. Columnas de
+                        agrupación: <code>"No."</code> y <code>"Descripcion"</code>.</li>
+                    <li>Dentro, anida <code>"Historial Estado Maquina"</code> con
+                        <code>DataItemLink = "No. Maquina" = Maquinaria."No."</code> y
+                        <code>SqlJoinType = LeftOuterJoin</code>.
+                    </li>
+                    <li>En el dataitem hijo añade:
+                        <ul>
+                            <li><code>"Entry No."</code> con <code>Method = Count</code> → alias
+                                <code>Total_Cambios</code>.
+                            </li>
+                            <li><code>"Fecha Cambio"</code> con <code>Method = Max</code> → alias
+                                <code>Ultimo_Cambio</code>.
+                            </li>
+                            <li><code>"Tipo Origen"</code> sin <code>Method</code> → columna de agrupación
+                                adicional para desglosar Alquiler vs Manual.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — ResumenHistorial.Query.al</span></div>
+                    <pre><code><span class="cmd">query</span> <span class="var">50101</span> <span class="string">"Resumen Historial Maquinaria"</span>
+{
+    Caption   = <span class="string">'Resumen de Cambios de Estado por Máquina'</span>;
+    QueryType = Normal;
+
+    elements
+    {
+        <span class="cmd">dataitem</span>(Maquinaria; <span class="string">"Maquinaria"</span>)
+        {
+            <span class="cmd">column</span>(No_Maquina;  <span class="string">"No."</span>)         { Caption = <span class="string">'Nº Máquina'</span>; }
+            <span class="cmd">column</span>(Descripcion; <span class="string">"Descripcion"</span>) { Caption = <span class="string">'Descripción'</span>; }
+
+            <span class="cmd">dataitem</span>(Historial; <span class="string">"Historial Estado Maquina"</span>)
+            {
+                DataItemLink = <span class="string">"No. Maquina"</span> = Maquinaria.<span class="string">"No."</span>;
+                SqlJoinType  = LeftOuterJoin;
+
+                <span class="comment">// Columna de agrupación adicional: desglose por tipo</span>
+                <span class="cmd">column</span>(Tipo_Origen; <span class="string">"Tipo Origen"</span>) { Caption = <span class="string">'Tipo Origen'</span>; }
+
+                <span class="cmd">column</span>(Total_Cambios; <span class="string">"Entry No."</span>)
+                {
+                    Caption = <span class="string">'Total Cambios de Estado'</span>;
+                    Method  = Count;
+                }
+                <span class="cmd">column</span>(Ultimo_Cambio; <span class="string">"Fecha Cambio"</span>)
+                {
+                    Caption = <span class="string">'Fecha Último Cambio'</span>;
+                    Method  = Max;
+                }
+            }
+        }
+    }
+}</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> Al añadir <code>"Tipo Origen"</code> como columna
+                    <em>sin</em> <code>Method</code>, la Query agrupa por la combinación
+                    <code>No_Maquina + Descripcion + Tipo_Origen</code>. Cada máquina generará hasta
+                    <em>dos filas</em>: una para <code>Alquiler</code> y otra para <code>Manual</code>.
+                    Si solo quisieras el total sin desglose, bastaría con eliminar esa columna.
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Bonus:</strong> Ahora que tienes dos Queries (<code>"Ranking Alquileres
+                    Maquinaria"</code> y <code>"Resumen Historial Maquinaria"</code>), podrías añadir
+                    una acción <code>VerRanking</code> en <code>"Maquinaria List"</code> que ejecute
+                    <code>"Maquinaria Stats".MaquinasConMasAlquileres(5)</code> para mostrar al usuario
+                    las máquinas con 5 o más alquileres con un solo clic, cerrando así el ciclo completo
+                    del proyecto: desde los datos hasta la interfaz pasando por la lógica de negocio.
+                </div>
+            </div>
+
+            <a href="../ejercicios.html" class="btn btn-secondary"
+                style="margin-top: 10px; margin-bottom: 60px; display: inline-block;">&larr; Volver a Ejercicios</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

@@ -25,6 +25,13 @@
             font-family: 'Outfit';
         }
 
+        .theory-content h3 {
+            color: var(--text-white);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit';
+        }
+
         .theory-content p {
             margin-bottom: 1.5rem;
         }
@@ -37,6 +44,115 @@
 
         .theory-content li {
             margin-bottom: 0.5rem;
+        }
+
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+
+        .alert-info ul {
+            margin-bottom: 0 !important;
+        }
+
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warning h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+
+        /* IDE Styles AL */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
         }
     </style>
 </head>
@@ -59,41 +175,264 @@
             <p
                 style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
                 Interfaz de Usuario</p>
-            <h1>Parts (Subpáginas)</h1>
+            <h1>Parts y FactBoxes</h1>
             <span class="diff-badge diff-medium"
                 style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 6/10</span>
         </div>
 
         <div class="theory-content">
-            <p>Muchas veces una pantalla "Principal" no es suficiente para describir toda la información. Las
-                <strong>Subpáginas</strong> son como pequeñas aplicaciones o "Widget-vistas" que incrustamos limpiamente
-                *dentro* de las pantallas maestras para organizar datos gigantes sin confundir a la gente.</p>
 
-            <h2>ListPart (Historiales o Sublistas)</h2>
-            <p>Se utiliza cuando la entidad tiene un flujo de diseño tipo Cabecera->Líneas (Header->Lines).</p>
-            <p>Piensa en un albarán gigante de supermercado o pedido de Venta. Abres la cabecera, es de tipo `Card` y
-                tiene info tuya global: nombre de cliente y fecha. Pero esa interfaz master "Cards" no sirve para
-                teclear y listar los 45 artículos comprados.</p>
-            <p>Así que el sistema incrusta un control inmenso tipo tabla llamado *Subformulario Líneas Pedido*, el cual
-                en realidad es un pequeño programa de tipo <strong>ListPart</strong> (Una lista, convertida en Part, en
-                Pieza). Aquí dentro el usuario puede machacar el enter velozmente viendo un historial gigante. Si pasas
-                a tu siguiente factura, la `Page` master pasa de factura, y dinámicamente el `ListPart` debajo descarta
-                en medio segundo su filtro y se trae y pinta el historial del cliente nuevo.</p>
+            <p>Muchas veces una pantalla principal no es suficiente para describir toda la información. Las
+                <strong>Parts</strong> son páginas embebidas dentro de otras páginas, y las <strong>FactBoxes</strong>
+                son paneles informativos que aparecen en la columna derecha de la pantalla. Juntos permiten organizar
+                datos complejos sin confundir al usuario.</p>
 
-            <h2>CardPart (Resúmenes Estáticos)</h2>
-            <p>Una "Card" convertida en Pieza y enjaulada a un rincón.</p>
-            <p>Sirve para concentrar datos densos pero pequeños de otra tabla, usualmente a la derecha de la pantalla
-                sin ensuciar la "Card" original. Por ejemplo, en el pedido gigante, el cliente tiene su "Límite de
-                Riesgo" o saldo contable de su tarjeta que se asoma a un lado.</p>
+            <!-- SUBPAGELINK RÁPIDO -->
+            <h2>El concepto clave: SubPageLink</h2>
+            <p>La propiedad <code>SubPageLink</code> es la clave que hace que una Part muestre solo los datos del
+                registro seleccionado. Sin ella, el panel mostraría <strong>todos</strong> los registros de la tabla.
+            </p>
 
             <div class="ide-code">
-                <pre><code><span class="string">// Lo que le dices a tu Card Principal...</span>
-<span class="cmd">part</span>(SalesLines; "Sales Order Subform")
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">part</span>(NombreLocal; <span class="string">"NombreDeLaPagePart"</span>)
 {
-    ApplicationArea = Basic, Suite;
-    SubPageLink = "Document No." = field("No.");
-    <span class="string">// ¡Boom! Estás incrustando otra pieza dentro.</span>
+    SubPageLink = <span class="string">"CampoEnTablaHija"</span> = <span class="cmd">field</span>(<span class="string">"CampoEnTablaPadre"</span>);
 }</code></pre>
+            </div>
+
+            <!-- FACTBOXES -->
+            <h2>FactBoxes — Paneles informativos laterales</h2>
+            <p>Las <strong>FactBoxes</strong> son paneles que aparecen en la <strong>columna derecha</strong> de la
+                pantalla cuando el usuario navega por una List o una Card. Su función es mostrar información adicional y
+                contextual del registro seleccionado sin necesidad de abrir otra ventana.</p>
+
+            <p>Se definen en el <code>area(FactBoxes)</code> de la page padre. Cada FactBox es un objeto
+                <code>part</code> que apunta a otra página y se filtra automáticamente al registro seleccionado mediante
+                <code>SubPageLink</code>.</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="comment">// En la page "Libro Card": panel lateral con los préstamos de ese libro</span>
+layout
+{
+    area(Content)
+    {
+        <span class="comment">// ... campos principales</span>
+    }
+    area(FactBoxes)
+    {
+        <span class="cmd">part</span>(PrestamosLibro; <span class="string">"Prestamo ListPart"</span>)
+        {
+            <span class="comment">// Cada vez que el usuario cambia de libro, el panel se actualiza</span>
+            SubPageLink = <span class="string">"No. Libro"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>);
+        }
+    }
+}</code></pre>
+            </div>
+
+            <!-- LISTPART -->
+            <h2>ListPart — Historiales o sublistas</h2>
+            <p>Se utiliza cuando la entidad tiene un flujo de diseño tipo Cabecera → Líneas. Piensa en un pedido de
+                venta: abres la cabecera (Card) con los datos globales del cliente, pero esa Card no sirve para listar
+                los 45 artículos comprados. El sistema incrusta un <strong>ListPart</strong> donde el usuario puede ver
+                el historial completo. Si pasas a tu siguiente factura, el ListPart descarta su filtro en décimas de
+                segundo y muestra el historial del nuevo cliente.</p>
+
+            <ul>
+                <li>Muestra <strong>varios registros</strong> en formato lista dentro del panel</li>
+                <li><strong>No usa</strong> control <code>repeater</code> (el propio PageType lo implica)</li>
+                <li>Ideal para relaciones uno (padre) → muchos (hijos)</li>
+            </ul>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">page</span> <span class="var">50311</span> <span class="string">"Prestamo ListPart"</span>
+{
+    PageType        = ListPart;
+    ApplicationArea = All;
+    SourceTable     = <span class="string">"Prestamo"</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            <span class="comment">// En un ListPart NO se usa repeater</span>
+            <span class="cmd">field</span>(<span class="string">"No."</span>;               Rec.<span class="string">"No."</span>)               { }
+            <span class="cmd">field</span>(<span class="string">"No. Libro"</span>;        Rec.<span class="string">"No. Libro"</span>)        { }
+            <span class="cmd">field</span>(<span class="string">"Fecha Prestamo"</span>;   Rec.<span class="string">"Fecha Prestamo"</span>)   { }
+            <span class="cmd">field</span>(<span class="string">"Fecha Devolucion"</span>; Rec.<span class="string">"Fecha Devolucion"</span>) { }
+            <span class="cmd">field</span>(Devuelto;         Rec.Devuelto)          { }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <div class="alert-warning">
+                <h3>⚠️ Diferencia importante con List</h3>
+                <p style="margin: 0;">En un <code>ListPart</code> el área de contenido <strong>NO lleva
+                        repeater</strong>. Los registros se muestran como lista automáticamente porque el propio
+                    <code>PageType = ListPart</code> lo implica. En cambio, en una page de tipo <code>List</code> el
+                    <code>repeater</code> es obligatorio.</p>
+            </div>
+
+            <!-- CARDPART -->
+            <h2>CardPart — Resúmenes estáticos</h2>
+            <p>Una Card convertida en pieza y enjaulada en un rincón. Sirve para concentrar datos densos pero pequeños
+                de otra tabla, usualmente a la derecha de la pantalla sin ensuciar la Card original. Por ejemplo, en un
+                pedido gigante, el cliente tiene su "Límite de Riesgo" o saldo contable que se asoma a un panel lateral.
+            </p>
+
+            <ul>
+                <li>Muestra información de <strong>un único registro</strong> relacionado</li>
+                <li>Para datos de referencia que acompañan al registro principal</li>
+                <li>Contenido <strong>estático</strong> (sin filas repetidas)</li>
+            </ul>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">page</span> <span class="var">50310</span> <span class="string">"Socio Info FactBox"</span>
+{
+    PageType        = CardPart;
+    ApplicationArea = All;
+    SourceTable     = <span class="string">"Socio"</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            <span class="cmd">field</span>(<span class="string">"No."</span>;            Rec.<span class="string">"No."</span>)            { }
+            <span class="cmd">field</span>(Nombre;         Rec.Nombre)          { }
+            <span class="cmd">field</span>(Email;          Rec.Email)           { }
+            <span class="cmd">field</span>(<span class="string">"Total Prestamos"</span>; Rec.<span class="string">"Total Prestamos"</span>)
+            {
+                Editable = <span class="param">false</span>;  <span class="comment">// FlowField — solo lectura</span>
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <!-- SUBPAGELINK AVANZADO -->
+            <h2>SubPageLink — Conexión con la página padre</h2>
+            <p>La relación entre la page padre y la Part encaja así: el campo de la tabla padre se conecta con el campo
+                de la tabla hija, y BC filtra automáticamente los datos del panel cada vez que el usuario cambia de
+                registro.</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="comment">// En "Socio Card" (tabla padre: Socio, campo clave: "No.")</span>
+area(FactBoxes)
+{
+    <span class="cmd">part</span>(MisPrestamos; <span class="string">"Prestamo ListPart"</span>)
+    {
+        <span class="comment">// "No. Socio" es el campo en la tabla Prestamo (hija)</span>
+        <span class="comment">// "No." es el campo clave en la tabla Socio (padre)</span>
+        SubPageLink = <span class="string">"No. Socio"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>);
+    }
+}
+
+<span class="comment">// SubPageLink con clave compuesta (varios campos)</span>
+SubPageLink = <span class="string">"No. Socio"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>),
+              <span class="string">"Ejercicio"</span>  = <span class="cmd">field</span>(<span class="string">"Ejercicio Fiscal"</span>);</code></pre>
+            </div>
+
+            <!-- TABLA COMPARATIVA -->
+            <h2>ListPart vs CardPart</h2>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>ListPart</th>
+                        <th>CardPart</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>¿Qué muestra?</strong></td>
+                        <td>Varios registros (lista)</td>
+                        <td>Un único registro (ficha)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Usa repeater</strong></td>
+                        <td>❌ No necesario</td>
+                        <td>❌ No aplica</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Uso típico</strong></td>
+                        <td>Historial de préstamos, líneas de pedido</td>
+                        <td>Datos de contacto, saldo, límite de riesgo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Relación</strong></td>
+                        <td>Uno a muchos (padre → hijos)</td>
+                        <td>Uno a uno (referencia)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Puede tener FactBoxes propias</strong></td>
+                        <td>❌</td>
+                        <td>❌</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- EJEMPLO COMPLETO -->
+            <h2>Ejemplo completo: Card con FactBox</h2>
+            <p>Una ficha de socio con un ListPart lateral mostrando sus préstamos y un CardPart con su información de
+                contacto:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">page</span> <span class="var">50301</span> <span class="string">"Socio Card"</span>
+{
+    PageType        = Card;
+    ApplicationArea = All;
+    UsageCategory   = Administration;
+    SourceTable     = <span class="string">"Socio"</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            group(General)
+            {
+                <span class="cmd">field</span>(<span class="string">"No."</span>;   Rec.<span class="string">"No."</span>)   { Importance = Promoted; }
+                <span class="cmd">field</span>(Nombre; Rec.Nombre) { Importance = Promoted; }
+                <span class="cmd">field</span>(Email;  Rec.Email)  { }
+            }
+        }
+        area(FactBoxes)
+        {
+            <span class="comment">// ListPart: historial de préstamos del socio seleccionado</span>
+            <span class="cmd">part</span>(HistorialPrestamos; <span class="string">"Prestamo ListPart"</span>)
+            {
+                SubPageLink = <span class="string">"No. Socio"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>);
+            }
+            <span class="comment">// CardPart: resumen de información adicional del socio</span>
+            <span class="cmd">part</span>(InfoSocio; <span class="string">"Socio Info FactBox"</span>)
+            {
+                SubPageLink = <span class="string">"No."</span> = <span class="cmd">field</span>(<span class="string">"No."</span>);
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <!-- TIPS -->
+            <div class="alert-info">
+                <h3>💡 Tips</h3>
+                <ul>
+                    <li><code>SubPageLink</code> es obligatorio si quieres que la Part muestre solo los datos del
+                        registro seleccionado. Sin él, mostraría todos los registros de la tabla.</li>
+                    <li>Un <code>ListPart</code> <strong>nunca lleva</strong> <code>repeater</code>: el propio PageType
+                        ya implica que los datos se muestran como lista.</li>
+                    <li>Las Parts (ListPart y CardPart) <strong>no pueden tener FactBoxes propias</strong>.</li>
+                    <li>Puedes tener múltiples Parts en el <code>area(FactBoxes)</code> de una misma page, cada una
+                        mostrando información diferente.</li>
+                    <li>Usa <code>CardPart</code> para mostrar un resumen rápido sin abrir otra ventana, y
+                        <code>ListPart</code> para relaciones uno a muchos.</li>
+                </ul>
             </div>
 
             <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;

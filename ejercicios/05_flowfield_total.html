@@ -42,6 +42,203 @@
             border-radius: 8px;
             margin-bottom: 2rem;
         }
+
+        /* Contexto previo */
+        .prev-context {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 28px;
+            margin-bottom: 40px;
+        }
+
+        .prev-context .prev-label {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .prev-context h4 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+        }
+
+        .prev-context ul {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .prev-context ul li {
+            margin-bottom: 4px;
+        }
+
+        /* Exercise block */
+        .exercise-block {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .exercise-block .exercise-number {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-blue);
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .exercise-block h3 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .badge-section {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 0.78rem;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* IDE */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info strong {
+            color: var(--primary-blue);
+        }
+
+        .alert-warn {
+            background-color: rgba(234, 179, 8, 0.08);
+            border-left: 4px solid #eab308;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warn strong {
+            color: #eab308;
+        }
+
+        /* Tabla resumen de FlowFields a crear */
+        .ff-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .ff-table th,
+        .ff-table td {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 11px 14px;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .ff-table th {
+            background: rgba(0, 0, 0, 0.4);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .ff-table td code {
+            background: rgba(255, 255, 255, 0.06);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 0.88rem;
+        }
+
+        .tag-fn {
+            display: inline-block;
+            background: rgba(198, 120, 221, 0.15);
+            border: 1px solid rgba(198, 120, 221, 0.3);
+            color: #c678dd;
+            border-radius: 4px;
+            padding: 1px 7px;
+            font-size: 0.8rem;
+            font-family: Consolas, monospace;
+        }
     </style>
 </head>
 
@@ -62,40 +259,337 @@
         <div class="exercise-header" style="margin-bottom: 30px;">
             <p
                 style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
-                EJERCICIO 05</p>
-            <h1>FlowFields: Total Prestado</h1>
+                EJERCICIO 05 · FLOWFIELDS</p>
+            <h1>FlowFields</h1>
             <span class="diff-badge diff-medium"
                 style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 6/10</span>
         </div>
 
         <div class="exercise-content">
-            <div class="goal">
-                <strong>Objetivo:</strong> Implementar un campo de tipo FlowField que cuente automáticamente cuántos
-                libros tiene prestados un socio.
+
+            <!-- Contexto previo -->
+            <div class="prev-context">
+                <div class="prev-label">Ejercicios anteriores</div>
+                <h4>¿Qué tienes construido hasta ahora?</h4>
+                <ul>
+                    <li>Enum <code>"Rental Status"</code> con los estados de maquinaria, extensible.</li>
+                    <li>Tabla <code>"Maquinaria"</code> (50100): PK <code>"No."</code>, campos <code>"Estado"</code>,
+                        <code>"Categoria"</code>, <code>"Fecha Alta"</code>, claves secundarias.
+                    </li>
+                    <li>Tabla <code>"Cabecera Alquiler"</code> (50103): PK <code>"No."</code>, vinculada desde líneas.
+                    </li>
+                    <li>Tabla <code>"Linea Alquiler"</code> (50101): PK compuesta, <code>TableRelation</code> hacia
+                        <code>"Maquinaria"</code> y <code>"Cabecera Alquiler"</code>.
+                    </li>
+                    <li>Tabla <code>"Historial Estado Maquina"</code> (50102): <code>AutoIncrement</code>,
+                        <code>TableRelation</code> condicional según <code>"Tipo Origen"</code>.
+                    </li>
+                    <li>Pages <code>"Maquinaria List"</code> y <code>"Maquinaria Card"</code> con
+                        <code>OnValidate</code> y filtro por estado.
+                    </li>
+                </ul>
             </div>
 
-            <h2>Instrucciones</h2>
-            <ul>
-                <li>Extiende la tabla de <code>Customer</code> o usa una tabla propia.</li>
-                <li>Crea un campo llamado <code>"Active Loans"</code> de tipo <code>Integer</code>.</li>
-                <li>Configura <code>FieldClass = FlowField;</code>.</li>
-                <li>Define la <code>CalcFormula</code> para que cuente (<code>Count</code>) los registros de la tabla
-                    <code>"Book Loan"</code> donde el campo <code>"Customer No."</code> coincida con el número del
-                    cliente actual.</li>
-            </ul>
+            <p>Hasta ahora las tablas guardan datos, pero <strong>no calculan nada por sí solas</strong>. En este
+                ejercicio añadirás FlowFields a las tablas que ya tienes para que muestren totales, contadores y
+                comprobaciones de existencia sin necesidad de triggers ni campos físicos extra.</p>
 
-            <h2>Ayuda de AL</h2>
-            <div class="ide-code">
-                <pre><code><span class="cmd">field</span>(50100; "Active Loans"; Integer)
+            <p>Este es el resumen de los FlowFields que vas a crear a lo largo del ejercicio:</p>
+
+            <table class="ff-table">
+                <thead>
+                    <tr>
+                        <th>Tabla</th>
+                        <th>Campo</th>
+                        <th>Función</th>
+                        <th>Qué calcula</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>"Maquinaria"</code></td>
+                        <td><code>"No. Alquileres"</code></td>
+                        <td><span class="tag-fn">count</span></td>
+                        <td>Líneas en <code>"Linea Alquiler"</code> para esa máquina</td>
+                    </tr>
+                    <tr>
+                        <td><code>"Maquinaria"</code></td>
+                        <td><code>"Tiene Historial"</code></td>
+                        <td><span class="tag-fn">exist</span></td>
+                        <td>Si existe algún cambio de estado registrado</td>
+                    </tr>
+                    <tr>
+                        <td><code>"Maquinaria"</code></td>
+                        <td><code>"Ultimo Cambio Estado"</code></td>
+                        <td><span class="tag-fn">max</span></td>
+                        <td>Fecha más reciente en el historial</td>
+                    </tr>
+                    <tr>
+                        <td><code>"Cabecera Alquiler"</code></td>
+                        <td><code>"No. Lineas"</code></td>
+                        <td><span class="tag-fn">count</span></td>
+                        <td>Número de líneas de ese alquiler</td>
+                    </tr>
+                    <tr>
+                        <td><code>"Cabecera Alquiler"</code></td>
+                        <td><code>"Descripcion Maquina"</code></td>
+                        <td><span class="tag-fn">lookup</span></td>
+                        <td>Descripción de la máquina de la primera línea</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 1 – Count y Exist en Maquinaria
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 01</div>
+                <div class="badge-section">Count · Exist</div>
+                <h3>Contadores y existencia en Maquinaria</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Añadir a la tabla <code>"Maquinaria"</code> dos FlowFields que
+                    indiquen cuántas líneas de alquiler tiene cada máquina y si alguna vez ha tenido un cambio
+                    de estado registrado en el historial.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Abre <code>Maquinaria.Table.al</code> y añade dos campos nuevos al bloque <code>fields</code>.
+                    </li>
+                    <li>Campo <code>"No. Alquileres"</code> (Integer): <code>FieldClass = FlowField</code> con
+                        <code>CalcFormula = count("Linea Alquiler" where ("No. Maquina" = field("No.")))</code>.
+                    </li>
+                    <li>Campo <code>"Tiene Historial"</code> (Boolean): <code>FieldClass = FlowField</code> con
+                        <code>CalcFormula = exist("Historial Estado Maquina" where ("No. Maquina" = field("No.")))</code>.
+                    </li>
+                    <li>Ambos campos son de solo lectura: añade la propiedad <code>Editable = false</code> a cada uno.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — Maquinaria.Table.al (campos nuevos)</span></div>
+                    <pre><code>        <span class="cmd">field</span>(<span class="var">10</span>; <span class="string">"No. Alquileres"</span>; <span class="param">Integer</span>)
+        {
+            FieldClass  = FlowField;
+            CalcFormula = <span class="param">count</span>(<span class="string">"Linea Alquiler"</span>
+                                <span class="cmd">where</span> (<span class="string">"No. Maquina"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>)));
+            Editable    = <span class="param">false</span>;
+        }
+        <span class="cmd">field</span>(<span class="var">11</span>; <span class="string">"Tiene Historial"</span>; <span class="param">Boolean</span>)
+        {
+            FieldClass  = FlowField;
+            CalcFormula = <span class="param">exist</span>(<span class="string">"Historial Estado Maquina"</span>
+                                <span class="cmd">where</span> (<span class="string">"No. Maquina"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>)));
+            Editable    = <span class="param">false</span>;
+        }</code></pre>
+                </div>
+
+                <div class="alert-warn">
+                    <strong>⚠️ Recuerda:</strong> Los FlowFields son de solo lectura. Si intentas asignarles un valor
+                    directamente en código, el compilador lanzará un error. Siempre usa <code>CalcFields</code>
+                    antes de leerlos desde AL.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 2 – Max en Maquinaria
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 02</div>
+                <div class="badge-section">Max · CalcFields</div>
+                <h3>Fecha del último cambio de estado</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Añadir a <code>"Maquinaria"</code> un FlowField con <code>max</code>
+                    que recupere la fecha más reciente del historial de cambios de estado, y después leerlo
+                    correctamente desde código con <code>CalcFields</code>.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Añade el campo <code>"Ultimo Cambio Estado"</code> (DateTime) a la tabla
+                        <code>"Maquinaria"</code>.
+                    </li>
+                    <li>Configúralo como FlowField con
+                        <code>CalcFormula = max("Historial Estado Maquina"."Fecha Cambio" where ("No. Maquina" = field("No.")))</code>.
+                    </li>
+                    <li>En el trigger <code>OnAfterGetRecord</code> de <code>MaquinariaCard.Page.al</code>, llama a
+                        <code>Rec.CalcFields("Ultimo Cambio Estado")</code> para que el campo se calcule al
+                        abrir la ficha.
+                    </li>
+                    <li>Expón el campo en el <code>group(General)</code> de la ficha, debajo de <code>"Estado"</code>.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — Maquinaria.Table.al (campo nuevo)</span></div>
+                    <pre><code>        <span class="cmd">field</span>(<span class="var">12</span>; <span class="string">"Ultimo Cambio Estado"</span>; <span class="param">DateTime</span>)
+        {
+            FieldClass  = FlowField;
+            CalcFormula = <span class="param">max</span>(<span class="string">"Historial Estado Maquina"</span>.<span class="string">"Fecha Cambio"</span>
+                              <span class="cmd">where</span> (<span class="string">"No. Maquina"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>)));
+            Editable    = <span class="param">false</span>;
+        }</code></pre>
+                </div>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — MaquinariaCard.Page.al (trigger)</span></div>
+                    <pre><code>    trigger OnAfterGetRecord()
+    <span class="cmd">begin</span>
+        Rec.CalcFields(<span class="string">"Ultimo Cambio Estado"</span>); <span class="comment">// forzamos el cálculo antes de mostrar</span>
+    <span class="cmd">end</span>;</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> En las pages, BC calcula automáticamente los FlowFields al
+                    renderizar el campo en pantalla. El <code>CalcFields</code> manual es necesario cuando lees
+                    el valor desde código (triggers, codeunits…) antes de que la interfaz lo muestre.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 3 – Count y Lookup en Cabecera Alquiler
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 03</div>
+                <div class="badge-section">Count · Lookup</div>
+                <h3>Totales y descripción en Cabecera Alquiler</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Enriquecer la tabla <code>"Cabecera Alquiler"</code> con un contador
+                    de líneas y un campo que recupere mediante <code>lookup</code> la descripción de la máquina
+                    asociada a la cabecera, sin duplicar ese dato físicamente.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Abre <code>CabeceraAlquiler.Table.al</code> y añade dos campos nuevos.</li>
+                    <li>Campo <code>"No. Lineas"</code> (Integer): <code>count</code> sobre
+                        <code>"Linea Alquiler"</code> filtrando por <code>"No. Alquiler" = field("No.")</code>.
+                    </li>
+                    <li>Para el <code>lookup</code> necesitas un campo de apoyo: añade primero el campo físico
+                        <code>"No. Maquina Principal"</code> (Code[20]) con <code>TableRelation = "Maquinaria"</code>.
+                        Este campo guardará la máquina representativa del alquiler.
+                    </li>
+                    <li>Campo <code>"Descripcion Maquina"</code> (Text[100]): <code>lookup</code> sobre
+                        <code>"Maquinaria"."Descripcion"</code> donde
+                        <code>"No." = field("No. Maquina Principal")</code>.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — CabeceraAlquiler.Table.al (campos nuevos)</span>
+                    </div>
+                    <pre><code>        <span class="cmd">field</span>(<span class="var">6</span>; <span class="string">"No. Maquina Principal"</span>; <span class="param">Code</span>[20])
+        {
+            TableRelation = <span class="string">"Maquinaria"</span>; <span class="comment">// campo físico de apoyo para el lookup</span>
+        }
+        <span class="cmd">field</span>(<span class="var">7</span>; <span class="string">"No. Lineas"</span>; <span class="param">Integer</span>)
+        {
+            FieldClass  = FlowField;
+            CalcFormula = <span class="param">count</span>(<span class="string">"Linea Alquiler"</span>
+                                <span class="cmd">where</span> (<span class="string">"No. Alquiler"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>)));
+            Editable    = <span class="param">false</span>;
+        }
+        <span class="cmd">field</span>(<span class="var">8</span>; <span class="string">"Descripcion Maquina"</span>; <span class="param">Text</span>[100])
+        {
+            FieldClass  = FlowField;
+            CalcFormula = <span class="param">lookup</span>(<span class="string">"Maquinaria"</span>.<span class="string">"Descripcion"</span>
+                                  <span class="cmd">where</span> (<span class="string">"No."</span> = <span class="cmd">field</span>(<span class="string">"No. Maquina Principal"</span>)));
+            Editable    = <span class="param">false</span>;
+        }</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Bonus:</strong> Ahora que <code>"Cabecera Alquiler"</code> tiene
+                    <code>"No. Lineas"</code>,
+                    podrías usarlo en el trigger <code>OnValidate</code> del campo <code>"Estado"</code> para
+                    impedir cerrar un alquiler si tiene cero líneas. Pista:
+                    <code>Rec.CalcFields("No. Lineas"); if Rec."No. Lineas" = 0 then Error(...);</code>
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 4 – Exponer en pages
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 04</div>
+                <div class="badge-section">Pages · CalcFields</div>
+                <h3>Muestra los FlowFields en pantalla</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Añadir los FlowFields creados a las pages existentes y verificar que
+                    BC los calcula automáticamente al renderizarlos, sin necesidad de <code>CalcFields</code>
+                    manual en la mayoría de los casos.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>En <code>MaquinariaList.Page.al</code>, añade los campos <code>"No. Alquileres"</code>
+                        y <code>"Tiene Historial"</code> al <code>repeater</code>. BC los calculará fila a fila
+                        automáticamente.</li>
+                    <li>En <code>MaquinariaCard.Page.al</code>, añade <code>"Ultimo Cambio Estado"</code> al
+                        <code>group(General)</code> debajo de <code>"Estado"</code>. El <code>CalcFields</code>
+                        del ejercicio anterior ya lo cubre.
+                    </li>
+                    <li>Crea una page de tipo <code>Card</code> para <code>"Cabecera Alquiler"</code> (ID 50104,
+                        nombre <code>"Cabecera Alquiler Card"</code>) que muestre todos sus campos, incluyendo
+                        <code>"No. Lineas"</code> y <code>"Descripcion Maquina"</code>.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — fragmento repeater en MaquinariaList.Page.al</span>
+                    </div>
+                    <pre><code>                <span class="cmd">field</span>(<span class="string">"No. Alquileres"</span>; Rec.<span class="string">"No. Alquileres"</span>)  { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Tiene Historial"</span>; Rec.<span class="string">"Tiene Historial"</span>) { ApplicationArea = <span class="param">All</span>; }</code></pre>
+                </div>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — CabeceraAlquilerCard.Page.al</span></div>
+                    <pre><code><span class="cmd">page</span> <span class="var">50104</span> <span class="string">"Cabecera Alquiler Card"</span>
 {
-    FieldClass = FlowField;
-    CalcFormula = Count("Book Loan" WHERE ("Customer No." = FIELD("No.")));
-    Editable = false;
+    PageType    = <span class="param">Card</span>;
+    SourceTable = <span class="string">"Cabecera Alquiler"</span>;
+    UsageCategory = <span class="param">None</span>;
+
+    layout
+    {
+        area(content)
+        {
+            group(General)
+            {
+                <span class="cmd">field</span>(<span class="string">"No."</span>;                  Rec.<span class="string">"No."</span>)                  { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Descripcion"</span>;         Rec.<span class="string">"Descripcion"</span>)         { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"No. Maquina Principal"</span>; Rec.<span class="string">"No. Maquina Principal"</span>) { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Descripcion Maquina"</span>;  Rec.<span class="string">"Descripcion Maquina"</span>)  { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Fecha Inicio"</span>;         Rec.<span class="string">"Fecha Inicio"</span>)         { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Fecha Fin"</span>;            Rec.<span class="string">"Fecha Fin"</span>)            { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Estado"</span>;              Rec.<span class="string">"Estado"</span>)              { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"No. Lineas"</span>;          Rec.<span class="string">"No. Lineas"</span>)          { ApplicationArea = <span class="param">All</span>; }
+            }
+        }
+    }
 }</code></pre>
+                </div>
+
+                <div class="alert-warn">
+                    <strong>⚠️ Recuerda:</strong> En pages, BC calcula los FlowFields automáticamente al mostrarlos.
+                    Pero si necesitas su valor dentro de un trigger de la misma page (por ejemplo en
+                    <code>OnAction</code>), debes llamar primero a <code>Rec.CalcFields(...)</code>,
+                    ya que fuera de la renderización el valor estará vacío.
+                </div>
             </div>
 
             <a href="../ejercicios.html" class="btn btn-secondary"
-                style="margin-top: 40px; display: inline-block;">&larr; Volver a Ejercicios</a>
+                style="margin-top: 10px; margin-bottom: 60px; display: inline-block;">&larr; Volver a Ejercicios</a>
         </div>
     </main>
 

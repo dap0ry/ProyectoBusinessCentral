@@ -25,6 +25,13 @@
             font-family: 'Outfit';
         }
 
+        .theory-content h3 {
+            color: var(--text-white);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit';
+        }
+
         .theory-content p {
             margin-bottom: 1.5rem;
         }
@@ -37,6 +44,114 @@
 
         .theory-content li {
             margin-bottom: 0.5rem;
+        }
+
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+
+        .alert-info ul {
+            margin-bottom: 0 !important;
+        }
+
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warning h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
         }
     </style>
 </head>
@@ -65,38 +180,159 @@
         </div>
 
         <div class="theory-content">
-            <p>Los <strong>FactBoxes</strong> son aquellos cuadros y paneles informativos especiales que siempre se
-                apegan al riel lateral *derecho* en las pantallas de Business Central.</p>
 
-            <h2>¿Qué son los paneles laterales?</h2>
-            <p>Si alguna vez estás navegando una lista (`List Page`) infinita de clientes que solo tiene tres diminutas
-                columnas (Teléfono, Cuidad, Nombre), y quisieras saber "Cuánto me debe este" tendrías que salirte o
-                doble-clicar para abrir una `Card` completa, interrumpiendo abruptamente tu flujo mental de filtrado y
-                búsqueda.</p>
-            <p>Los desarrolladores de ERP resolvieron eso habilitando el "Área de FactBox".</p>
-            <p>Cuando el usuario mueve las flechas por las distintas filas de la izquierda, el <strong>FactBox de la
-                    derecha reacciona instantáneamente actualizando en vivo "Datos curiosos" y resúmenes valiosos de
-                    FlowFields.</strong></p>
+            <p>Los <strong>FactBoxes</strong> son paneles informativos especiales que se ubican en el <strong>riel
+                    lateral derecho</strong> de las pantallas de Business Central. Muestran información adicional y
+                contextual del registro seleccionado sin necesidad de abrir otra ventana.</p>
 
-            <h2>¿Cómo mejoran la navegación?</h2>
-            <p>Tienen superposiciones de datos, fotos y enlaces cruzados. No solo aportan contexto pasivo sino que sus
-                numeritos en verde brillante son clicables (`DrillDowns`) permitiéndote teletransportarte a los orígenes
-                del problema sin cambiar ni ensuciar tu vista master de la parte principal.</p>
-            <p>Por debajo, un FactBox es sencillamente una `Page` de tipo <strong>CardPart</strong> insertada en un
-                bloque maestro superior de código llamado `factboxarea()`, que se engarza dinámicamente con la entidad
-                en pantalla.</p>
+            <!-- EJEMPLO RÁPIDO -->
+            <h2>Sintaxis básica</h2>
+            <p>Un FactBox se declara en el <code>area(FactBoxes)</code> de la page padre apuntando a una page de tipo
+                <code>CardPart</code> o <code>ListPart</code>:
+            </p>
 
             <div class="ide-code">
-                <pre><code><span class="cmd">layout</span>
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code>layout
 {
-    area(<span class="param">FactBoxes</span>)
+    area(Content)
     {
-        <span class="cmd">part</span>(CustomerSalesHistory; "Customer Sales History")
+        <span class="comment">// ... campos principales</span>
+    }
+    area(FactBoxes)
+    {
+        <span class="cmd">part</span>(NombreLocal; <span class="string">"NombreDeLaPagePart"</span>)
         {
-            SubPageLink = "No." = field("Sell-to Customer No.");
+            SubPageLink = <span class="string">"CampoFiltro"</span> = <span class="cmd">field</span>(<span class="string">"CampoOrigen"</span>);
         }
     }
 }</code></pre>
+            </div>
+
+            <!-- QUÉ SON -->
+            <h2>¿Qué son los paneles laterales?</h2>
+            <p>Imagina que estás navegando una lista infinita de clientes que solo tiene tres columnas (Teléfono,
+                Ciudad, Nombre) y quisieras saber "¿Cuánto me debe este?". Tendrías que salirte o hacer doble clic para
+                abrir una Card completa, interrumpiendo abruptamente tu flujo de búsqueda.</p>
+
+            <p>Los desarrolladores de ERP resolvieron eso habilitando el <strong>Área de FactBox</strong>. Cuando el
+                usuario mueve las flechas por las distintas filas de la lista, el FactBox de la derecha
+                <strong>reacciona instantáneamente</strong> actualizando en vivo resúmenes y valores de FlowFields del
+                registro seleccionado.
+            </p>
+
+            <p>Por debajo, un FactBox es simplemente una page de tipo <strong>CardPart</strong> o
+                <strong>ListPart</strong> insertada en el bloque <code>area(FactBoxes)</code>, que se engarza
+                dinámicamente con la entidad en pantalla a través de <code>SubPageLink</code>.
+            </p>
+
+            <!-- CÓMO MEJORAN LA NAVEGACIÓN -->
+            <h2>¿Cómo mejoran la navegación?</h2>
+            <p>Los FactBoxes no solo aportan contexto pasivo. Sus numeritos en verde brillante son clicables
+                (<strong>DrillDowns</strong>), permitiéndote navegar directamente al origen del dato sin cambiar ni
+                ensuciar tu vista principal.</p>
+
+            <ul>
+                <li>Muestran <strong>FlowFields calculados</strong> en tiempo real: saldos, totales, contadores</li>
+                <li>Permiten <strong>DrillDown</strong>: al hacer clic en un número, abres el detalle directamente</li>
+                <li>Se actualizan <strong>automáticamente</strong> al cambiar de registro en la lista</li>
+                <li>No interrumpen el flujo: el usuario no tiene que abrir ninguna ventana nueva</li>
+            </ul>
+
+            <!-- EJEMPLO COMPLETO -->
+            <h2>Ejemplo: FactBox de préstamos en la ficha de un libro</h2>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="comment">// En la page "Libro Card":</span>
+<span class="cmd">page</span> <span class="var">50302</span> <span class="string">"Libro Card"</span>
+{
+    PageType        = Card;
+    ApplicationArea = All;
+    SourceTable     = <span class="string">"Libro"</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            group(General)
+            {
+                <span class="cmd">field</span>(<span class="string">"No."</span>;    Rec.<span class="string">"No."</span>)    { Importance = Promoted; }
+                <span class="cmd">field</span>(Titulo;  Rec.Titulo)  { Importance = Promoted; }
+                <span class="cmd">field</span>(Autor;   Rec.Autor)   { }
+                <span class="cmd">field</span>(ISBN;    Rec.ISBN)    { }
+            }
+        }
+        area(FactBoxes)
+        {
+            <span class="comment">// Cada vez que el usuario cambia de libro, el panel se actualiza</span>
+            <span class="comment">// mostrando solo los préstamos de ESE libro</span>
+            <span class="cmd">part</span>(PrestamosLibro; <span class="string">"Prestamo ListPart"</span>)
+            {
+                SubPageLink = <span class="string">"No. Libro"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>);
+            }
+            <span class="comment">// Segundo FactBox: resumen estadístico del libro</span>
+            <span class="cmd">part</span>(EstadisticasLibro; <span class="string">"Libro Stats FactBox"</span>)
+            {
+                SubPageLink = <span class="string">"No."</span> = <span class="cmd">field</span>(<span class="string">"No."</span>);
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <!-- TAMBIÉN EN LISTAS -->
+            <h2>FactBoxes también en páginas List</h2>
+            <p>Los FactBoxes no son exclusivos de las Cards. También funcionan en páginas de tipo <strong>List</strong>:
+                al seleccionar una fila, el panel lateral se actualiza mostrando información del registro resaltado.</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">page</span> <span class="var">50300</span> <span class="string">"Socio List"</span>
+{
+    PageType   = List;
+    SourceTable = <span class="string">"Socio"</span>;
+    CardPageId  = <span class="string">"Socio Card"</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(GroupName)
+            {
+                <span class="cmd">field</span>(<span class="string">"No."</span>;   Rec.<span class="string">"No."</span>)   { }
+                <span class="cmd">field</span>(Nombre; Rec.Nombre) { }
+            }
+        }
+        area(FactBoxes)
+        {
+            <span class="comment">// El panel se actualiza al mover el cursor por las filas</span>
+            <span class="cmd">part</span>(HistorialPrestamos; <span class="string">"Prestamo ListPart"</span>)
+            {
+                SubPageLink = <span class="string">"No. Socio"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>);
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <!-- TIPS -->
+            <div class="alert-info">
+                <h3>💡 Tips</h3>
+                <ul>
+                    <li>Un FactBox es siempre una page de tipo <code>CardPart</code> (un registro) o
+                        <code>ListPart</code> (varios registros).
+                    </li>
+                    <li><code>SubPageLink</code> es obligatorio para que el FactBox filtre por el registro seleccionado.
+                        Sin él, mostraría todos los datos de la tabla.</li>
+                    <li>Puedes tener <strong>múltiples FactBoxes</strong> en el mismo <code>area(FactBoxes)</code>,
+                        apilados verticalmente.</li>
+                    <li>Los valores de FlowFields mostrados en un FactBox son clicables (DrillDown) si la propiedad
+                        <code>DrillDownPageId</code> está configurada en la tabla.
+                    </li>
+                    <li>Los FactBoxes funcionan tanto en pages de tipo <code>List</code> como de tipo <code>Card</code>.
+                    </li>
+                </ul>
             </div>
 
             <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;

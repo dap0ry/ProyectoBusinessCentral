@@ -42,6 +42,210 @@
             border-radius: 8px;
             margin-bottom: 2rem;
         }
+
+        /* Contexto previo */
+        .prev-context {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 28px;
+            margin-bottom: 40px;
+        }
+
+        .prev-context .prev-label {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .prev-context h4 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+        }
+
+        .prev-context ul {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .prev-context ul li {
+            margin-bottom: 4px;
+        }
+
+        /* Exercise block */
+        .exercise-block {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .exercise-block .exercise-number {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-blue);
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .exercise-block h3 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .badge-section {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 0.78rem;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* IDE */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info strong {
+            color: var(--primary-blue);
+        }
+
+        .alert-warn {
+            background-color: rgba(234, 179, 8, 0.08);
+            border-left: 4px solid #eab308;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warn strong {
+            color: #eab308;
+        }
+
+        /* Diagrama antes/después */
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0 28px;
+        }
+
+        .compare-box {
+            background: #1e1e1e;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 16px 18px;
+            font-family: Consolas, monospace;
+            font-size: 0.85rem;
+            line-height: 1.9;
+            color: #d4d4d4;
+        }
+
+        .compare-box .cb-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #888;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .compare-box .hi-blue {
+            color: #61afef;
+        }
+
+        .compare-box .hi-green {
+            color: #98c379;
+        }
+
+        .compare-box .hi-purple {
+            color: #c678dd;
+        }
+
+        .compare-box .hi-dim {
+            color: #5c6370;
+            font-style: italic;
+        }
     </style>
 </head>
 
@@ -62,43 +266,298 @@
         <div class="exercise-header" style="margin-bottom: 30px;">
             <p
                 style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
-                EJERCICIO 06</p>
-            <h1>FlowFilters: Ventas por Período</h1>
+                EJERCICIO 06 · FLOWFILTERS</p>
+            <h1>FlowFilters</h1>
             <span class="diff-badge diff-hard"
                 style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 7/10</span>
         </div>
 
         <div class="exercise-content">
-            <div class="goal">
-                <strong>Objetivo:</strong> Crear un FlowFilter que permita filtrar los cálculos de un FlowField por un
-                rango de fechas.
+
+            <!-- Contexto previo -->
+            <div class="prev-context">
+                <div class="prev-label">Ejercicios anteriores</div>
+                <h4>¿Qué tienes construido hasta ahora?</h4>
+                <ul>
+                    <li>Enum <code>"Rental Status"</code> con los estados de maquinaria, extensible.</li>
+                    <li>Tabla <code>"Maquinaria"</code> (50100): FlowFields <code>"No. Alquileres"</code> (count),
+                        <code>"Tiene Historial"</code> (exist) y <code>"Ultimo Cambio Estado"</code> (max).
+                    </li>
+                    <li>Tabla <code>"Cabecera Alquiler"</code> (50103): FlowFields <code>"No. Lineas"</code> (count) y
+                        <code>"Descripcion Maquina"</code> (lookup).
+                    </li>
+                    <li>Tabla <code>"Linea Alquiler"</code> (50101): PK compuesta, <code>TableRelation</code> hacia
+                        ambas tablas superiores.</li>
+                    <li>Tabla <code>"Historial Estado Maquina"</code> (50102): <code>AutoIncrement</code>, campo
+                        <code>"Fecha Cambio"</code> (DateTime), <code>TableRelation</code> condicional.
+                    </li>
+                    <li>Pages <code>"Maquinaria List"</code>, <code>"Maquinaria Card"</code> y
+                        <code>"Cabecera Alquiler Card"</code>.
+                    </li>
+                </ul>
             </div>
 
-            <h2>Instrucciones</h2>
-            <ul>
-                <li>Crea un campo <code>"Date Filter"</code> en tu tabla de estadísticas.</li>
-                <li>Configura <code>FieldClass = FlowFilter;</code> y tipo <code>Date</code>.</li>
-                <li>Modifica un FlowField existente (como "Total Ventas") añadiendo a su <code>CalcFormula</code> una
-                    condición: <code>"Posting Date" = FIELD("Date Filter")</code>.</li>
-                <li>Prueba a filtrar la página por diferentes fechas para ver cómo cambia el valor.</li>
-            </ul>
+            <p>Los FlowFields que creaste en el ejercicio anterior siempre calculan el <em>total global</em>: todos los
+                alquileres de una máquina desde el principio de los tiempos. Pero el responsable de flota quiere poder
+                preguntar: <strong>"¿Cuántos alquileres tuvo esta máquina en el primer trimestre?"</strong> o
+                <strong>"¿Cuántos cambios de estado ocurrieron este mes?"</strong>. Para eso necesitas FlowFilters.
+            </p>
 
-            <div class="ide-code">
-                <pre><code><span class="cmd">field</span>(100; "Date Filter"; Date)
-{
-    FieldClass = FlowFilter;
-    Caption = 'Filtro Fecha';
-}
+            <p>En este ejercicio vas a añadir un <code>"Date Filter"</code> a las tablas clave del proyecto y
+                conectarlo con los FlowFields existentes, de modo que los totales respondan al rango de fechas que
+                el usuario introduzca en pantalla.</p>
 
-<span class="cmd">field</span>(101; "Ventas Periodo"; Decimal)
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 1 – Date Filter en Maquinaria
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 01</div>
+                <div class="badge-section">FlowFilter · Definición</div>
+                <h3>Añade un Date Filter a Maquinaria</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Declarar el campo FlowFilter <code>"Date Filter"</code> en la tabla
+                    <code>"Maquinaria"</code> y conectarlo al FlowField <code>"No. Alquileres"</code> para que
+                    el contador solo tenga en cuenta las líneas cuya <code>"Fecha Inicio"</code> caiga dentro
+                    del rango indicado.
+                </div>
+
+                <h2>Lo que cambia</h2>
+
+                <div class="compare-grid">
+                    <div class="compare-box">
+                        <span class="cb-label">Antes — sin FlowFilter</span>
+                        <span class="hi-purple">field</span>(<span class="hi-blue">10</span>; <span
+                            class="hi-green">"No. Alquileres"</span>; Integer)
+                        {
+                        FieldClass = FlowField;
+                        CalcFormula = <span class="hi-purple">count</span>(<span class="hi-green">"Linea
+                            Alquiler"</span>
+                        <span class="hi-purple">where</span> (<span class="hi-green">"No. Maquina"</span>
+                        = <span class="hi-purple">field</span>(<span class="hi-green">"No."</span>)));
+                        <span class="hi-dim">// cuenta TODOS los alquileres</span>
+                        }
+                    </div>
+                    <div class="compare-box">
+                        <span class="cb-label">Después — con FlowFilter</span>
+                        <span class="hi-purple">field</span>(<span class="hi-blue">10</span>; <span
+                            class="hi-green">"No. Alquileres"</span>; Integer)
+                        {
+                        FieldClass = FlowField;
+                        CalcFormula = <span class="hi-purple">count</span>(<span class="hi-green">"Linea
+                            Alquiler"</span>
+                        <span class="hi-purple">where</span> (<span class="hi-green">"No. Maquina"</span>
+                        = <span class="hi-purple">field</span>(<span class="hi-green">"No."</span>),
+                        <span class="hi-green">"Fecha Inicio"</span>
+                        = <span class="hi-purple">field</span>(<span class="hi-green">"Date Filter"</span>)));
+                        <span class="hi-dim">// solo el rango elegido</span>
+                        }
+                    </div>
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Abre <code>Maquinaria.Table.al</code> y añade el campo <code>"Date Filter"</code> (Date)
+                        con <code>FieldClass = FlowFilter</code> y un <code>Caption</code> descriptivo.</li>
+                    <li>Modifica la <code>CalcFormula</code> del FlowField <code>"No. Alquileres"</code> para
+                        añadir una segunda condición en el <code>where</code>:
+                        <code>"Fecha Inicio" = field("Date Filter")</code>.
+                    </li>
+                    <li>Haz lo mismo con el FlowField <code>"Tiene Historial"</code>: añade la condición
+                        <code>"Fecha Cambio" = field("Date Filter")</code> para que la comprobación de existencia
+                        también respete el periodo.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — Maquinaria.Table.al (campos nuevos y
+                            modificados)</span></div>
+                    <pre><code>        <span class="comment">// ── FlowFilter ──────────────────────────────────────────────</span>
+        <span class="cmd">field</span>(<span class="var">20</span>; <span class="string">"Date Filter"</span>; <span class="param">Date</span>)
+        {
+            FieldClass = FlowFilter;
+            Caption    = <span class="string">'Rango de Fechas'</span>;
+        }
+
+        <span class="comment">// ── FlowField actualizado: count filtrando por fecha ────────</span>
+        <span class="cmd">field</span>(<span class="var">10</span>; <span class="string">"No. Alquileres"</span>; <span class="param">Integer</span>)
+        {
+            FieldClass  = FlowField;
+            CalcFormula = <span class="param">count</span>(<span class="string">"Linea Alquiler"</span>
+                                <span class="cmd">where</span> (<span class="string">"No. Maquina"</span>  = <span class="cmd">field</span>(<span class="string">"No."</span>),
+                                       <span class="string">"Fecha Inicio"</span> = <span class="cmd">field</span>(<span class="string">"Date Filter"</span>)));
+            Editable    = <span class="param">false</span>;
+        }
+
+        <span class="comment">// ── FlowField actualizado: exist filtrando por fecha ────────</span>
+        <span class="cmd">field</span>(<span class="var">11</span>; <span class="string">"Tiene Historial"</span>; <span class="param">Boolean</span>)
+        {
+            FieldClass  = FlowField;
+            CalcFormula = <span class="param">exist</span>(<span class="string">"Historial Estado Maquina"</span>
+                                <span class="cmd">where</span> (<span class="string">"No. Maquina"</span>  = <span class="cmd">field</span>(<span class="string">"No."</span>),
+                                       <span class="string">"Fecha Cambio"</span> = <span class="cmd">field</span>(<span class="string">"Date Filter"</span>)));
+            Editable    = <span class="param">false</span>;
+        }</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> Cuando el usuario deja el <code>"Date Filter"</code> vacío,
+                    BC lo ignora por completo y el FlowField devuelve el total global. El filtro solo restringe
+                    el cálculo cuando tiene un valor asignado.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 2 – Exponer el FlowFilter en la page
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 02</div>
+                <div class="badge-section">FlowFilter · Page</div>
+                <h3>Muestra el Date Filter en Maquinaria Card</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Exponer el FlowFilter <code>"Date Filter"</code> en la ficha de
+                    maquinaria para que el usuario pueda introducir un rango de fechas directamente en pantalla
+                    y ver cómo cambian los FlowFields al instante.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Abre <code>MaquinariaCard.Page.al</code> y añade un nuevo <code>group</code> llamado
+                        <code>Estadisticas</code> después del grupo <code>General</code>.
+                    </li>
+                    <li>Dentro de <code>Estadisticas</code>, añade primero el campo <code>"Date Filter"</code>
+                        para que el usuario pueda introducir el rango. Los campos FlowFilter son editables por
+                        defecto en las pages: no necesitas ninguna propiedad especial.</li>
+                    <li>Debajo del filtro, añade los campos <code>"No. Alquileres"</code>,
+                        <code>"Tiene Historial"</code> y <code>"Ultimo Cambio Estado"</code>.
+                    </li>
+                    <li>En el trigger <code>OnAfterGetRecord</code> que ya tienes, añade también
+                        <code>Rec.CalcFields("No. Alquileres", "Tiene Historial")</code> para que se calculen
+                        al abrir la ficha.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — MaquinariaCard.Page.al (fragmento layout)</span>
+                    </div>
+                    <pre><code>            group(Estadisticas)
+            {
+                Caption = <span class="string">'Estadísticas'</span>;
+
+                <span class="cmd">field</span>(<span class="string">"Date Filter"</span>;        Rec.<span class="string">"Date Filter"</span>)        { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"No. Alquileres"</span>;    Rec.<span class="string">"No. Alquileres"</span>)    { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Tiene Historial"</span>;   Rec.<span class="string">"Tiene Historial"</span>)   { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Ultimo Cambio Estado"</span>; Rec.<span class="string">"Ultimo Cambio Estado"</span>) { ApplicationArea = <span class="param">All</span>; }
+            }</code></pre>
+                </div>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — trigger OnAfterGetRecord actualizado</span></div>
+                    <pre><code>    trigger OnAfterGetRecord()
+    <span class="cmd">begin</span>
+        Rec.CalcFields(
+            <span class="string">"Ultimo Cambio Estado"</span>,
+            <span class="string">"No. Alquileres"</span>,
+            <span class="string">"Tiene Historial"</span>
+        );
+    <span class="cmd">end</span>;</code></pre>
+                </div>
+
+                <div class="alert-warn">
+                    <strong>⚠️ Ojo:</strong> Cuando el usuario cambia el <code>"Date Filter"</code> en pantalla,
+                    BC recalcula automáticamente los FlowFields vinculados. El <code>CalcFields</code> manual
+                    solo es necesario en el <code>OnAfterGetRecord</code> para la carga inicial del registro.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 3 – SetRange en código
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 03</div>
+                <div class="badge-section">FlowFilter · SetRange en código</div>
+                <h3>Comparativa trimestral de alquileres por máquina</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Escribir un procedimiento en un codeunit que, para una máquina
+                    concreta, compare el número de alquileres del primer y segundo trimestre del año en curso
+                    usando <code>SetRange</code> sobre el FlowFilter antes de cada <code>CalcFields</code>.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea un codeunit con ID <code>50100</code> y nombre <code>"Maquinaria Stats"</code>.</li>
+                    <li>Añade el procedimiento <code>ComparativaTrimestral(MaquinaNo: Code[20])</code>.</li>
+                    <li>Dentro del procedimiento, declara un <code>Record "Maquinaria"</code> y llama a
+                        <code>Get</code> con <code>MaquinaNo</code>.
+                    </li>
+                    <li>Aplica <code>SetRange("Date Filter", ...)</code> con el rango del primer trimestre
+                        (01/01 al 31/03 del año actual), llama a <code>CalcFields("No. Alquileres")</code>
+                        y guarda el valor en una variable.</li>
+                    <li>Repite el proceso para el segundo trimestre (01/04 al 30/06) usando un nuevo
+                        <code>SetRange</code> sobre el mismo registro.
+                    </li>
+                    <li>Muestra ambos valores con un <code>Message</code>.</li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — MaquinariaStats.Codeunit.al</span></div>
+                    <pre><code><span class="cmd">codeunit</span> <span class="var">50100</span> <span class="string">"Maquinaria Stats"</span>
 {
-    FieldClass = FlowField;
-    CalcFormula = Sum("Sales Line".Amount WHERE ("Posting Date" = FIELD("Date Filter")));
+    <span class="cmd">procedure</span> ComparativaTrimestral(MaquinaNo: <span class="param">Code</span>[20])
+    <span class="cmd">var</span>
+        Maquina : Record <span class="string">"Maquinaria"</span>;
+        Q1      : <span class="param">Integer</span>;
+        Q2      : <span class="param">Integer</span>;
+        Hoy     : Date;
+        AnoActual: <span class="param">Integer</span>;
+    <span class="cmd">begin</span>
+        Maquina.Get(MaquinaNo);
+        Hoy       := Today();
+        AnoActual := Date2DMY(Hoy, <span class="var">3</span>); <span class="comment">// extrae el año</span>
+
+        <span class="comment">// ── Primer trimestre ────────────────────────────────────────</span>
+        Maquina.SetRange(<span class="string">"Date Filter"</span>,
+            DMY2Date(<span class="var">1</span>, <span class="var">1</span>, AnoActual),   <span class="comment">// 01/01/AAAA</span>
+            DMY2Date(<span class="var">31</span>, <span class="var">3</span>, AnoActual));  <span class="comment">// 31/03/AAAA</span>
+        Maquina.CalcFields(<span class="string">"No. Alquileres"</span>);
+        Q1 := Maquina.<span class="string">"No. Alquileres"</span>;
+
+        <span class="comment">// ── Segundo trimestre ───────────────────────────────────────</span>
+        Maquina.SetRange(<span class="string">"Date Filter"</span>,
+            DMY2Date(<span class="var">1</span>, <span class="var">4</span>, AnoActual),   <span class="comment">// 01/04/AAAA</span>
+            DMY2Date(<span class="var">30</span>, <span class="var">6</span>, AnoActual));  <span class="comment">// 30/06/AAAA</span>
+        Maquina.CalcFields(<span class="string">"No. Alquileres"</span>);
+        Q2 := Maquina.<span class="string">"No. Alquileres"</span>;
+
+        Message(<span class="string">'Máquina %1 — Alquileres Q1: %2 | Q2: %3'</span>, MaquinaNo, Q1, Q2);
+    <span class="cmd">end</span>;
 }</code></pre>
+                </div>
+
+                <div class="alert-warn">
+                    <strong>⚠️ Recuerda:</strong> El <code>SetRange</code> del FlowFilter debe ir
+                    <em>siempre antes</em> del <code>CalcFields</code>. Si los intercambias, BC ya habrá
+                    calculado el valor sin el filtro y el resultado será incorrecto.
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Bonus:</strong> Ahora que tienes el codeunit <code>"Maquinaria Stats"</code>,
+                    puedes añadir una acción <code>VerComparativa</code> en <code>MaquinariaCard.Page.al</code>
+                    que llame a <code>"Maquinaria Stats".ComparativaTrimestral(Rec."No.")</code> desde
+                    su trigger <code>OnAction</code>. Así el usuario puede ejecutar el análisis con un solo
+                    clic desde la ficha de cualquier máquina.
+                </div>
             </div>
 
             <a href="../ejercicios.html" class="btn btn-secondary"
-                style="margin-top: 40px; display: inline-block;">&larr; Volver a Ejercicios</a>
+                style="margin-top: 10px; margin-bottom: 60px; display: inline-block;">&larr; Volver a Ejercicios</a>
         </div>
     </main>
 

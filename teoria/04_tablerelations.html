@@ -1,3 +1,6 @@
+Tablerelations · HTML
+Copiar
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -38,6 +41,102 @@
         .theory-content li {
             margin-bottom: 0.5rem;
         }
+
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+
+        .alert-info ul {
+            margin-bottom: 0 !important;
+        }
+
+        /* IDE Styles AL */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
     </style>
 </head>
 
@@ -65,38 +164,121 @@
         </div>
 
         <div class="theory-content">
-            <p>Los sistemas ERP basan todo su poder en que sus múltiples tablas de datos "hablan" unas con otras. La
-                forma en la que le decimos a una tabla que uno de sus campos contiene código relacionado con OTRA tabla,
-                es mediante el concepto <strong>TableRelation</strong>.</p>
 
-            <h2>Vincular información sin duplicarla</h2>
-            <p>Imagina que estás registrando un **préstamo**. Necesitas saber qué socio o miembro de la biblioteca se
-                lleva el libro. NO escribes manualmante su DNI, su nombre completo, domicilio y teléfono cada vez. En su
-                lugar, el préstamo solo guarda el "Nº de Socio".</p>
-            <p>Para conseguir eso, le ponemos la propiedad <code>TableRelation</code> al campo del número del socio
-                dentro del préstamo para que apunte directamente a la tabla maestra gigante de "Socios".</p>
+            <p>La propiedad <code>TableRelation</code> se define a nivel de <strong>campo dentro de una tabla</strong>.
+                Su función es vincular el campo actual con otra tabla (integridad referencial), asegurando que el dato
+                introducido exista realmente en la tabla de origen.</p>
 
-            <h2>Efectos Prácticos UI</h2>
-            <p>Al hacer esto en AL, el sistema UI de Business Central automáticamente "reacciona". Cuando el usuario
-                intente rellenar ese campo, le aparecerán tres puntitos <code>(...)</code> y al pulsar, se abrirá casi
-                como por magia una ventana lateral listando todos los socios para que pueda hacer clic (look-up) y
-                escoger sin confundirse.</p>
+            <p>Al configurar esto, Business Central genera automáticamente el icono de "lupa" o desplegable en las
+                páginas para seleccionar el registro.</p>
+
+            <!-- SINTAXIS BÁSICA -->
+            <h2>Sintaxis básica</h2>
 
             <div class="ide-code">
-                <pre><code><span class="cmd">table</span> <span class="var">50101</span> "Préstamos"
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">field</span>(<span class="var">&lt;idCampo&gt;</span>; <span class="string">"&lt;NombreCampo&gt;"</span>; <span class="param">&lt;TipoDato&gt;</span>)
+{
+    TableRelation = <span class="string">"&lt;NombreTablaOrigen&gt;"</span>;
+}</code></pre>
+            </div>
+
+            <p>También puedes apuntar directamente a un campo concreto de la tabla relacionada, no solo a la tabla. Esto
+                es útil cuando quieres filtrar por un campo específico distinto de la PK:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">field</span>(<span class="var">&lt;idCampo&gt;</span>; <span class="string">"&lt;NombreCampo&gt;"</span>; <span class="param">&lt;TipoDato&gt;</span>)
+{
+    TableRelation = <span class="string">"&lt;NombreTablaOrigen&gt;"</span>.<span class="string">"&lt;NombreCampo&gt;"</span>;
+}</code></pre>
+            </div>
+
+            <!-- PROPIEDADES RELACIONADAS -->
+            <h2>Propiedades relacionadas</h2>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Propiedad</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>TableRelation</code></td>
+                        <td>Vincula el campo con otra tabla. BC genera automáticamente el desplegable de búsqueda en la
+                            interfaz.</td>
+                    </tr>
+                    <tr>
+                        <td><code>ValidateTableRelation</code></td>
+                        <td>Si es <code>true</code> (por defecto), BC comprueba que el valor introducido existe en la
+                            tabla relacionada antes de guardarlo.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- RELACIONES CONDICIONALES -->
+            <h2>Relaciones condicionales</h2>
+            <p>Puede tener una relación condicional, dependiendo del valor de otros campos. Esto permite que un mismo
+                campo apunte a tablas distintas según el contexto:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">field</span>(<span class="var">&lt;idCampo&gt;</span>; <span class="string">"&lt;NombreCampo&gt;"</span>; <span class="param">&lt;TipoDato&gt;</span>)
+{
+    TableRelation = <span class="cmd">if</span> (<span class="string">"&lt;NombreCampo1&gt;"</span> = <span class="cmd">const</span>(<span class="var">&lt;opt1&gt;</span>)) <span class="string">&lt;opt1&gt;</span>.<span class="string">&lt;PK&gt;</span>
+    <span class="cmd">else if</span> (<span class="string">"&lt;NombreCampo2&gt;"</span> = <span class="cmd">const</span>(<span class="var">&lt;opt2&gt;</span>)) <span class="string">&lt;opt2&gt;</span>.<span class="string">&lt;PK&gt;</span>
+    <span class="cmd">else if</span> (<span class="string">"&lt;NombreCampo3&gt;"</span> = <span class="cmd">const</span>(<span class="var">&lt;optN&gt;</span>)) <span class="string">&lt;optN&gt;</span>.<span class="string">&lt;PK&gt;</span>;
+}</code></pre>
+            </div>
+
+            <!-- EJEMPLO COMPLETO -->
+            <h2>Ejemplo completo</h2>
+            <p>En una tabla de préstamos, vinculamos el campo <code>"No. Socio"</code> con la tabla <code>"Socio"</code>
+                y el campo <code>"No. Libro"</code> con la tabla <code>"Libro"</code>:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">table</span> <span class="var">50103</span> <span class="string">"Prestamo"</span>
 {
     fields
     {
-        <span class="cmd">field</span>(1; "Id Prestamo"; Code[20]) { ... }
-        
-        <span class="cmd">field</span>(2; "Nº Socio"; Code[20])
+        <span class="cmd">field</span>(<span class="var">1</span>; <span class="string">"No."</span>;      <span class="param">Code</span>[20]) { }
+        <span class="cmd">field</span>(<span class="var">2</span>; <span class="string">"No. Socio"</span>; <span class="param">Code</span>[20])
         {
-            <span class="string">// Aquí indicamos que lo que el usuario ponga en "Nº Socio" tiene
-            // que existir obligatoriamente en el campo "No." de la Tabla "Customer" (Cliente).</span>
-            TableRelation = Customer."No.";
+            TableRelation = <span class="string">"Socio"</span>; <span class="comment">// el campo apunta a la tabla Socio</span>
         }
+        <span class="cmd">field</span>(<span class="var">3</span>; <span class="string">"No. Libro"</span>; <span class="param">Code</span>[20])
+        {
+            TableRelation = <span class="string">"Libro"</span>; <span class="comment">// el campo apunta a la tabla Libro</span>
+        }
+        <span class="cmd">field</span>(<span class="var">4</span>; <span class="string">"Fecha Prestamo"</span>;   <span class="param">Date</span>) { }
+        <span class="cmd">field</span>(<span class="var">5</span>; <span class="string">"Fecha Devolucion"</span>; <span class="param">Date</span>) { }
+        <span class="cmd">field</span>(<span class="var">6</span>; <span class="string">"Devuelto"</span>;         <span class="param">Boolean</span>) { }
+    }
+    keys
+    {
+        <span class="cmd">key</span>(PK; <span class="string">"No."</span>) { }
+        <span class="cmd">key</span>(SK1; <span class="string">"No. Socio"</span>) { }
+        <span class="cmd">key</span>(SK2; <span class="string">"No. Libro"</span>) { }
     }
 }</code></pre>
+            </div>
+
+            <!-- TIPS -->
+            <div class="alert-info">
+                <h3>💡 Tips</h3>
+                <ul>
+                    <li>El campo que tiene <code>TableRelation</code> debe ser del mismo tipo y tamaño que la PK de la
+                        tabla relacionada (normalmente <code>Code[20]</code>).</li>
+                    <li>BC genera automáticamente el icono de lupa en la interfaz: el usuario puede buscar y seleccionar
+                        el registro sin teclear el código manualmente.</li>
+                    <li><code>ValidateTableRelation = false</code> permite introducir valores que no existan en la tabla
+                        relacionada. Úsalo con precaución.</li>
+                    <li>Las relaciones condicionales son útiles cuando un campo puede apuntar a distintas tablas según
+                        el tipo de registro (p.ej. proveedor o cliente).</li>
+                </ul>
             </div>
 
             <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;

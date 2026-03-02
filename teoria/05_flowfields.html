@@ -38,6 +38,115 @@
         .theory-content li {
             margin-bottom: 0.5rem;
         }
+
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+
+        .alert-info ul {
+            margin-bottom: 0 !important;
+        }
+
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warning h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+
+        /* IDE Styles AL */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
     </style>
 </head>
 
@@ -65,42 +174,209 @@
         </div>
 
         <div class="theory-content">
+
             <p>En las bases de datos normales, si entras en un albarán y quieres mostrar siempre la "Suma Total de
                 Euros" a pagar, creas un campo y programas triggers para que se actualice sumando cada vez que añadan,
                 editen o borren una línea. Un <strong>FlowField</strong> te libera de todo ese trabajo sucio.</p>
 
-            <h2>Concepto de Campos Calculados Dinámicamente</h2>
-            <p>Un FlowField *no existe* físicamente en la base de datos como un número estático guardado en su cajita.
-                Actúa como un *embudo vivo*. Su valor está siempre vacío hasta que una pieza de interfaz (una pantalla),
-                o un código lo "calcula" pidiendo su refresco explícito.</p>
+            <!-- QUÉ ES -->
+            <h2>¿Qué es un FlowField?</h2>
+            <p>Los <strong>FlowFields</strong> son campos virtuales que representan una consulta configurada que se
+                ejecuta bajo demanda. <strong>No ocupan espacio en la base de datos SQL</strong> y garantizan que la
+                información esté siempre actualizada.</p>
+
+            <p>Un FlowField no existe físicamente en la base de datos como un número estático guardado en su cajita.
+                Actúa como un <em>embudo vivo</em>: su valor está siempre vacío hasta que una pieza de interfaz (una
+                pantalla) o un código lo calcula pidiendo su refresco explícito con <code>CalcFields</code>.</p>
 
             <p>¿Qué logra? Ahorra espacio de almacenamiento masivo y evita errores fatales si un trigger se salta la
                 actualización.</p>
 
-            <h2>Funciones Soportadas e Implementación</h2>
-            <p>Un FlowField requiere un <code>FieldClass = FlowField;</code> y una fórmula matemática expresada con
-                <code>CalcFormula</code>. Las operaciones que soporta por detrás la base de datos SQL son limitadas:</p>
-            <ul>
-                <li><strong>Sum:</strong> Suma lo que valga un campo de otra tabla (ej. Facturas -> Factura Líneas ->
-                    Sum(Importe)).</li>
-                <li><strong>Average:</strong> Hace la media.</li>
-                <li><strong>Exist:</strong> Devuelve True (un Boolean) si existe al menos 1 registro en otra tabla que
-                    cumpla el vínculo.</li>
-                <li><strong>Count:</strong> Cuenta cuántas líneas de otra tabla coinciden con el enlace.</li>
-                <li><strong>Min / Max:</strong> Extrae el valor numérico (o fecha) menor o mayor de la otra tabla.</li>
-                <li><strong>Lookup:</strong> Se trae y muestra un campo de texto u otra cosa de otra tabla, de forma
-                    pasiva, sin guardarlo.</li>
-            </ul>
+            <div class="alert-warning">
+                <h3>⚠️ Aviso importante</h3>
+                <p style="margin: 0;">Un FlowField nunca se actualiza solo en código. Siempre hay que llamar a
+                    <code>Rec.CalcFields("NombreCampo")</code> antes de leer su valor desde AL.
+                </p>
+            </div>
+
+            <!-- ESTRUCTURA BASE -->
+            <h2>Estructura base</h2>
+            <p>Un FlowField requiere siempre <code>FieldClass = FlowField</code> y una fórmula matemática expresada con
+                <code>CalcFormula</code>:
+            </p>
 
             <div class="ide-code">
-                <pre><code><span class="cmd">field</span>(50; "Importe del Préstamo Activo"; Decimal)
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">field</span>(<span class="var">&lt;id&gt;</span>; <span class="string">"&lt;NombreCampo&gt;"</span>; <span class="param">&lt;TipoDato&gt;</span>)
 {
-    FieldClass = FlowField;
-    <span class="string">// Calcula la SUMA del campo "Saldo". 
-    // Donde el "Nº Socio" del préstamo coincida con el "Nº" del Socio que estoy viendo.</span>
-    CalcFormula = Sum("Detalle de Préstamos".Saldo 
-                      where("Nº Socio" = field("No.")));
+    FieldClass   = FlowField;
+    CalcFormula  = <span class="param">&lt;funcion&gt;</span>(<span class="string">"&lt;Tabla&gt;"</span>.<span class="string">"&lt;Campo&gt;"</span> <span class="cmd">where</span> (<span class="string">"&lt;CampoFiltro&gt;"</span> = <span class="cmd">field</span>(<span class="string">"&lt;CampoOrigen&gt;"</span>)));
 }</code></pre>
+            </div>
+
+            <!-- LOS 7 FANTÁSTICOS -->
+            <h2>Las 6 funciones de CalcFormula</h2>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Función</th>
+                        <th>Tipo resultado</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Sum</code></td>
+                        <td><code>Decimal</code></td>
+                        <td>Suma los valores de una columna numérica en una tabla relacionada</td>
+                    </tr>
+                    <tr>
+                        <td><code>Average</code></td>
+                        <td><code>Decimal</code></td>
+                        <td>Calcula la media aritmética de un conjunto de valores</td>
+                    </tr>
+                    <tr>
+                        <td><code>Exist</code></td>
+                        <td><code>Boolean</code></td>
+                        <td>Devuelve <code>true</code> si existe al menos un registro que cumpla el filtro</td>
+                    </tr>
+                    <tr>
+                        <td><code>Count</code></td>
+                        <td><code>Integer</code></td>
+                        <td>Cuenta la cantidad exacta de registros que coinciden con la relación</td>
+                    </tr>
+                    <tr>
+                        <td><code>Min</code> / <code>Max</code></td>
+                        <td><code>Decimal</code> / <code>Date</code></td>
+                        <td>Localiza el valor más bajo o más alto (numérico o de fecha)</td>
+                    </tr>
+                    <tr>
+                        <td><code>Lookup</code></td>
+                        <td>Cualquiera</td>
+                        <td>Recupera un valor de una tabla externa sin duplicar la información físicamente</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- SUM -->
+            <h2>Sum — Suma acumulada</h2>
+            <p>Suma los valores de una columna numérica en una tabla relacionada. Ejemplo: saldo acumulado del cliente
+                desde los movimientos detallados.</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">field</span>(<span class="var">50100</span>; <span class="string">"Balance (LCY)"</span>; <span class="param">Decimal</span>)
+{
+    FieldClass  = FlowField;
+    CalcFormula = <span class="param">sum</span>(<span class="string">"Detailed Cust. Ledg. Entry"</span>.<span class="string">"Amount (LCY)"</span>
+                      <span class="cmd">where</span> (<span class="string">"Customer No."</span> = <span class="cmd">field</span>(<span class="string">"No."</span>)));
+}</code></pre>
+            </div>
+
+            <!-- AVERAGE -->
+            <h2>Average — Precio medio</h2>
+            <p>Calcula la media aritmética de un conjunto de valores. Ejemplo: precio medio de compra de un producto.
+            </p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">field</span>(<span class="var">50101</span>; <span class="string">"Avg. Cost"</span>; <span class="param">Decimal</span>)
+{
+    FieldClass  = FlowField;
+    CalcFormula = <span class="param">average</span>(<span class="string">"Item Ledger Entry"</span>.<span class="string">"Cost Amount (Actual)"</span>
+                           <span class="cmd">where</span> (<span class="string">"Item No."</span> = <span class="cmd">field</span>(<span class="string">"No."</span>)));
+}</code></pre>
+            </div>
+
+            <!-- EXIST -->
+            <h2>Exist — Comprobación de existencia</h2>
+            <p>Devuelve un booleano (<code>true</code>/<code>false</code>) indicando si existen registros que cumplan el
+                filtro. Ejemplo: ¿tiene el cliente movimientos registrados?</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">field</span>(<span class="var">50102</span>; <span class="string">"Has Entries"</span>; <span class="param">Boolean</span>)
+{
+    FieldClass  = FlowField;
+    CalcFormula = <span class="param">exist</span>(<span class="string">"Item Ledger Entry"</span>
+                        <span class="cmd">where</span> (<span class="string">"Item No."</span> = <span class="cmd">field</span>(<span class="string">"No."</span>)));
+}</code></pre>
+            </div>
+
+            <!-- COUNT -->
+            <h2>Count — Contador de registros</h2>
+            <p>Cuenta la cantidad exacta de registros que coinciden con la relación. Ejemplo: número de líneas de venta
+                en un documento.</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">field</span>(<span class="var">50103</span>; <span class="string">"No. of Lines"</span>; <span class="param">Integer</span>)
+{
+    FieldClass  = FlowField;
+    CalcFormula = <span class="param">count</span>(<span class="string">"Sales Line"</span>
+                        <span class="cmd">where</span> (<span class="string">"Document No."</span> = <span class="cmd">field</span>(<span class="string">"No."</span>)));
+}</code></pre>
+            </div>
+
+            <!-- MIN / MAX -->
+            <h2>Min / Max — Valores extremos</h2>
+            <p>Localiza el valor más bajo o más alto (numérico o de fecha). Ejemplo: fecha de la primera contabilización
+                en una cuenta contable.</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">field</span>(<span class="var">50104</span>; <span class="string">"First Posting Date"</span>; <span class="param">Date</span>)
+{
+    FieldClass  = FlowField;
+    CalcFormula = <span class="param">min</span>(<span class="string">"G/L Entry"</span>.<span class="string">"Posting Date"</span>
+                      <span class="cmd">where</span> (<span class="string">"G/L Account No."</span> = <span class="cmd">field</span>(<span class="string">"No."</span>)));
+}</code></pre>
+            </div>
+
+            <!-- LOOKUP -->
+            <h2>Lookup — Búsqueda de valor</h2>
+            <p>Recupera un valor (texto, código, etc.) de una tabla externa sin duplicar la información físicamente.
+                Ejemplo: obtener el nombre del vendedor desde su tabla maestra.</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">field</span>(<span class="var">50105</span>; <span class="string">"Salesperson Name"</span>; <span class="param">Text</span>[100])
+{
+    FieldClass  = FlowField;
+    CalcFormula = <span class="param">lookup</span>(Salesperson.Name
+                         <span class="cmd">where</span> (Code = <span class="cmd">field</span>(<span class="string">"Salesperson Code"</span>)));
+}</code></pre>
+            </div>
+
+            <!-- CALCFIELDS -->
+            <h2>Usar un FlowField desde código: CalcFields</h2>
+            <p>Cuando lees un FlowField desde código AL, su valor no se calcula automáticamente. Debes llamar
+                explícitamente a <code>CalcFields</code> antes de usarlo:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">var</span>
+    Socio : Record <span class="string">"Socio"</span>;
+<span class="cmd">begin</span>
+    Socio.Get(<span class="string">'S001'</span>);
+    Socio.CalcFields(<span class="string">"Total Prestamos"</span>); <span class="comment">// forzamos el cálculo</span>
+    Message(<span class="string">'Total préstamos: %1'</span>, Socio.<span class="string">"Total Prestamos"</span>);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <!-- TIPS -->
+            <div class="alert-info">
+                <h3>💡 Tips</h3>
+                <ul>
+                    <li>Los FlowFields <strong>no ocupan espacio en SQL</strong>: son consultas virtuales que se
+                        ejecutan bajo demanda.</li>
+                    <li>Siempre llama a <code>CalcFields</code> antes de leer un FlowField desde código. En las páginas,
+                        BC lo hace automáticamente al mostrar el campo.</li>
+                    <li>Un FlowField es de solo lectura: no puedes asignarle un valor directamente.</li>
+                    <li>Úsalos para totales, contadores y búsquedas que deben estar siempre actualizados sin programar
+                        triggers de actualización.</li>
+                </ul>
             </div>
 
             <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;

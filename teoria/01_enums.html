@@ -65,30 +65,215 @@
         </div>
 
         <div class="theory-content">
-            <p>Los <strong>Enums</strong> (Enumeraciones) en AL son listas estructuradas y cerradas de opciones que el
-                usuario puede seleccionar. Imagina un desplegable en el programa donde solo puedes elegir "Borrador",
-                "Aprobado" o "Cancelado". Para eso se usa un Enum.</p>
+            <p>El tipo <code>Enum</code> es la evolución moderna del antiguo tipo <code>Option</code>. Su función es la
+                misma: definir una lista cerrada de opciones para un campo. Sin embargo, aporta ventajas clave frente a
+                Option:</p>
+            <ul>
+                <li>Se declara como un <strong>objeto independiente</strong> (con su propio ID), lo que lo hace
+                    reutilizable en varias tablas.</li>
+                <li>Es <strong>extensible</strong>: otras extensiones pueden añadirle valores sin modificar el original.
+                </li>
+                <li>Permite asignar <strong>posiciones explícitas</strong> a cada valor, por lo que puedes dejar huecos
+                    para crecer sin romper el orden.</li>
+            </ul>
 
-            <h2>¿Para qué sirven?</h2>
-            <p>Sirven para estandarizar la entrada de datos, asegurando que los usuarios no escriban texto libre con
-                faltas de ortografía cuando solo existen opciones específicas válidas para un campo (como tipos de
-                documentos, estados, o categorías).</p>
+            <h2>Enum vs Option</h2>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>Option</th>
+                        <th>Enum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Es un objeto independiente</td>
+                        <td>❌</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td>Reutilizable en varias tablas</td>
+                        <td>❌</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td>Extensible desde otras apps</td>
+                        <td>❌</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td>Posiciones explícitas</td>
+                        <td>❌</td>
+                        <td>✅</td>
+                    </tr>
+                </tbody>
+            </table>
 
-            <h2>¿Cómo estructurar sus valores?</h2>
-            <p>Se estructuran dando un ID entero a cada opción y un valor de texto que se muestra al usuario:</p>
+            <h2>Estructura base</h2>
             <div class="ide-code">
-                <pre><code><span class="cmd">enum</span> <span class="var">50100</span> "Categoría de Libros"
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">enum</span> <span class="var">&lt;id&gt;</span> <span class="string">"&lt;nombre_enum&gt;"</span>
 {
-    Extensible = true;
-    
-    <span class="cmd">value</span>(0; Ficción) { Caption = 'Ficción'; }
-    <span class="cmd">value</span>(1; Ensayo) { Caption = 'Ensayo técnico'; }
-    <span class="cmd">value</span>(2; Poesia) { Caption = 'Poesía y teatro'; }
+    <span class="cmd">value</span>(<span class="var">&lt;posicion&gt;</span>; <span class="string">"&lt;valor&gt;"</span>) { }
+    <span class="cmd">value</span>(<span class="var">&lt;posicion&gt;</span>; <span class="string">"&lt;valor&gt;"</span>) { }
+    <span class="cmd">value</span>(<span class="var">&lt;posicion&gt;</span>; <span class="string">"&lt;valor&gt;"</span>) { }
 }</code></pre>
             </div>
 
-            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
-                Volver a Teoría</a>
+            <p>Para usarlo en un campo de tabla:</p>
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">field</span>(<span class="var">&lt;id&gt;</span>; <span class="string">"&lt;NombreCampo&gt;"</span>; <span class="param">Enum</span> <span class="string">"&lt;nombre_enum&gt;"</span>) { }</code></pre>
+            </div>
+
+            <h2>Ejemplo: Categorías de libros</h2>
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">enum</span> <span class="var">50100</span> <span class="string">"Categoria Libro"</span>
+{
+    <span class="cmd">value</span>(<span class="var">0</span>; <span class="string">" "</span>) { }
+    <span class="cmd">value</span>(<span class="var">1</span>; <span class="string">"Novela"</span>) { }
+    <span class="cmd">value</span>(<span class="var">2</span>; <span class="string">"Ensayo"</span>) { }
+    <span class="cmd">value</span>(<span class="var">3</span>; <span class="string">"Infantil"</span>) { }
+    <span class="cmd">value</span>(<span class="var">4</span>; <span class="string">"Tecnico"</span>) { }
+}</code></pre>
+            </div>
+
+            <p>Aplicado a un campo en una tabla:</p>
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">table</span> <span class="var">50100</span> <span class="string">"Libro"</span>
+{
+    fields
+    {
+        <span class="cmd">field</span>(<span class="var">1</span>; <span class="string">"No."</span>;       <span class="param">Code</span>[20])              { }
+        <span class="cmd">field</span>(<span class="var">2</span>; <span class="string">"Titulo"</span>;    <span class="param">Text</span>[100])             { }
+        <span class="cmd">field</span>(<span class="var">3</span>; <span class="string">"Categoria"</span>; <span class="param">Enum</span> <span class="string">"Categoria Libro"</span>) { }
+    }
+    keys
+    {
+        <span class="cmd">key</span>(PK; <span class="string">"No."</span>) { }
+    }
+}</code></pre>
+            </div>
+
+            <h2>Referenciar un valor en código AL</h2>
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">if</span> Rec.Categoria = Rec.Categoria::Infantil <span class="cmd">then</span>
+    <span class="param">Message</span>(<span class="string">'Este libro es para el público infantil.'</span>);</code></pre>
+            </div>
+
+            <div class="alert alert-info">
+                <h3>💡 Tips</h3>
+                <ul>
+                    <li>Deja siempre un valor <code>0</code> con texto vacío <code>" "</code> como estado "sin
+                        seleccionar".</li>
+                    <li>Usa huecos entre posiciones (0, 10, 20...) si prevés que el enum crecerá.</li>
+                    <li>El nombre del enum va entre comillas si contiene espacios: <code>Enum "Categoria Libro"</code>.
+                    </li>
+                </ul>
+            </div>
+
+            <style>
+                .theory-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 20px 0;
+                    background-color: var(--card-bg);
+                }
+
+                .theory-table th,
+                .theory-table td {
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    padding: 12px;
+                    text-align: left;
+                }
+
+                .theory-table th {
+                    background-color: rgba(0, 0, 0, 0.5);
+                    color: var(--text-white);
+                    font-family: 'Outfit';
+                }
+
+                .alert-info {
+                    background-color: rgba(59, 130, 246, 0.1);
+                    border-left: 4px solid var(--primary-blue);
+                    padding: 20px;
+                    margin: 30px 0;
+                    border-radius: 4px;
+                }
+
+                .alert-info h3 {
+                    margin-top: 0;
+                    color: var(--primary-blue);
+                }
+
+                .alert-info ul {
+                    margin-bottom: 0 !important;
+                }
+
+                /* IDE Styles AL */
+                .ide-code {
+                    background: #1e1e1e;
+                    border-radius: 8px;
+                    margin: 1.5rem 0;
+                    overflow: hidden;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    font-size: 0.95rem;
+                }
+
+                .ide-header {
+                    background: #2d2d2d;
+                    padding: 8px 15px;
+                    display: flex;
+                    align-items: center;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+                }
+
+                .ide-header .title {
+                    color: #888888;
+                    font-size: 0.8rem;
+                    font-family: 'Inter', sans-serif;
+                }
+
+                .ide-code pre {
+                    margin: 0;
+                    padding: 15px;
+                    overflow-x: auto;
+                }
+
+                .ide-code code {
+                    font-family: Consolas, 'Courier New', monospace;
+                    color: #d4d4d4;
+                    line-height: 1.6;
+                    white-space: pre;
+                }
+
+                .ide-code .cmd {
+                    color: #c678dd;
+                }
+
+                /* Purple for keywords (table, field, keys, etc.) */
+                .ide-code .param {
+                    color: #e5c07b;
+                }
+
+                /* Yellow/Gold for Types (Code, Text, Enum) */
+                .ide-code .var {
+                    color: #61afef;
+                }
+
+                /* Blue for Numbers/IDs */
+                .ide-code .string {
+                    color: #98c379;
+                }
+
+                /* Green for strings */
+            </style>
+            Volver a Teoría</a>
         </div>
     </main>
 

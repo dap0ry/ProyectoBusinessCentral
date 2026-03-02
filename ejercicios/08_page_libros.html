@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio: Pages - Business Central</title>
+    <title>Ejercicio: Tipos de Pages - Business Central</title>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="../ejercicios.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
@@ -42,6 +42,248 @@
             border-radius: 8px;
             margin-bottom: 2rem;
         }
+
+        /* Contexto previo */
+        .prev-context {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 28px;
+            margin-bottom: 40px;
+        }
+
+        .prev-context .prev-label {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .prev-context h4 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+        }
+
+        .prev-context ul {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .prev-context ul li {
+            margin-bottom: 4px;
+        }
+
+        /* Page map diagram */
+        .page-map {
+            background: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 28px;
+            margin: 20px 0 32px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .pm-node {
+            background: #252525;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 14px 16px;
+        }
+
+        .pm-node.new {
+            border-color: rgba(97, 175, 239, 0.4);
+            background: rgba(97, 175, 239, 0.05);
+        }
+
+        .pm-node.existing {
+            border-color: rgba(152, 195, 121, 0.3);
+            background: rgba(152, 195, 121, 0.04);
+        }
+
+        .pm-node .pn-type {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+        }
+
+        .pm-node.new .pn-type {
+            color: #61afef;
+        }
+
+        .pm-node.existing .pn-type {
+            color: #98c379;
+        }
+
+        .pm-node .pn-name {
+            font-family: Consolas, monospace;
+            font-size: 0.88rem;
+            color: #d4d4d4;
+        }
+
+        .pm-node .pn-desc {
+            font-size: 0.78rem;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .pm-legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 12px;
+            font-size: 0.78rem;
+            color: #888;
+        }
+
+        .pm-legend span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pm-legend .dot-new {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            background: #61afef;
+        }
+
+        .pm-legend .dot-existing {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            background: #98c379;
+        }
+
+        /* Exercise block */
+        .exercise-block {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .exercise-block .exercise-number {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-blue);
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .exercise-block h3 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .badge-section {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 0.78rem;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* IDE */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info strong {
+            color: var(--primary-blue);
+        }
+
+        .alert-warn {
+            background-color: rgba(234, 179, 8, 0.08);
+            border-left: 4px solid #eab308;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warn strong {
+            color: #eab308;
+        }
     </style>
 </head>
 
@@ -62,40 +304,405 @@
         <div class="exercise-header" style="margin-bottom: 30px;">
             <p
                 style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
-                EJERCICIO 08</p>
-            <h1>Pages: Listado de Libros</h1>
+                EJERCICIO 08 · TIPOS DE PAGES</p>
+            <h1>Tipos de Pages</h1>
             <span class="diff-badge diff-easy"
                 style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 3/10</span>
         </div>
 
         <div class="exercise-content">
-            <div class="goal">
-                <strong>Objetivo:</strong> Diseñar las páginas necesarias (List y Card) para visualizar y editar la
-                tabla de libros.
+
+            <!-- Contexto previo -->
+            <div class="prev-context">
+                <div class="prev-label">Ejercicios anteriores</div>
+                <h4>¿Qué tienes construido hasta ahora?</h4>
+                <ul>
+                    <li>Tablas completas: <code>"Maquinaria"</code>, <code>"Cabecera Alquiler"</code>,
+                        <code>"Linea Alquiler"</code> y <code>"Historial Estado Maquina"</code> con triggers,
+                        FlowFields, FlowFilters y TableRelations.
+                    </li>
+                    <li>Pages básicas: <code>"Maquinaria List"</code>, <code>"Maquinaria Card"</code> y
+                        <code>"Cabecera Alquiler Card"</code>.
+                    </li>
+                    <li>Codeunit <code>"Maquinaria Stats"</code> con la comparativa trimestral.</li>
+                    <li>Las pages actuales son funcionales pero incompletas: les falta vinculación entre List y Card,
+                        vistas filtradas, subformularios y FactBoxes.</li>
+                </ul>
             </div>
 
-            <h2>Instrucciones</h2>
-            <ul>
-                <li>Crea un objeto <code>Page</code> de tipo <code>List</code> llamado "Book List".</li>
-                <li>Configura el <code>ApplicationArea = All</code> y la <code>UsageCategory = Lists</code> para que
-                    aparezca en el buscador.</li>
-                <li>Crea una <code>Page</code> de tipo <code>Card</code> llamada "Book Card" con al menos dos FastTabs
-                    ("General" y "Details").</li>
-                <li>Vincula ambas páginas a la tabla <code>Book</code>.</li>
-            </ul>
+            <p>Con las tablas y los triggers listos, el proyecto tiene toda la lógica de negocio en su sitio. Ahora toca
+                <strong>construir la interfaz completa</strong>: vincular las pages, crear vistas especializadas con
+                <code>SourceTableView</code>, añadir el historial como <code>ListPart</code> embebido en la ficha de
+                maquinaria y terminar con un <code>CardPart</code> de resumen.
+            </p>
 
-            <div class="ide-code">
-                <pre><code><span class="cmd">page</span> <span class="var">50100</span> "Book List"
+            <p>Este es el mapa de pages que tendrás al terminar el ejercicio:</p>
+
+            <div class="page-map">
+                <div class="pm-node existing">
+                    <div class="pn-type">List · existente → mejorar</div>
+                    <div class="pn-name">"Maquinaria List"</div>
+                    <div class="pn-desc">Añadir CardPageId, Editable = false</div>
+                </div>
+                <div class="pm-node existing">
+                    <div class="pn-type">Card · existente → mejorar</div>
+                    <div class="pn-name">"Maquinaria Card"</div>
+                    <div class="pn-desc">Añadir grupos, Importance, ListPart de historial</div>
+                </div>
+                <div class="pm-node new">
+                    <div class="pn-type">List · nueva</div>
+                    <div class="pn-name">"Cabecera Alquiler List"</div>
+                    <div class="pn-desc">Con CardPageId y columnas clave</div>
+                </div>
+                <div class="pm-node new">
+                    <div class="pn-type">List · nueva · SourceTableView</div>
+                    <div class="pn-name">"Alquileres Activos List"</div>
+                    <div class="pn-desc">Solo alquileres con estado ≠ Retirado</div>
+                </div>
+                <div class="pm-node new">
+                    <div class="pn-type">ListPart · nueva</div>
+                    <div class="pn-name">"Historial Maquina Part"</div>
+                    <div class="pn-desc">Embebida en Maquinaria Card</div>
+                </div>
+                <div class="pm-node new">
+                    <div class="pn-type">CardPart · nueva</div>
+                    <div class="pn-name">"Maquinaria Stats Part"</div>
+                    <div class="pn-desc">FactBox con FlowFields de la máquina</div>
+                </div>
+            </div>
+
+            <div class="pm-legend">
+                <span><span class="dot-new"></span>Páginas nuevas</span>
+                <span><span class="dot-existing"></span>Páginas existentes a mejorar</span>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 1 – Mejorar Maquinaria List y Card
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 01</div>
+                <div class="badge-section">List · Card · CardPageId</div>
+                <h3>Vincula y mejora las pages existentes de Maquinaria</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Completar <code>"Maquinaria List"</code> con <code>CardPageId</code>
+                    y <code>Editable = false</code>, y reestructurar <code>"Maquinaria Card"</code> en grupos
+                    (<em>General</em>, <em>Estadísticas</em>) usando <code>Importance = Promoted</code> en los
+                    campos clave.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>En <code>MaquinariaList.Page.al</code> añade las propiedades
+                        <code>CardPageId = "Maquinaria Card"</code>
+                        y <code>Editable = false</code> al nivel raíz de la page.
+                    </li>
+                    <li>En <code>MaquinariaCard.Page.al</code>, divide el layout en dos grupos:
+                        <code>group(General)</code> con <code>"No."</code>, <code>"Descripcion"</code>,
+                        <code>"Categoria"</code>, <code>"Fecha Alta"</code> y <code>"Estado"</code>;
+                        y <code>group(Estadisticas)</code> con <code>"Date Filter"</code>,
+                        <code>"No. Alquileres"</code>, <code>"Tiene Historial"</code> y
+                        <code>"Ultimo Cambio Estado"</code>.
+                    </li>
+                    <li>En el grupo <em>General</em>, marca con <code>Importance = Promoted</code> los campos
+                        <code>"No."</code>, <code>"Descripcion"</code> y <code>"Estado"</code> para que
+                        aparezcan visibles aunque el grupo esté contraído.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — MaquinariaList.Page.al (propiedades raíz)</span>
+                    </div>
+                    <pre><code><span class="cmd">page</span> <span class="var">50100</span> <span class="string">"Maquinaria List"</span>
 {
-    PageType = List;
-    SourceTable = Book;
-    CardPageId = "Book Card";
-    <span class="string">// Define los campos en el área layout(content) -> repeater</span>
+    PageType        = <span class="param">List</span>;
+    ApplicationArea = <span class="param">All</span>;
+    UsageCategory   = <span class="param">Lists</span>;
+    SourceTable     = <span class="string">"Maquinaria"</span>;
+    CardPageId      = <span class="string">"Maquinaria Card"</span>;  <span class="comment">// doble clic abre la ficha</span>
+    Editable        = <span class="param">false</span>;              <span class="comment">// solo lectura desde la lista</span>
+    <span class="comment">// ... resto de la page</span>
 }</code></pre>
+                </div>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — MaquinariaCard.Page.al (layout
+                            reestructurado)</span></div>
+                    <pre><code>    layout
+    {
+        area(Content)
+        {
+            group(General)
+            {
+                <span class="cmd">field</span>(<span class="string">"No."</span>;        Rec.<span class="string">"No."</span>)        { ApplicationArea = <span class="param">All</span>; Importance = <span class="param">Promoted</span>; }
+                <span class="cmd">field</span>(<span class="string">"Descripcion"</span>; Rec.<span class="string">"Descripcion"</span>) { ApplicationArea = <span class="param">All</span>; Importance = <span class="param">Promoted</span>; }
+                <span class="cmd">field</span>(<span class="string">"Categoria"</span>;   Rec.<span class="string">"Categoria"</span>)   { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Fecha Alta"</span>;  Rec.<span class="string">"Fecha Alta"</span>)  { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Estado"</span>;      Rec.<span class="string">"Estado"</span>)
+                {
+                    ApplicationArea = <span class="param">All</span>;
+                    Importance      = <span class="param">Promoted</span>;
+                    <span class="cmd">trigger</span> <span class="param">OnValidate</span>()
+                    <span class="cmd">begin</span>
+                        <span class="cmd">if</span> Rec.Estado = Rec.Estado::Retirado <span class="cmd">then</span>
+                            Message(<span class="string">'Atención: esta máquina ha sido retirada del parque.'</span>);
+                    <span class="cmd">end</span>;
+                }
+            }
+            group(Estadisticas)
+            {
+                Caption = <span class="string">'Estadísticas'</span>;
+                <span class="cmd">field</span>(<span class="string">"Date Filter"</span>;         Rec.<span class="string">"Date Filter"</span>)         { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"No. Alquileres"</span>;    Rec.<span class="string">"No. Alquileres"</span>)    { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Tiene Historial"</span>;   Rec.<span class="string">"Tiene Historial"</span>)   { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Ultimo Cambio Estado"</span>; Rec.<span class="string">"Ultimo Cambio Estado"</span>) { ApplicationArea = <span class="param">All</span>; }
+            }
+        }
+    }</code></pre>
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 2 – Lista de Cabecera Alquiler + SourceTableView
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 02</div>
+                <div class="badge-section">List · SourceTableView</div>
+                <h3>Lista de alquileres y vista filtrada de activos</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Crear la page de lista general de <code>"Cabecera Alquiler"</code>
+                    y una segunda page con <code>SourceTableView</code> que muestre solo los alquileres cuyo
+                    estado no sea <em>Retirado</em>, sin que el usuario vea el filtro en la barra.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea <code>CabeceraAlquilerList.Page.al</code> (ID 50105): <code>PageType = List</code>,
+                        <code>SourceTable = "Cabecera Alquiler"</code>,
+                        <code>CardPageId = "Cabecera Alquiler Card"</code>,
+                        <code>Editable = false</code>. El <code>repeater</code> debe mostrar <code>"No."</code>,
+                        <code>"Descripcion"</code>, <code>"No. Maquina Principal"</code>,
+                        <code>"Descripcion Maquina"</code>, <code>"Fecha Inicio"</code>, <code>"Fecha Fin"</code>,
+                        <code>"Estado"</code> y <code>"No. Lineas"</code>.
+                    </li>
+                    <li>Crea <code>AlquileresActivosList.Page.al</code> (ID 50106): misma estructura pero añade
+                        <code>SourceTableView = where("Estado" = filter(&lt;&gt; Retirado))</code> para excluir
+                        las máquinas retiradas. Añade también ordenación descendente por <code>"Fecha Inicio"</code>.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — AlquileresActivosList.Page.al</span></div>
+                    <pre><code><span class="cmd">page</span> <span class="var">50106</span> <span class="string">"Alquileres Activos List"</span>
+{
+    PageType        = <span class="param">List</span>;
+    ApplicationArea = <span class="param">All</span>;
+    UsageCategory   = <span class="param">Lists</span>;
+    SourceTable     = <span class="string">"Cabecera Alquiler"</span>;
+    CardPageId      = <span class="string">"Cabecera Alquiler Card"</span>;
+    Editable        = <span class="param">false</span>;
+    Caption         = <span class="string">'Alquileres Activos'</span>;
+
+    SourceTableView = <span class="cmd">sorting</span>(<span class="string">"Fecha Inicio"</span>) <span class="cmd">order</span>(descending)
+                      <span class="cmd">where</span>(<span class="string">"Estado"</span> = <span class="cmd">filter</span>(&lt;&gt; Retirado));
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(GroupName)
+            {
+                <span class="cmd">field</span>(<span class="string">"No."</span>;                  Rec.<span class="string">"No."</span>)                  { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Descripcion"</span>;         Rec.<span class="string">"Descripcion"</span>)         { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Descripcion Maquina"</span>;  Rec.<span class="string">"Descripcion Maquina"</span>)  { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Fecha Inicio"</span>;         Rec.<span class="string">"Fecha Inicio"</span>)         { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Fecha Fin"</span>;            Rec.<span class="string">"Fecha Fin"</span>)            { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"Estado"</span>;              Rec.<span class="string">"Estado"</span>)              { ApplicationArea = <span class="param">All</span>; }
+                <span class="cmd">field</span>(<span class="string">"No. Lineas"</span>;          Rec.<span class="string">"No. Lineas"</span>)          { ApplicationArea = <span class="param">All</span>; }
+            }
+        }
+    }
+}</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> <code>SourceTableView</code> aplica un filtro invisible para
+                    el usuario. Si necesitas una vista con filtro visible y modificable, usa una acción con
+                    <code>SetRange</code> como la del ejercicio de Enums. Ambos enfoques son válidos según
+                    el caso de uso.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 3 – ListPart de historial embebido
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 03</div>
+                <div class="badge-section">ListPart · Subformulario</div>
+                <h3>Historial de estado embebido en la ficha de Maquinaria</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Crear una page de tipo <code>ListPart</code> que muestre el
+                    historial de cambios de estado de la máquina activa, y embeberla en
+                    <code>"Maquinaria Card"</code> como subformulario.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea <code>HistorialMaquinaPart.Page.al</code> (ID 50107): <code>PageType = ListPart</code>,
+                        <code>SourceTable = "Historial Estado Maquina"</code>, sin <code>UsageCategory</code>
+                        ni <code>repeater</code>. Muestra los campos <code>"Entry No."</code>,
+                        <code>"Estado Anterior"</code>, <code>"Estado Nuevo"</code>, <code>"Fecha Cambio"</code>
+                        y <code>"Tipo Origen"</code>.
+                    </li>
+                    <li>Vuelve a <code>MaquinariaCard.Page.al</code> y añade un área <code>area(FactBoxes)</code>
+                        después del layout. Dentro, declara un <code>part</code> que apunte a
+                        <code>"Historial Maquina Part"</code> y que aplique el <code>SubPageLink</code>
+                        <code>"No. Maquina" = field("No.")</code> para que el subformulario filtre
+                        automáticamente por la máquina abierta.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — HistorialMaquinaPart.Page.al</span></div>
+                    <pre><code><span class="cmd">page</span> <span class="var">50107</span> <span class="string">"Historial Maquina Part"</span>
+{
+    PageType        = <span class="param">ListPart</span>;
+    ApplicationArea = <span class="param">All</span>;
+    SourceTable     = <span class="string">"Historial Estado Maquina"</span>;
+    Editable        = <span class="param">false</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            <span class="cmd">field</span>(<span class="string">"Entry No."</span>;       Rec.<span class="string">"Entry No."</span>)       { ApplicationArea = <span class="param">All</span>; }
+            <span class="cmd">field</span>(<span class="string">"Estado Anterior"</span>; Rec.<span class="string">"Estado Anterior"</span>) { ApplicationArea = <span class="param">All</span>; }
+            <span class="cmd">field</span>(<span class="string">"Estado Nuevo"</span>;    Rec.<span class="string">"Estado Nuevo"</span>)    { ApplicationArea = <span class="param">All</span>; }
+            <span class="cmd">field</span>(<span class="string">"Fecha Cambio"</span>;    Rec.<span class="string">"Fecha Cambio"</span>)    { ApplicationArea = <span class="param">All</span>; }
+            <span class="cmd">field</span>(<span class="string">"Tipo Origen"</span>;     Rec.<span class="string">"Tipo Origen"</span>)     { ApplicationArea = <span class="param">All</span>; }
+        }
+    }
+}</code></pre>
+                </div>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — MaquinariaCard.Page.al (área FactBoxes)</span>
+                    </div>
+                    <pre><code>        area(FactBoxes)
+        {
+            part(HistorialPart; <span class="string">"Historial Maquina Part"</span>)
+            {
+                ApplicationArea = <span class="param">All</span>;
+                Caption         = <span class="string">'Historial de Estado'</span>;
+                SubPageLink     = <span class="string">"No. Maquina"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>);
+            }
+        }</code></pre>
+                </div>
+
+                <div class="alert-warn">
+                    <strong>⚠️ Ojo:</strong> Las pages de tipo <code>ListPart</code> no llevan
+                    <code>repeater</code> en el layout. Si lo añades, el compilador lanzará un error.
+                    Los campos se declaran directamente dentro del <code>area(Content)</code>.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 4 – CardPart de resumen + OnAfterGetRecord
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 04</div>
+                <div class="badge-section">CardPart · OnAfterGetRecord · OnOpenPage</div>
+                <h3>FactBox de resumen y título dinámico</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Crear un <code>CardPart</code> de resumen estadístico que aparezca
+                    como FactBox en <code>"Maquinaria List"</code>, y añadir un trigger
+                    <code>OnAfterGetRecord()</code> a <code>"Maquinaria Card"</code> que cambie el título de
+                    la página si la máquina está retirada.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea <code>MaquinariaStatsPart.Page.al</code> (ID 50108): <code>PageType = CardPart</code>,
+                        <code>SourceTable = "Maquinaria"</code>. Muestra los FlowFields
+                        <code>"No. Alquileres"</code>, <code>"Tiene Historial"</code> y
+                        <code>"Ultimo Cambio Estado"</code>. En el trigger <code>OnAfterGetRecord()</code>
+                        del CardPart, llama a <code>Rec.CalcFields(...)</code> para los tres campos.
+                    </li>
+                    <li>Añade este CardPart como FactBox en <code>"Maquinaria List"</code> con
+                        <code>SubPageLink = "No." = field("No.")</code>.
+                    </li>
+                    <li>En <code>"Maquinaria Card"</code>, añade el trigger <code>OnAfterGetRecord()</code>:
+                        si <code>Rec.Estado = Rec.Estado::Retirado</code>, asigna
+                        <code>CurrPage.Caption := Rec."Descripcion" + ' — RETIRADA'</code>; en caso contrario,
+                        asigna simplemente <code>CurrPage.Caption := Rec."Descripcion"</code>.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — MaquinariaStatsPart.Page.al</span></div>
+                    <pre><code><span class="cmd">page</span> <span class="var">50108</span> <span class="string">"Maquinaria Stats Part"</span>
+{
+    PageType        = <span class="param">CardPart</span>;
+    ApplicationArea = <span class="param">All</span>;
+    SourceTable     = <span class="string">"Maquinaria"</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            <span class="cmd">field</span>(<span class="string">"No. Alquileres"</span>;    Rec.<span class="string">"No. Alquileres"</span>)    { ApplicationArea = <span class="param">All</span>; }
+            <span class="cmd">field</span>(<span class="string">"Tiene Historial"</span>;   Rec.<span class="string">"Tiene Historial"</span>)   { ApplicationArea = <span class="param">All</span>; }
+            <span class="cmd">field</span>(<span class="string">"Ultimo Cambio Estado"</span>; Rec.<span class="string">"Ultimo Cambio Estado"</span>) { ApplicationArea = <span class="param">All</span>; }
+        }
+    }
+
+    <span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+    <span class="cmd">begin</span>
+        Rec.CalcFields(<span class="string">"No. Alquileres"</span>, <span class="string">"Tiene Historial"</span>, <span class="string">"Ultimo Cambio Estado"</span>);
+    <span class="cmd">end</span>;
+}</code></pre>
+                </div>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — MaquinariaCard.Page.al (trigger
+                            OnAfterGetRecord)</span></div>
+                    <pre><code>    <span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+    <span class="cmd">begin</span>
+        Rec.CalcFields(<span class="string">"Ultimo Cambio Estado"</span>, <span class="string">"No. Alquileres"</span>, <span class="string">"Tiene Historial"</span>);
+
+        <span class="cmd">if</span> Rec.Estado = Rec.Estado::Retirado <span class="cmd">then</span>
+            CurrPage.Caption := Rec.<span class="string">"Descripcion"</span> + <span class="string">' — RETIRADA'</span>
+        <span class="cmd">else</span>
+            CurrPage.Caption := Rec.<span class="string">"Descripcion"</span>;
+    <span class="cmd">end</span>;</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> <code>OnAfterGetRecord()</code> se ejecuta cada vez que BC
+                    carga un registro en la page: al abrir la ficha, al navegar con los botones anterior/siguiente
+                    y al refrescar. Es el lugar correcto para cálculos visuales que dependen del registro activo.
+                    Evita operaciones pesadas aquí para no ralentizar la navegación.
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Bonus:</strong> Ahora que tienes <code>"Alquileres Activos List"</code> y
+                    <code>"Cabecera Alquiler List"</code>, podrías añadir una acción en
+                    <code>"Maquinaria Card"</code> que abra <code>"Alquileres Activos List"</code>
+                    pre-filtrada por <code>Rec."No."</code> usando <code>SetRange</code>, para ver de
+                    un vistazo todos los alquileres activos de esa máquina concreta.
+                </div>
             </div>
 
             <a href="../ejercicios.html" class="btn btn-secondary"
-                style="margin-top: 40px; display: inline-block;">&larr; Volver a Ejercicios</a>
+                style="margin-top: 10px; margin-bottom: 60px; display: inline-block;">&larr; Volver a Ejercicios</a>
         </div>
     </main>
 

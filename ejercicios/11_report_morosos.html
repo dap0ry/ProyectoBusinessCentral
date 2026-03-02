@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio: Reports y DataItems - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../ejercicios.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .exercise-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .exercise-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .exercise-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .exercise-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .exercise-content .goal {
+            background: rgba(0, 123, 255, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        /* Contexto previo */
+        .prev-context {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 28px;
+            margin-bottom: 40px;
+        }
+
+        .prev-context .prev-label {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .prev-context h4 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+        }
+
+        .prev-context ul {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .prev-context ul li {
+            margin-bottom: 4px;
+        }
+
+        /* Report structure diagram */
+        .report-diagram {
+            background: #141414;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0 32px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+        }
+
+        .rd-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .rd-row:last-child {
+            border-bottom: none;
+        }
+
+        .rd-indent-1 {
+            padding-left: 20px;
+        }
+
+        .rd-indent-2 {
+            padding-left: 40px;
+        }
+
+        .rd-indent-3 {
+            padding-left: 60px;
+        }
+
+        .rd-code {
+            font-family: Consolas, monospace;
+            font-size: 0.84rem;
+            color: #d4d4d4;
+            flex: 1;
+        }
+
+        .rd-code .kw {
+            color: #c678dd;
+        }
+
+        .rd-code .str {
+            color: #98c379;
+        }
+
+        .rd-code .cm {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .rd-pill {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            white-space: nowrap;
+            margin-top: 2px;
+        }
+
+        .rd-pill.once {
+            background: rgba(97, 175, 239, 0.12);
+            color: #61afef;
+            border: 1px solid rgba(97, 175, 239, 0.3);
+        }
+
+        .rd-pill.loop {
+            background: rgba(152, 195, 121, 0.12);
+            color: #98c379;
+            border: 1px solid rgba(152, 195, 121, 0.3);
+        }
+
+        .rd-pill.link {
+            background: rgba(229, 192, 123, 0.12);
+            color: #e5c07b;
+            border: 1px solid rgba(229, 192, 123, 0.3);
+        }
+
+        .rd-pill.layout {
+            background: rgba(198, 120, 221, 0.12);
+            color: #c678dd;
+            border: 1px solid rgba(198, 120, 221, 0.3);
+        }
+
+        /* Exercise block */
+        .exercise-block {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .exercise-block .exercise-number {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-blue);
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .exercise-block h3 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .badge-section {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 0.78rem;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* IDE */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info strong {
+            color: var(--primary-blue);
+        }
+
+        .alert-warn {
+            background-color: rgba(234, 179, 8, 0.08);
+            border-left: 4px solid #eab308;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warn strong {
+            color: #eab308;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html">Teoría</a></li>
+                <li><a href="../ejercicios.html" class="active">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="exercise-section" style="padding-top: 100px;">
+        <div class="exercise-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                EJERCICIO 11 · REPORTS Y DATAITEMS</p>
+            <h1>Reports y DataItems</h1>
+            <span class="diff-badge diff-hard"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 8/10</span>
+        </div>
+
+        <div class="exercise-content">
+
+            <!-- Contexto previo -->
+            <div class="prev-context">
+                <div class="prev-label">Ejercicios anteriores</div>
+                <h4>¿Qué tienes construido hasta ahora?</h4>
+                <ul>
+                    <li>Modelo completo: tablas, triggers, FlowFields, FlowFilters, TableRelations y Queries.</li>
+                    <li>Interfaz completa: pages de tipo List, Card, ListPart, CardPart con SubPageLink y FactBoxes.
+                    </li>
+                    <li>Queries <code>"Ranking Alquileres Maquinaria"</code> y
+                        <code>"Resumen Historial Maquinaria"</code> que calculan totales de todas las máquinas a la vez.
+                    </li>
+                    <li>Codeunit <code>"Maquinaria Stats"</code> con comparativa trimestral y ranking por alquileres.
+                    </li>
+                    <li>Lo que aún no tienes: un <strong>documento imprimible</strong> que el responsable de flota pueda
+                        entregar o archivar.</li>
+                </ul>
+            </div>
+
+            <p>Las Queries del ejercicio anterior dan al desarrollador los datos que necesita para procesar. Pero el
+                responsable de flota necesita algo diferente: un <strong>PDF con el listado completo de
+                    maquinaria</strong>,
+                sus alquileres activos y el historial de estados para entregarlo en reuniones o archivarlo. Para eso
+                existen los Reports.</p>
+
+            <p>Antes de empezar, revisa cómo se organizan los tres niveles del Report que vas a construir:</p>
+
+            <!-- Report structure diagram -->
+            <div class="report-diagram">
+                <div class="rd-row">
+                    <span class="rd-code"><span class="kw">report</span> 50100 <span class="str">"Informe Flota
+                            Maquinaria"</span></span>
+                    <span class="rd-pill layout">objeto report</span>
+                </div>
+                <div class="rd-row rd-indent-1">
+                    <span class="rd-code"><span class="kw">trigger</span> OnPreReport() — valida fechas del
+                        requestpage</span>
+                    <span class="rd-pill once">1 vez al inicio</span>
+                </div>
+                <div class="rd-row rd-indent-1">
+                    <span class="rd-code"><span class="kw">dataitem</span>(Maquinaria; <span
+                            class="str">"Maquinaria"</span>)</span>
+                    <span class="rd-pill loop">bucle × máquina</span>
+                </div>
+                <div class="rd-row rd-indent-2">
+                    <span class="rd-code"><span class="kw">trigger</span> OnPreDataItem() — SetCurrentKey, filtro
+                        estado</span>
+                    <span class="rd-pill once">1 vez por nivel</span>
+                </div>
+                <div class="rd-row rd-indent-2">
+                    <span class="rd-code"><span class="kw">trigger</span> OnAfterGetRecord() — calcular
+                        DiasDesdeAlta</span>
+                    <span class="rd-pill loop">× cada registro</span>
+                </div>
+                <div class="rd-row rd-indent-2">
+                    <span class="rd-code"><span class="kw">dataitem</span>(CabeceraAlquiler; <span class="str">"Cabecera
+                            Alquiler"</span>)</span>
+                    <span class="rd-pill loop">bucle × alquiler</span>
+                </div>
+                <div class="rd-row rd-indent-3">
+                    <span class="rd-code">DataItemLink = <span class="str">"No. Maquina Principal"</span> = FIELD(<span
+                            class="str">"No."</span>)</span>
+                    <span class="rd-pill link">enlace padre→hijo</span>
+                </div>
+                <div class="rd-row rd-indent-3">
+                    <span class="rd-code"><span class="kw">trigger</span> OnPostDataItem() — acumula
+                        TotalAlquileresMaquina</span>
+                    <span class="rd-pill once">1 vez al cerrar nivel</span>
+                </div>
+                <div class="rd-row rd-indent-1">
+                    <span class="rd-code"><span class="kw">trigger</span> OnPostReport() — mensaje de
+                        confirmación</span>
+                    <span class="rd-pill once">1 vez al final</span>
+                </div>
+                <div class="rd-row rd-indent-1">
+                    <span class="rd-code"><span class="kw">rendering</span> { layout(RDLCLayout) { ... } }</span>
+                    <span class="rd-pill layout">plantilla visual</span>
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 1 – Estructura base + DataItem raíz
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 01</div>
+                <div class="badge-section">Report · DataItem · OnPreDataItem · OnAfterGetRecord</div>
+                <h3>Crea el Report de flota con DataItem raíz</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Definir la estructura base del report
+                    <code>"Informe Flota Maquinaria"</code>
+                    con el dataset raíz sobre <code>"Maquinaria"</code>, ordenado por descripción, con un campo
+                    calculado que muestre los días que lleva la máquina en el parque desde su fecha de alta.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea <code>InformeFlota.Report.al</code> con ID <code>50100</code>, nombre
+                        <code>"Informe Flota Maquinaria"</code>, <code>UsageCategory = ReportsAndAnalysis</code>
+                        y <code>ApplicationArea = All</code>.
+                    </li>
+                    <li>En el <code>dataset</code>, declara un <code>dataitem(Maquinaria; "Maquinaria")</code>
+                        con las columnas: <code>"No."</code> (alias <code>No_Maquina</code>),
+                        <code>"Descripcion"</code>, <code>"Categoria"</code>, <code>"Estado"</code>,
+                        <code>"Fecha Alta"</code> y una columna calculada <code>DiasEnParque</code>
+                        que apunte a la variable global del mismo nombre.
+                    </li>
+                    <li>En <code>OnPreDataItem()</code>: llama a <code>SetCurrentKey("Descripcion")</code>
+                        para ordenar alfabéticamente.</li>
+                    <li>En <code>OnAfterGetRecord()</code>: calcula
+                        <code>DiasEnParque := Today() - "Fecha Alta"</code>. Si <code>"Fecha Alta"</code>
+                        es <code>0D</code> asigna <code>0</code> para evitar valores negativos.
+                    </li>
+                    <li>Declara <code>DiasEnParque</code> como variable global de tipo <code>Integer</code>.</li>
+                    <li>Añade un bloque <code>rendering</code> vacío (sin layout real por ahora):
+                        solo declara el tipo <code>RDLC</code> con un nombre de archivo de referencia.</li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — InformeFlota.Report.al (estructura base)</span>
+                    </div>
+                    <pre><code><span class="cmd">report</span> <span class="var">50100</span> <span class="string">"Informe Flota Maquinaria"</span>
+{
+    Caption         = <span class="string">'Informe de Flota de Maquinaria'</span>;
+    UsageCategory   = ReportsAndAnalysis;
+    ApplicationArea = <span class="param">All</span>;
+
+    dataset
+    {
+        <span class="cmd">dataitem</span>(Maquinaria; <span class="string">"Maquinaria"</span>)
+        {
+            <span class="cmd">column</span>(No_Maquina;  <span class="string">"No."</span>)         { Caption = <span class="string">'Nº Máquina'</span>; }
+            <span class="cmd">column</span>(Descripcion; <span class="string">"Descripcion"</span>) { Caption = <span class="string">'Descripción'</span>; }
+            <span class="cmd">column</span>(Categoria;   <span class="string">"Categoria"</span>)   { Caption = <span class="string">'Categoría'</span>; }
+            <span class="cmd">column</span>(Estado;      <span class="string">"Estado"</span>)      { Caption = <span class="string">'Estado'</span>; }
+            <span class="cmd">column</span>(FechaAlta;   <span class="string">"Fecha Alta"</span>)  { Caption = <span class="string">'Fecha de Alta'</span>; }
+            <span class="cmd">column</span>(DiasEnParque; DiasEnParque) { Caption = <span class="string">'Días en el Parque'</span>; }
+
+            <span class="cmd">trigger</span> <span class="param">OnPreDataItem</span>()
+            <span class="cmd">begin</span>
+                SetCurrentKey(<span class="string">"Descripcion"</span>); <span class="comment">// ordenamos A → Z</span>
+            <span class="cmd">end</span>;
+
+            <span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+            <span class="cmd">begin</span>
+                <span class="cmd">if</span> <span class="string">"Fecha Alta"</span> = <span class="var">0D</span> <span class="cmd">then</span>
+                    DiasEnParque := <span class="var">0</span>
+                <span class="cmd">else</span>
+                    DiasEnParque := Today() - <span class="string">"Fecha Alta"</span>;
+            <span class="cmd">end</span>;
+        }
+    }
+
+    rendering
+    {
+        layout(RDLCLayout)
+        {
+            Type       = RDLC;
+            LayoutFile = <span class="string">'layouts/InformeFlota.rdlc'</span>;
+        }
+    }
+
+    <span class="cmd">var</span>
+        DiasEnParque: <span class="param">Integer</span>; <span class="comment">// variable global del Report</span>
+}</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> Un DataItem es un <strong>bucle automático</strong>: BC
+                    recorre todos los registros de <code>"Maquinaria"</code> sin que escribas
+                    <code>FindSet</code> ni <code>Next</code>. El <code>OnAfterGetRecord</code> se ejecuta
+                    en cada iteración. Las variables globales del Report mantienen su valor entre iteraciones,
+                    lo que las hace útiles para acumular totales.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 2 – DataItem anidado: alquileres por máquina
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 02</div>
+                <div class="badge-section">DataItem anidado · DataItemLink · OnPostDataItem</div>
+                <h3>Añade el nivel de alquileres anidado</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Anidar un segundo <code>dataitem</code> de
+                    <code>"Cabecera Alquiler"</code> dentro del de <code>"Maquinaria"</code>, enlazado
+                    por <code>DataItemLink</code>, y usar <code>OnPostDataItem()</code> para acumular
+                    el total de alquileres de cada máquina en una variable.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Dentro del <code>dataitem(Maquinaria; ...)</code>, añade un segundo
+                        <code>dataitem(CabeceraAlquiler; "Cabecera Alquiler")</code>.
+                    </li>
+                    <li>Configura <code>DataItemLink = "No. Maquina Principal" = FIELD("No.")</code>
+                        para que solo aparezcan los alquileres de la máquina activa en cada iteración
+                        del padre.</li>
+                    <li>Añade las columnas: <code>"No."</code> (alias <code>Alquiler_No</code>),
+                        <code>"Fecha Inicio"</code>, <code>"Fecha Fin"</code>, <code>"Estado"</code>
+                        y <code>"No. Lineas"</code> (el FlowField que ya tienes).
+                    </li>
+                    <li>En <code>OnPreDataItem()</code> del hijo: ordena por <code>"Fecha Inicio"</code>
+                        descendente con <code>SetAscending("Fecha Inicio", false)</code>.</li>
+                    <li>Declara la variable global <code>TotalAlquileresMaquina</code> (Integer).
+                        En <code>OnAfterGetRecord()</code> del hijo incrementa el contador:
+                        <code>TotalAlquileresMaquina += 1</code>.
+                    </li>
+                    <li>En <code>OnPostDataItem()</code> del hijo, resetea el contador a 0 para la
+                        siguiente máquina: <code>TotalAlquileresMaquina := 0</code>.</li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — fragmento dataset con DataItem anidado</span></div>
+                    <pre><code>        <span class="cmd">dataitem</span>(Maquinaria; <span class="string">"Maquinaria"</span>)
+        {
+            <span class="comment">// ... columnas del nivel padre (Ejercicio 01)</span>
+            <span class="cmd">column</span>(TotalAlq; TotalAlquileresMaquina) { Caption = <span class="string">'Total Alquileres'</span>; }
+
+            <span class="comment">// ── DataItem hijo: un nivel más adentro ─────────────────────</span>
+            <span class="cmd">dataitem</span>(CabeceraAlquiler; <span class="string">"Cabecera Alquiler"</span>)
+            {
+                DataItemLink = <span class="string">"No. Maquina Principal"</span> = FIELD(<span class="string">"No."</span>);
+
+                <span class="cmd">column</span>(Alquiler_No;    <span class="string">"No."</span>)          { Caption = <span class="string">'Nº Alquiler'</span>; }
+                <span class="cmd">column</span>(Alq_FechaIni;  <span class="string">"Fecha Inicio"</span>) { Caption = <span class="string">'Fecha Inicio'</span>; }
+                <span class="cmd">column</span>(Alq_FechaFin;  <span class="string">"Fecha Fin"</span>)    { Caption = <span class="string">'Fecha Fin'</span>; }
+                <span class="cmd">column</span>(Alq_Estado;    <span class="string">"Estado"</span>)       { Caption = <span class="string">'Estado'</span>; }
+                <span class="cmd">column</span>(Alq_NoLineas; <span class="string">"No. Lineas"</span>)   { Caption = <span class="string">'Nº Líneas'</span>; }
+
+                <span class="cmd">trigger</span> <span class="param">OnPreDataItem</span>()
+                <span class="cmd">begin</span>
+                    SetCurrentKey(<span class="string">"Fecha Inicio"</span>);
+                    SetAscending(<span class="string">"Fecha Inicio"</span>, <span class="param">false</span>); <span class="comment">// más recientes primero</span>
+                <span class="cmd">end</span>;
+
+                <span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+                <span class="cmd">begin</span>
+                    TotalAlquileresMaquina += <span class="var">1</span>; <span class="comment">// cuenta alquileres de esta máquina</span>
+                <span class="cmd">end</span>;
+
+                <span class="cmd">trigger</span> <span class="param">OnPostDataItem</span>()
+                <span class="cmd">begin</span>
+                    TotalAlquileresMaquina := <span class="var">0</span>; <span class="comment">// reset para la siguiente máquina</span>
+                <span class="cmd">end</span>;
+            }
+
+            <span class="comment">// ... triggers del nivel padre</span>
+        }</code></pre>
+                </div>
+
+                <div class="alert-warn">
+                    <strong>⚠️ Ojo con el reset:</strong> Si no reseteas <code>TotalAlquileresMaquina</code>
+                    en <code>OnPostDataItem()</code>, el contador acumulará todos los alquileres de todas
+                    las máquinas en una sola cifra. El reset en <code>OnPostDataItem</code> garantiza que
+                    la variable empiece en 0 para cada nueva máquina del nivel padre.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 3 – OnPreReport + DataItemTableFilter + OnPostReport
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 03</div>
+                <div class="badge-section">OnPreReport · DataItemTableFilter · OnPostReport</div>
+                <h3>Filtros fijos, validación y mensaje final</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Añadir los triggers globales del Report para validar que
+                    el informe tiene sentido antes de ejecutarse, aplicar un filtro fijo que excluya
+                    las máquinas retiradas sin que el usuario pueda modificarlo, y mostrar un resumen
+                    al terminar.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Declara dos variables globales de tipo <code>Integer</code>:
+                        <code>TotalMaquinas</code> y <code>TotalAlquileresFinal</code>.
+                    </li>
+                    <li>En el <code>dataitem(Maquinaria; ...)</code>, añade la propiedad
+                        <code>DataItemTableFilter = "Estado" = filter(&lt;&gt; Retirado)</code>
+                        para excluir máquinas retiradas de forma fija e invisible para el usuario.
+                    </li>
+                    <li>En <code>OnAfterGetRecord()</code> del nivel <code>Maquinaria</code>, incrementa
+                        también <code>TotalMaquinas += 1</code>.</li>
+                    <li>En <code>OnAfterGetRecord()</code> del nivel <code>CabeceraAlquiler</code>,
+                        incrementa también <code>TotalAlquileresFinal += 1</code> (además del contador
+                        por máquina del ejercicio anterior).</li>
+                    <li>Escribe el trigger <code>OnPreReport()</code>: si tanto <code>TotalMaquinas</code>
+                        como el filtro de estado producen 0 registros (lo detectarás con
+                        <code>Maquinaria.Count() = 0</code>), lanza un <code>Error</code> con el mensaje
+                        <em>'No hay máquinas activas que incluir en el informe.'</em>
+                    </li>
+                    <li>Escribe el trigger <code>OnPostReport()</code>: muestra un <code>Message</code>
+                        con el total de máquinas procesadas y el total de alquileres incluidos.</li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — InformeFlota.Report.al (triggers globales y filtro
+                            fijo)</span></div>
+                    <pre><code>    dataset
+    {
+        <span class="cmd">dataitem</span>(Maquinaria; <span class="string">"Maquinaria"</span>)
+        {
+            <span class="comment">// Filtro fijo: el usuario no puede ver ni cambiar esto</span>
+            DataItemTableFilter = <span class="string">"Estado"</span> = <span class="cmd">filter</span>(&lt;&gt; Retirado);
+
+            <span class="comment">// ... columnas y DataItem hijo del ejercicio anterior</span>
+
+            <span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+            <span class="cmd">begin</span>
+                TotalMaquinas += <span class="var">1</span>;
+
+                <span class="cmd">if</span> <span class="string">"Fecha Alta"</span> = <span class="var">0D</span> <span class="cmd">then</span>
+                    DiasEnParque := <span class="var">0</span>
+                <span class="cmd">else</span>
+                    DiasEnParque := Today() - <span class="string">"Fecha Alta"</span>;
+            <span class="cmd">end</span>;
+        }
+    }
+
+    <span class="comment">// ── Trigger global: se ejecuta UNA VEZ antes de todo ────────────</span>
+    <span class="cmd">trigger</span> <span class="param">OnPreReport</span>()
+    <span class="cmd">begin</span>
+        Maquinaria.SetFilter(<span class="string">"Estado"</span>, <span class="string">'<>%1'</span>, Maquinaria.<span class="string">"Estado"</span>::Retirado);
+        <span class="cmd">if</span> Maquinaria.IsEmpty() <span class="cmd">then</span>
+            Error(<span class="string">'No hay máquinas activas que incluir en el informe.'</span>);
+    <span class="cmd">end</span>;
+
+    <span class="comment">// ── Trigger global: se ejecuta UNA VEZ al terminar todo ─────────</span>
+    <span class="cmd">trigger</span> <span class="param">OnPostReport</span>()
+    <span class="cmd">begin</span>
+        Message(
+            <span class="string">'Informe generado.\nMáquinas procesadas: %1\nAlquileres incluidos: %2'</span>,
+            TotalMaquinas,
+            TotalAlquileresFinal
+        );
+    <span class="cmd">end</span>;
+
+    <span class="cmd">var</span>
+        DiasEnParque          : <span class="param">Integer</span>;
+        TotalAlquileresMaquina: <span class="param">Integer</span>;
+        TotalMaquinas         : <span class="param">Integer</span>;
+        TotalAlquileresFinal  : <span class="param">Integer</span>;</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> <code>DataItemTableFilter</code> aplica un filtro
+                    <em>permanente e invisible</em> al DataItem, igual que <code>SourceTableView</code>
+                    en una page. El usuario no puede verlo ni eliminarlo desde el <code>requestpage</code>.
+                    Es la forma correcta de restringir el alcance del informe a un subconjunto de datos
+                    sin depender de que el usuario aplique los filtros correctos.
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Bonus:</strong> Ahora que el Report existe, puedes añadir una acción
+                    <code>ImprimirInformeFlota</code> en <code>"Maquinaria List"</code> con el trigger
+                    <code>OnAction</code> que llame a
+                    <code>Report.Run(Report::"Informe Flota Maquinaria")</code>. El usuario podrá
+                    generar el PDF directamente desde la lista de maquinaria con un solo clic,
+                    cerrando así el ciclo completo del proyecto: datos → lógica → interfaz → documento.
+                </div>
+            </div>
+
+            <a href="../ejercicios.html" class="btn btn-secondary"
+                style="margin-top: 10px; margin-bottom: 60px; display: inline-block;">&larr; Volver a Ejercicios</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

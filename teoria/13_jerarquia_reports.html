@@ -29,14 +29,126 @@
             margin-bottom: 1.5rem;
         }
 
-        .theory-content ul {
+        .theory-content ul,
+        .theory-content ol {
             margin-bottom: 1.5rem;
             padding-left: 20px;
+        }
+
+        .theory-content ul {
             list-style-type: square;
         }
 
         .theory-content li {
             margin-bottom: 0.5rem;
+        }
+
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+
+        .alert-info ul {
+            margin-bottom: 0 !important;
+        }
+
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warning h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
         }
     </style>
 </head>
@@ -65,44 +177,229 @@
         </div>
 
         <div class="theory-content">
-            <p>Si la factura de la luz fuera un informe y tuviera un solo <code>DataItem</code> que itera la palabra
-                "Factura 1", tendrías una sola cara blanca y fea. Los reports reales tienen <strong>Jerarquías de Datos
-                    (Anidación)</strong> para explicar desgloses (cabecera, y todos sus miles de hijos).</p>
 
-            <h2>Cómo anidar DataItems</h2>
-            <p>Cuando anidas (indentas o metes dentro) un segundo `DataItem` dentro de uno original (Padre), creas un
-                bucle infinito *"hijo"* que **se dispara por cada vuelta individual que da el bucle inicial**.</p>
-            <p>Por ejemplo, imagina que queremos una lista de los préstamos organizados o agrupados dentro de cada socio
-                infractor de la biblioteca:</p>
+            <p>Si la factura de la luz fuera un informe con un solo <code>DataItem</code>, tendrías una sola cara blanca
+                y fea. Los reports reales tienen <strong>jerarquías de datos (anidación)</strong> para explicar
+                desgloses: cabecera con todos sus hijos, socios con todos sus préstamos, facturas con todas sus líneas.
+            </p>
 
-            <ol>
-                <li><strong>El bucle Padre <code>(DataItem 1: Socios)</code></strong> coge al Socio A (Iteración 1).
-                </li>
-                <li>Inmediatamente el motor desciende al <strong>bucle Hijo
-                        <code>(DataItem 2: Préstamos)</code></strong>. El hijo le grita al motor "¡Espera, solo quiero
-                    iterar mis préstamos cuyo número de socio coincida con el Padre A en este microsegundo (SubLink)!".
-                </li>
-                <li>El bucle Hijo entra en acción iterando 4 préstamos del socio A, mandando las `Columns` (los
-                    importes) para imprimir.</li>
-                <li>Termina el hijo. El Padre recupera el control, y salta al Socio B (Iteración 2).</li>
-                <li>Se repite la cascada hija para el Socio B con los préstamos del B... y así sucesivamente.</li>
-            </ol>
+            <!-- SINTAXIS BÁSICA -->
+            <h2>Sintaxis de la anidación</h2>
+            <p>Para anidar un segundo DataItem dentro de uno padre basta con declararlo <strong>dentro</strong> del
+                bloque del padre. El <code>DataItemLink</code> es la clave que conecta el hijo con el padre:</p>
 
             <div class="ide-code">
-                <pre><code><span class="cmd">dataset</span>
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">dataitem</span>(Socio; <span class="string">"Socio"</span>)       <span class="comment">// PADRE</span>
 {
-    <span class="cmd">dataitem</span>(Padre; "Socio") {
-        
-        <span class="string">// Para cada socio, exporta su nombre</span>
-        <span class="cmd">column</span>(SocioName; "Name") { }
+    <span class="cmd">column</span>(SocioNombre; Nombre) { }
 
-        <span class="string">// Y luego por cada uno, indaga en esta sub-tabla:</span>
-        <span class="cmd">dataitem</span>(Hijo; "Prestamos") {
-            DataItemLink = "Id Socio" = field("Id");
-            <span class="cmd">column</span>(FechaRetraso; "Fecha Devolucion") { }
+    <span class="cmd">dataitem</span>(Prestamo; <span class="string">"Prestamo"</span>)  <span class="comment">// HIJO (va DENTRO del padre)</span>
+    {
+        DataItemLink = <span class="string">"No. Socio"</span> = FIELD(<span class="string">"No."</span>);  <span class="comment">// enlace padre → hijo</span>
+        <span class="cmd">column</span>(FechaDevolucion; <span class="string">"Fecha Devolucion"</span>) { }
+    }
+}</code></pre>
+            </div>
+
+            <!-- CÓMO FUNCIONA -->
+            <h2>¿Cómo funciona el bucle anidado?</h2>
+            <p>Cuando anidas un DataItem dentro de otro, creas un bucle hijo que <strong>se dispara por cada vuelta
+                    individual que da el bucle padre</strong>. El flujo es siempre el mismo:</p>
+
+            <ol>
+                <li>El <strong>bucle padre</strong> (<code>DataItem: Socio</code>) coge al Socio A (iteración 1).</li>
+                <li>Inmediatamente el motor desciende al <strong>bucle hijo</strong> (<code>DataItem: Préstamo</code>).
+                    El hijo solo itera los préstamos cuyo <code>No. Socio</code> coincida con el padre actual.</li>
+                <li>El bucle hijo itera los 4 préstamos del Socio A, enviando sus columnas al layout para imprimir.</li>
+                <li>Termina el hijo. El padre recupera el control y salta al Socio B (iteración 2).</li>
+                <li>Se repite la cascada hijo para el Socio B... y así sucesivamente hasta el último socio.</li>
+            </ol>
+
+            <!-- 3 NIVELES -->
+            <h2>Anidación de 3 niveles</h2>
+            <p>Puedes anidar tantos niveles como necesites. El mismo principio se aplica a cada nivel adicional:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">dataitem</span>(Socio; Socio)              <span class="comment">// NIVEL 1 — Padre</span>
+{
+    <span class="cmd">column</span>(Socio_No;     <span class="string">"No."</span>) { }
+    <span class="cmd">column</span>(Socio_Nombre; Nombre) { }
+
+    <span class="cmd">dataitem</span>(Prestamo; Prestamo)    <span class="comment">// NIVEL 2 — Hijo</span>
+    {
+        DataItemLink = <span class="string">"No. Socio"</span> = FIELD(<span class="string">"No."</span>);
+
+        <span class="cmd">column</span>(Prestamo_No;   <span class="string">"No."</span>)          { }
+        <span class="cmd">column</span>(Prestamo_Dias; <span class="string">"Dias Prestamo"</span>) { }
+
+        <span class="cmd">dataitem</span>(Linea; <span class="string">"Linea Prestamo"</span>)  <span class="comment">// NIVEL 3 — Nieto</span>
+        {
+            DataItemLink = <span class="string">"No. Prestamo"</span> = FIELD(<span class="string">"No."</span>);
+
+            <span class="cmd">column</span>(Linea_Libro;    <span class="string">"Titulo Libro"</span>) { }
+            <span class="cmd">column</span>(Linea_Devuelto; Devuelto)       { }
         }
     }
 }</code></pre>
+            </div>
+
+            <!-- ACUMULAR TOTALES -->
+            <h2>Acumular totales entre niveles</h2>
+            <p>Un patrón muy habitual es acumular totales del hijo en variables del padre. El truco está en
+                <strong>reiniciar el contador en el padre</strong> (<code>OnAfterGetRecord</code> del padre) e
+                <strong>irlo sumando en el hijo</strong>:
+            </p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">dataitem</span>(Socio; Socio)
+{
+    <span class="cmd">column</span>(Socio_No;       <span class="string">"No."</span>)          { }
+    <span class="cmd">column</span>(Socio_Nombre;   Nombre)         { }
+    <span class="cmd">column</span>(Socio_TotalDias; TotalDiasSocio) { }  <span class="comment">// columna calculada con variable</span>
+
+    <span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+    <span class="cmd">begin</span>
+        TotalDiasSocio := <span class="var">0</span>;  <span class="comment">// reiniciamos al cambiar de socio</span>
+    <span class="cmd">end</span>;
+
+    <span class="cmd">dataitem</span>(Prestamo; Prestamo)
+    {
+        DataItemLink = <span class="string">"No. Socio"</span> = FIELD(<span class="string">"No."</span>);
+
+        <span class="comment">// Solo préstamos activos o en devolución</span>
+        DataItemTableFilter = Estado = FILTER(Activo | <span class="string">"En Devolucion"</span>);
+
+        <span class="cmd">column</span>(Prestamo_No;    <span class="string">"No."</span>)          { }
+        <span class="cmd">column</span>(Prestamo_Dias;  <span class="string">"Dias Prestamo"</span>) { }
+        <span class="cmd">column</span>(Prestamo_Estado; Estado)         { }
+
+        <span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+        <span class="cmd">begin</span>
+            TotalDiasSocio += <span class="string">"Dias Prestamo"</span>;  <span class="comment">// acumulamos en la variable del padre</span>
+        <span class="cmd">end</span>;
+    }
+}
+
+<span class="cmd">var</span>
+    TotalDiasSocio: <span class="param">Integer</span>;</code></pre>
+            </div>
+
+            <!-- DATAITEMTABLEFILTER -->
+            <h2>DataItemTableFilter — Filtro fijo en el hijo</h2>
+            <p><code>DataItemTableFilter</code> permite aplicar un filtro permanente al DataItem que el usuario
+                <strong>no puede modificar</strong> desde la RequestPage. Es el equivalente al
+                <code>SourceTableView</code> de las pages:
+            </p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">dataitem</span>(Prestamo; Prestamo)
+{
+    DataItemLink        = <span class="string">"No. Socio"</span> = FIELD(<span class="string">"No."</span>);
+    DataItemTableFilter = Estado = FILTER(Activo | <span class="string">"En Devolucion"</span>);  <span class="comment">// nunca mostrará Devueltos</span>
+
+    <span class="cmd">column</span>(Prestamo_No;    <span class="string">"No."</span>)  { }
+    <span class="cmd">column</span>(Prestamo_Dias;  <span class="string">"Dias Prestamo"</span>) { }
+}</code></pre>
+            </div>
+
+            <!-- EJEMPLO COMPLETO -->
+            <h2>Ejemplo completo: socios con préstamos y totales</h2>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">report</span> <span class="var">50101</span> <span class="string">"Socios con Prestamos"</span>
+{
+    Caption         = <span class="string">'Socios y sus Préstamos'</span>;
+    UsageCategory   = ReportsAndAnalysis;
+    ApplicationArea = All;
+
+    dataset
+    {
+        <span class="comment">// ── NIVEL 1: SOCIO ─────────────────────────────</span>
+        <span class="cmd">dataitem</span>(Socio; Socio)
+        {
+            <span class="cmd">column</span>(Socio_No;        <span class="string">"No."</span>)          { }
+            <span class="cmd">column</span>(Socio_Nombre;    Nombre)         { }
+            <span class="cmd">column</span>(Socio_TotalDias; TotalDiasSocio) { }
+
+            <span class="cmd">trigger</span> <span class="param">OnPreDataItem</span>()
+            <span class="cmd">begin</span>
+                SetCurrentKey(Nombre);  <span class="comment">// orden alfabético</span>
+            <span class="cmd">end</span>;
+
+            <span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+            <span class="cmd">begin</span>
+                TotalDiasSocio := <span class="var">0</span>;  <span class="comment">// reinicio al cambiar de socio</span>
+            <span class="cmd">end</span>;
+
+            <span class="comment">// ── NIVEL 2: PRÉSTAMO ───────────────────────────</span>
+            <span class="cmd">dataitem</span>(Prestamo; Prestamo)
+            {
+                DataItemLink        = <span class="string">"No. Socio"</span> = FIELD(<span class="string">"No."</span>);
+                DataItemTableFilter = Estado = FILTER(Activo | <span class="string">"En Devolucion"</span>);
+
+                <span class="cmd">column</span>(Prestamo_No;     <span class="string">"No."</span>)           { }
+                <span class="cmd">column</span>(Prestamo_Inicio; <span class="string">"Fecha Inicio"</span>)  { }
+                <span class="cmd">column</span>(Prestamo_Dias;   <span class="string">"Dias Prestamo"</span>) { }
+
+                <span class="cmd">trigger</span> <span class="param">OnPreDataItem</span>()
+                <span class="cmd">begin</span>
+                    SetCurrentKey(<span class="string">"Fecha Inicio"</span>);
+                    SetAscending(<span class="string">"Fecha Inicio"</span>, <span class="param">false</span>);  <span class="comment">// más recientes primero</span>
+                <span class="cmd">end</span>;
+
+                <span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+                <span class="cmd">begin</span>
+                    TotalDiasSocio += <span class="string">"Dias Prestamo"</span>;
+                <span class="cmd">end</span>;
+
+                <span class="comment">// ── NIVEL 3: LÍNEA ──────────────────────────────</span>
+                <span class="cmd">dataitem</span>(LineaPrestamo; <span class="string">"Linea Prestamo"</span>)
+                {
+                    DataItemLink = <span class="string">"No. Prestamo"</span> = FIELD(<span class="string">"No."</span>);
+
+                    <span class="cmd">column</span>(Linea_Libro;    <span class="string">"Titulo Libro"</span>) { }
+                    <span class="cmd">column</span>(Linea_ISBN;     ISBN)            { }
+                    <span class="cmd">column</span>(Linea_Devuelto; Devuelto)        { }
+                }
+            }
+        }
+    }
+
+    <span class="cmd">var</span>
+        TotalDiasSocio: <span class="param">Integer</span>;
+
+    rendering
+    {
+        layout(RDLCLayout)
+        {
+            Type       = RDLC;
+            LayoutFile = <span class="string">'src/layouts/SociosPrestamos.rdlc'</span>;
+        }
+    }
+}</code></pre>
+            </div>
+
+            <!-- TIPS -->
+            <div class="alert-info">
+                <h3>💡 Tips</h3>
+                <ul>
+                    <li><code>DataItemLink</code> es el equivalente al <code>SubPageLink</code> de las pages: conecta el
+                        hijo con el padre por campo.</li>
+                    <li><code>DataItemTableFilter</code> aplica un filtro fijo que el usuario no puede cambiar. Úsalo
+                        para excluir registros que nunca deben aparecer en el informe.</li>
+                    <li>Para acumular totales del hijo en el padre: reinicia la variable en
+                        <code>OnAfterGetRecord</code> del padre y súmala en <code>OnAfterGetRecord</code> del hijo.
+                    </li>
+                    <li>Usa <code>SetAscending(campo, false)</code> para ordenar de mayor a menor (fechas recientes
+                        primero, Z→A...).</li>
+                    <li>No hay límite teórico de niveles de anidación, pero más de 3 o 4 niveles suele indicar que el
+                        diseño del informe puede simplificarse.</li>
+                </ul>
             </div>
 
             <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;

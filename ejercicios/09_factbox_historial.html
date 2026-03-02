@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio: Parts y FactBoxes - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../ejercicios.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .exercise-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .exercise-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .exercise-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .exercise-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .exercise-content .goal {
+            background: rgba(0, 123, 255, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        /* Contexto previo */
+        .prev-context {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px 28px;
+            margin-bottom: 40px;
+        }
+
+        .prev-context .prev-label {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .prev-context h4 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+        }
+
+        .prev-context ul {
+            margin: 0;
+            padding-left: 18px;
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .prev-context ul li {
+            margin-bottom: 4px;
+        }
+
+        /* UI wireframe diagram */
+        .wireframe {
+            background: #141414;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0 32px;
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+        }
+
+        .wf-main {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .wf-card {
+            background: #1e1e1e;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 12px 14px;
+        }
+
+        .wf-card .wf-title {
+            color: #888;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+
+        .wf-card .wf-fields {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .wf-field {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            padding: 3px 8px;
+            color: #aaa;
+            font-size: 0.75rem;
+        }
+
+        .wf-subpart {
+            background: rgba(97, 175, 239, 0.06);
+            border: 1px dashed rgba(97, 175, 239, 0.3);
+            border-radius: 6px;
+            padding: 10px 12px;
+        }
+
+        .wf-subpart .wf-part-label {
+            color: #61afef;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .wf-subpart .wf-part-row {
+            color: #888;
+            font-size: 0.72rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 2px 0;
+        }
+
+        .wf-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .wf-factbox {
+            background: rgba(152, 195, 121, 0.05);
+            border: 1px dashed rgba(152, 195, 121, 0.3);
+            border-radius: 6px;
+            padding: 10px 12px;
+        }
+
+        .wf-factbox .wf-fb-label {
+            color: #98c379;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .wf-factbox .wf-fb-row {
+            color: #888;
+            font-size: 0.72rem;
+            padding: 2px 0;
+        }
+
+        .wf-legend {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 20px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .wf-legend span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dot-blue {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            border: 1px dashed #61afef;
+            background: rgba(97, 175, 239, 0.15);
+        }
+
+        .dot-green {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            border: 1px dashed #98c379;
+            background: rgba(152, 195, 121, 0.1);
+        }
+
+        /* Exercise block */
+        .exercise-block {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .exercise-block .exercise-number {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary-blue);
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .exercise-block h3 {
+            color: var(--text-white);
+            font-family: 'Outfit';
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .badge-section {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: 0.78rem;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* IDE */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info strong {
+            color: var(--primary-blue);
+        }
+
+        .alert-warn {
+            background-color: rgba(234, 179, 8, 0.08);
+            border-left: 4px solid #eab308;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warn strong {
+            color: #eab308;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html">Teoría</a></li>
+                <li><a href="../ejercicios.html" class="active">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="exercise-section" style="padding-top: 100px;">
+        <div class="exercise-header" style="margin-bottom: 30px;">
+            <p
+                style="text-transform: uppercase; letter-spacing: 2px; color: var(--primary-blue); font-size: 0.9rem; font-weight: bold; margin-bottom: 10px;">
+                EJERCICIO 09 · PARTS Y FACTBOXES</p>
+            <h1>Parts y FactBoxes</h1>
+            <span class="diff-badge diff-medium"
+                style="position: static; display: inline-block; margin-top: 10px;">Dificultad: 6/10</span>
+        </div>
+
+        <div class="exercise-content">
+
+            <!-- Contexto previo -->
+            <div class="prev-context">
+                <div class="prev-label">Ejercicios anteriores</div>
+                <h4>¿Qué tienes construido hasta ahora?</h4>
+                <ul>
+                    <li>Modelo de datos completo: <code>"Maquinaria"</code>, <code>"Cabecera Alquiler"</code>,
+                        <code>"Linea Alquiler"</code> y <code>"Historial Estado Maquina"</code> con triggers,
+                        FlowFields, FlowFilters y TableRelations.</li>
+                    <li>Pages completas: <code>"Maquinaria List"</code> y <code>"Maquinaria Card"</code> (con grupos,
+                        <code>Importance</code>, <code>CardPageId</code> y <code>OnAfterGetRecord</code>).</li>
+                    <li><code>"Cabecera Alquiler List"</code>, <code>"Alquileres Activos List"</code> y
+                        <code>"Cabecera Alquiler Card"</code>.</li>
+                    <li><code>"Historial Maquina Part"</code> (ListPart) y <code>"Maquinaria Stats Part"</code>
+                        (CardPart) ya creadas en el ejercicio anterior y embebidas en <code>"Maquinaria Card"</code>.
+                    </li>
+                </ul>
+            </div>
+
+            <p>Ya tienes las Parts básicas en pie. En este ejercicio vas a profundizar en <code>SubPageLink</code>,
+                añadir Parts donde aún faltan y conectar el lado de <em>Cabecera Alquiler</em> con toda su
+                información relacionada. El resultado final será una interfaz completa donde el usuario puede ver
+                las líneas de un alquiler y el resumen de la máquina sin salir de la pantalla actual.</p>
+
+            <p>Este es el wireframe de la pantalla que construirás en el ejercicio:</p>
+
+            <!-- Wireframe -->
+            <div class="wireframe">
+                <div class="wf-main">
+                    <div class="wf-card">
+                        <div class="wf-title">Cabecera Alquiler Card — grupo General</div>
+                        <div class="wf-fields">
+                            <span class="wf-field">No.</span>
+                            <span class="wf-field">Descripcion</span>
+                            <span class="wf-field">No. Maquina Principal</span>
+                            <span class="wf-field">Fecha Inicio</span>
+                            <span class="wf-field">Fecha Fin</span>
+                            <span class="wf-field">Estado</span>
+                            <span class="wf-field">Creado Por</span>
+                            <span class="wf-field">Modificado Por</span>
+                        </div>
+                    </div>
+                    <div class="wf-subpart">
+                        <div class="wf-part-label">ListPart — "Lineas Alquiler Part" (nueva)</div>
+                        <div class="wf-part-row">No. Linea | No. Maquina | Fecha Inicio | Fecha Fin | Dias Alquiler
+                        </div>
+                        <div class="wf-part-row">No. Linea | No. Maquina | Fecha Inicio | Fecha Fin | Dias Alquiler
+                        </div>
+                        <div class="wf-part-row">No. Linea | No. Maquina | Fecha Inicio | Fecha Fin | Dias Alquiler
+                        </div>
+                    </div>
+                </div>
+                <div class="wf-sidebar">
+                    <div class="wf-factbox">
+                        <div class="wf-fb-label">CardPart — "Maquinaria Stats Part" (ya existe)</div>
+                        <div class="wf-fb-row">No. Alquileres: 12</div>
+                        <div class="wf-fb-row">Tiene Historial: Sí</div>
+                        <div class="wf-fb-row">Último Cambio: 01/03/2026</div>
+                    </div>
+                    <div class="wf-factbox">
+                        <div class="wf-fb-label">ListPart — "Historial Maquina Part" (ya existe)</div>
+                        <div class="wf-fb-row">Disponible → Alquilado</div>
+                        <div class="wf-fb-row">Alquilado → En Reparación</div>
+                        <div class="wf-fb-row">En Reparación → Disponible</div>
+                    </div>
+                </div>
+                <div class="wf-legend">
+                    <span><span class="dot-blue"></span>ListPart (zona principal)</span>
+                    <span><span class="dot-green"></span>FactBoxes (columna lateral)</span>
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 1 – ListPart de líneas de alquiler
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 01</div>
+                <div class="badge-section">ListPart · SubPageLink</div>
+                <h3>Crea el ListPart de líneas de alquiler</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Construir el subformulario de líneas y embebarlo directamente
+                    en el layout principal de <code>"Cabecera Alquiler Card"</code> (no en FactBoxes), para
+                    reproducir el patrón clásico de cabecera → líneas que tienen los documentos de BC.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea <code>LineasAlquilerPart.Page.al</code> (ID 50109): <code>PageType = ListPart</code>,
+                        <code>SourceTable = "Linea Alquiler"</code>. Muestra los campos <code>"No. Linea"</code>,
+                        <code>"No. Maquina"</code>, <code>"Fecha Inicio"</code>, <code>"Fecha Fin"</code>
+                        y <code>"Dias Alquiler"</code>. Recuerda: en un <code>ListPart</code> no se usa
+                        <code>repeater</code>.
+                    </li>
+                    <li>Abre <code>CabeceraAlquilerCard.Page.al</code> y añade un <code>part</code> dentro del
+                        <code>area(Content)</code>, después del grupo <code>General</code>, apuntando a
+                        <code>"Lineas Alquiler Part"</code>.
+                    </li>
+                    <li>Configura el <code>SubPageLink</code>: el campo <code>"No. Alquiler"</code> de
+                        <code>"Linea Alquiler"</code> debe enlazarse con el campo <code>"No."</code> de
+                        <code>"Cabecera Alquiler"</code>.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — LineasAlquilerPart.Page.al</span></div>
+                    <pre><code><span class="cmd">page</span> <span class="var">50109</span> <span class="string">"Lineas Alquiler Part"</span>
+{
+    PageType        = <span class="param">ListPart</span>;
+    ApplicationArea = <span class="param">All</span>;
+    SourceTable     = <span class="string">"Linea Alquiler"</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            <span class="comment">// ⚠️ Sin repeater — el ListPart ya lo implica</span>
+            <span class="cmd">field</span>(<span class="string">"No. Linea"</span>;    Rec.<span class="string">"No. Linea"</span>)    { ApplicationArea = <span class="param">All</span>; }
+            <span class="cmd">field</span>(<span class="string">"No. Maquina"</span>;  Rec.<span class="string">"No. Maquina"</span>)  { ApplicationArea = <span class="param">All</span>; }
+            <span class="cmd">field</span>(<span class="string">"Fecha Inicio"</span>; Rec.<span class="string">"Fecha Inicio"</span>) { ApplicationArea = <span class="param">All</span>; }
+            <span class="cmd">field</span>(<span class="string">"Fecha Fin"</span>;    Rec.<span class="string">"Fecha Fin"</span>)    { ApplicationArea = <span class="param">All</span>; }
+            <span class="cmd">field</span>(<span class="string">"Dias Alquiler"</span>; Rec.<span class="string">"Dias Alquiler"</span>) { ApplicationArea = <span class="param">All</span>; }
+        }
+    }
+}</code></pre>
+                </div>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — CabeceraAlquilerCard.Page.al (layout con
+                            part)</span></div>
+                    <pre><code>    layout
+    {
+        area(Content)
+        {
+            group(General)
+            {
+                <span class="comment">// ... campos existentes</span>
+            }
+
+            <span class="comment">// Part embebido en el cuerpo principal (no en FactBoxes)</span>
+            <span class="cmd">part</span>(LineasAlquiler; <span class="string">"Lineas Alquiler Part"</span>)
+            {
+                ApplicationArea = <span class="param">All</span>;
+                Caption         = <span class="string">'Líneas de Alquiler'</span>;
+                SubPageLink     = <span class="string">"No. Alquiler"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>);
+            }
+        }
+    }</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> La diferencia entre poner el <code>part</code> en
+                    <code>area(Content)</code> y en <code>area(FactBoxes)</code> es visual. En
+                    <code>Content</code> aparece integrado en el cuerpo principal de la ficha (patrón
+                    cabecera/líneas); en <code>FactBoxes</code> aparece en la columna lateral derecha.
+                    Para un subformulario de líneas, siempre va en <code>Content</code>.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 2 – FactBoxes en Cabecera Alquiler Card
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 02</div>
+                <div class="badge-section">FactBoxes · CardPart · SubPageLink</div>
+                <h3>Añade FactBoxes a Cabecera Alquiler Card</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Reutilizar las Parts ya construidas en ejercicios anteriores para
+                    enriquecer <code>"Cabecera Alquiler Card"</code> con dos FactBoxes laterales: el resumen
+                    estadístico de la máquina y su historial de estados, conectados a través del campo
+                    <code>"No. Maquina Principal"</code>.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>En <code>CabeceraAlquilerCard.Page.al</code>, añade un <code>area(FactBoxes)</code>
+                        después del <code>area(Content)</code>.</li>
+                    <li>Añade el <code>part</code> que apunte a <code>"Maquinaria Stats Part"</code>
+                        (ya existe del ejercicio anterior). El <code>SubPageLink</code> debe conectar
+                        el campo <code>"No."</code> de <code>"Maquinaria"</code> con el campo
+                        <code>"No. Maquina Principal"</code> de <code>"Cabecera Alquiler"</code>.
+                    </li>
+                    <li>Añade un segundo <code>part</code> que apunte a <code>"Historial Maquina Part"</code>
+                        (también ya existe). El <code>SubPageLink</code> debe conectar
+                        <code>"No. Maquina"</code> de <code>"Historial Estado Maquina"</code> con
+                        <code>"No. Maquina Principal"</code> de <code>"Cabecera Alquiler"</code>.
+                    </li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — CabeceraAlquilerCard.Page.al (area
+                            FactBoxes)</span></div>
+                    <pre><code>        area(FactBoxes)
+        {
+            <span class="comment">// Reutilizamos "Maquinaria Stats Part" del ejercicio anterior</span>
+            <span class="cmd">part</span>(EstadisticasMaquina; <span class="string">"Maquinaria Stats Part"</span>)
+            {
+                ApplicationArea = <span class="param">All</span>;
+                Caption         = <span class="string">'Estadísticas de la Máquina'</span>;
+                <span class="comment">// "No." en tabla Maquinaria = "No. Maquina Principal" en Cabecera Alquiler</span>
+                SubPageLink     = <span class="string">"No."</span> = <span class="cmd">field</span>(<span class="string">"No. Maquina Principal"</span>);
+            }
+
+            <span class="comment">// Reutilizamos "Historial Maquina Part" del ejercicio anterior</span>
+            <span class="cmd">part</span>(HistorialMaquina; <span class="string">"Historial Maquina Part"</span>)
+            {
+                ApplicationArea = <span class="param">All</span>;
+                Caption         = <span class="string">'Historial de Estado'</span>;
+                <span class="comment">// "No. Maquina" en Historial = "No. Maquina Principal" en Cabecera Alquiler</span>
+                SubPageLink     = <span class="string">"No. Maquina"</span> = <span class="cmd">field</span>(<span class="string">"No. Maquina Principal"</span>);
+            }
+        }</code></pre>
+                </div>
+
+                <div class="alert-warn">
+                    <strong>⚠️ Ojo con el SubPageLink:</strong> El campo de la izquierda siempre pertenece
+                    a la tabla de la Part (tabla hija). El campo de la derecha, dentro de <code>field()</code>,
+                    pertenece a la tabla de la page padre. Si los intercambias, BC no lanzará error de
+                    compilación pero el filtro no funcionará y el panel mostrará todos los registros.
+                </div>
+            </div>
+
+
+            <!-- ══════════════════════════════════════════
+                 EJERCICIO 3 – SubPageLink compuesto en Lineas Alquiler Part
+            ══════════════════════════════════════════ -->
+            <div class="exercise-block">
+                <div class="exercise-number">Ejercicio 03</div>
+                <div class="badge-section">SubPageLink compuesto</div>
+                <h3>SubPageLink con clave primaria compuesta</h3>
+
+                <div class="goal">
+                    <strong>Objetivo:</strong> Practicar el <code>SubPageLink</code> con más de un campo,
+                    necesario cuando la tabla hija tiene una <strong>clave primaria compuesta</strong>.
+                    Añadirás una page de tipo <code>ListPart</code> al historial que filtre simultáneamente
+                    por máquina y por tipo de origen.
+                </div>
+
+                <h2>Instrucciones</h2>
+                <ul>
+                    <li>Crea <code>HistorialAlquilerPart.Page.al</code> (ID 50110):
+                        <code>PageType = ListPart</code>, <code>SourceTable = "Historial Estado Maquina"</code>.
+                        Muestra <code>"Entry No."</code>, <code>"Estado Anterior"</code>,
+                        <code>"Estado Nuevo"</code>, <code>"Fecha Cambio"</code> y <code>"No. Origen"</code>.
+                    </li>
+                    <li>Añade este ListPart como segunda Part en el <code>area(FactBoxes)</code> de
+                        <code>"Cabecera Alquiler Card"</code>, reemplazando al <code>"Historial Maquina Part"</code>
+                        que ya estaba. Configura un <code>SubPageLink</code> <strong>compuesto</strong> con
+                        dos condiciones:
+                        <ul>
+                            <li><code>"No. Maquina"</code> = <code>field("No. Maquina Principal")</code></li>
+                            <li><code>"Tipo Origen"</code> = <code>const(Alquiler)</code></li>
+                        </ul>
+                    </li>
+                    <li>De este modo el panel lateral mostrará solo los cambios de estado que ocurrieron
+                        durante un alquiler, no los manuales.</li>
+                </ul>
+
+                <h2>Pista de Código</h2>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — HistorialAlquilerPart.Page.al</span></div>
+                    <pre><code><span class="cmd">page</span> <span class="var">50110</span> <span class="string">"Historial Alquiler Part"</span>
+{
+    PageType        = <span class="param">ListPart</span>;
+    ApplicationArea = <span class="param">All</span>;
+    SourceTable     = <span class="string">"Historial Estado Maquina"</span>;
+    Editable        = <span class="param">false</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            <span class="cmd">field</span>(<span class="string">"Entry No."</span>;       Rec.<span class="string">"Entry No."</span>)       { ApplicationArea = <span class="param">All</span>; }
+            <span class="cmd">field</span>(<span class="string">"Estado Anterior"</span>; Rec.<span class="string">"Estado Anterior"</span>) { ApplicationArea = <span class="param">All</span>; }
+            <span class="cmd">field</span>(<span class="string">"Estado Nuevo"</span>;    Rec.<span class="string">"Estado Nuevo"</span>)    { ApplicationArea = <span class="param">All</span>; }
+            <span class="cmd">field</span>(<span class="string">"Fecha Cambio"</span>;    Rec.<span class="string">"Fecha Cambio"</span>)    { ApplicationArea = <span class="param">All</span>; }
+            <span class="cmd">field</span>(<span class="string">"No. Origen"</span>;     Rec.<span class="string">"No. Origen"</span>)     { ApplicationArea = <span class="param">All</span>; }
+        }
+    }
+}</code></pre>
+                </div>
+                <div class="ide-code">
+                    <div class="ide-header"><span class="title">AL — SubPageLink compuesto en
+                            CabeceraAlquilerCard</span></div>
+                    <pre><code>            <span class="cmd">part</span>(HistorialAlquiler; <span class="string">"Historial Alquiler Part"</span>)
+            {
+                ApplicationArea = <span class="param">All</span>;
+                Caption         = <span class="string">'Historial de Estados (Alquiler)'</span>;
+                SubPageLink     = <span class="string">"No. Maquina"</span>  = <span class="cmd">field</span>(<span class="string">"No. Maquina Principal"</span>),
+                                  <span class="string">"Tipo Origen"</span>  = <span class="cmd">const</span>(Alquiler);
+                <span class="comment">// const(Alquiler) filtra directamente por el valor del Option</span>
+                <span class="comment">// sin necesidad de que sea un campo de la tabla padre</span>
+            }</code></pre>
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Recuerda:</strong> En un <code>SubPageLink</code> puedes mezclar
+                    <code>field()</code> (valor del registro padre) con <code>const()</code> (valor
+                    fijo hardcodeado). Esto permite filtrar la Part por una combinación de contexto
+                    dinámico y condición estática, sin necesidad de crear una page separada para cada caso.
+                </div>
+
+                <div class="alert-info">
+                    <strong>💡 Bonus:</strong> Ahora tienes <code>"Historial Maquina Part"</code>
+                    (todos los cambios) y <code>"Historial Alquiler Part"</code> (solo los de alquiler).
+                    Podrías añadir ambas en <code>"Maquinaria Card"</code> como dos FactBoxes independientes:
+                    una con todos los cambios y otra filtrada solo por <code>const(Manual)</code> para
+                    ver las revisiones manuales. El usuario tendría una vista completa del ciclo de vida
+                    de cada máquina sin salir de su ficha.
+                </div>
+            </div>
+
+            <a href="../ejercicios.html" class="btn btn-secondary"
+                style="margin-top: 10px; margin-bottom: 60px; display: inline-block;">&larr; Volver a Ejercicios</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

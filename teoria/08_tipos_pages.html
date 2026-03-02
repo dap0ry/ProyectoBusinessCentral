@@ -25,6 +25,13 @@
             font-family: 'Outfit';
         }
 
+        .theory-content h3 {
+            color: var(--text-white);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit';
+        }
+
         .theory-content p {
             margin-bottom: 1.5rem;
         }
@@ -37,6 +44,115 @@
 
         .theory-content li {
             margin-bottom: 0.5rem;
+        }
+
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+
+        .alert-info ul {
+            margin-bottom: 0 !important;
+        }
+
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warning h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+
+        /* IDE Styles AL */
+        .ide-code {
+            background: #1e1e1e;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.95rem;
+        }
+
+        .ide-header {
+            background: #2d2d2d;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .ide-header .title {
+            color: #888888;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .ide-code pre {
+            margin: 0;
+            padding: 15px;
+            overflow-x: auto;
+        }
+
+        .ide-code code {
+            font-family: Consolas, 'Courier New', monospace;
+            color: #d4d4d4;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .ide-code .cmd {
+            color: #c678dd;
+        }
+
+        .ide-code .param {
+            color: #e5c07b;
+        }
+
+        .ide-code .var {
+            color: #61afef;
+        }
+
+        .ide-code .string {
+            color: #98c379;
+        }
+
+        .ide-code .comment {
+            color: #5c6370;
+            font-style: italic;
         }
     </style>
 </head>
@@ -65,48 +181,426 @@
         </div>
 
         <div class="theory-content">
-            <p>Una <strong>Page</strong> (página) es la representación visual, lo que llamamos el Frontend. En Business
-                Central, las páginas son generadas por la plataforma web dinámicamente según como definas su estructura
-                en AL. En los ERPs de Microsoft, la interfaz está predefinida por un patrón muy estricto para asegurar
-                homogeneidad.</p>
 
-            <h2>Diferencia Conceptual</h2>
-            <p>Dentro del desarrollo necesitas usar la propiedad clave <code>PageType</code> donde eliges uno de varios
-                modelos de interfaz que controla cómo de pintarán los datos al usuario de Chrome, Edge, etc.</p>
+            <p>Una <strong>Page</strong> es el objeto de Business Central que define cómo se <em>ve</em> e
+                <em>interactúa</em> con los datos del sistema. Si las <strong>Tablas</strong> son el "almacén" de datos,
+                las Pages son las "ventanas" a través de las cuales el usuario final lee, introduce y modifica esa
+                información.
+            </p>
 
-            <h3>Page Type: List</h3>
-            <p>La vista tipo "Lista". Literalmente pinta una cuadrícula tipo Excel.</p>
-            <p>Está pensada para mostrar docenas de registros simultáneos uno bajo el otro, pero habitualmente no se
-                muestra en una List todos los infinitos campos que posee la tabla, solo enseñan lo resumido: "Nº",
-                "Título", "Fecha", etc. Los usuarios acceden a List pages para navegar, ordenar y filtrar grandes bases
-                de datos.</p>
+            <p>En los ERPs de Microsoft, la interfaz está predefinida por un patrón muy estricto para asegurar
+                homogeneidad. Dentro del desarrollo usas la propiedad clave <code>PageType</code> para elegir uno de
+                varios modelos de interfaz que controla cómo se pintarán los datos al usuario.</p>
 
-            <h3>Page Type: Card</h3>
-            <p>La vista de "Ficha de Detalle" o Tipo Tarjeta.</p>
-            <p>Ocurre cuando el usuario hace clic en una línea de la "List" y se "infiltra". La Card **solo muestra 1
-                único registro**, pero con un nivel de profunidad masivo. Estructura la pantalla en paneles llamados
-                <code>FastTabs</code> (Pestañas como "General", "Facturación", "Envío") donde acomoda de forma elegante
-                decenas y decenas de campos (textos largos, booleanos sueltos, adjuntos) para ese cliente individual o
-                factura concreta.</p>
+            <!-- ESTRUCTURA BASE -->
+            <h2>Estructura base de una Page</h2>
 
-            <h3>Otros PageTypes menores</h3>
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">page</span> <span class="var">&lt;Id&gt;</span> <span class="string">"&lt;NombreDeLaPage&gt;"</span>
+{
+    PageType       = <span class="param">&lt;TipoDePage&gt;</span>;
+    ApplicationArea = All;
+    UsageCategory  = <span class="param">&lt;Categoría&gt;</span>;
+    SourceTable    = <span class="string">"&lt;NombreTabla&gt;"</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            <span class="comment">// controles de grupo y de campo</span>
+        }
+        area(FactBoxes)
+        {
+            <span class="comment">// paneles informativos laterales</span>
+        }
+    }
+
+    actions
+    {
+        area(Processing)
+        {
+            action(NombreAccion)
+            {
+                <span class="cmd">trigger</span> <span class="param">OnAction</span>()
+                <span class="cmd">begin</span>
+                    <span class="comment">// lógica del botón</span>
+                <span class="cmd">end</span>;
+            }
+        }
+    }
+
+    <span class="cmd">trigger</span> <span class="param">OnOpenPage</span>()
+    <span class="cmd">begin</span>
+        <span class="comment">// se ejecuta al abrir la página</span>
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <!-- PROPIEDADES CLAVE -->
+            <h2>Propiedades clave de una Page</h2>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Propiedad</th>
+                        <th>Descripción</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>PageType</code></td>
+                        <td>Define la apariencia y comportamiento de la page</td>
+                        <td><code>List</code>, <code>Card</code>, <code>ListPart</code>...</td>
+                    </tr>
+                    <tr>
+                        <td><code>SourceTable</code></td>
+                        <td>Tabla de datos que alimenta la page</td>
+                        <td><code>"Socio"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>ApplicationArea</code></td>
+                        <td>Controla qué áreas funcionales pueden ver la page</td>
+                        <td><code>All</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>UsageCategory</code></td>
+                        <td>Categoría al buscar con la lupa en BC</td>
+                        <td><code>Lists</code>, <code>Administration</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>CardPageId</code></td>
+                        <td>En un List, indica qué Card se abre al hacer clic</td>
+                        <td><code>"Socio Card"</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>Editable</code></td>
+                        <td>Si es <code>false</code>, los campos no se pueden modificar</td>
+                        <td><code>false</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>Caption</code></td>
+                        <td>Título visible en la interfaz de BC</td>
+                        <td><code>'Gestión de Socios'</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>RefreshOnActivate</code></td>
+                        <td>Recarga datos al volver a la página</td>
+                        <td><code>true</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- LIST -->
+            <h2>Page Type: List</h2>
+            <p>La vista tipo "Lista". Literalmente pinta una cuadrícula tipo Excel. Está pensada para mostrar muchos
+                registros simultáneos uno bajo el otro, pero habitualmente no se muestran todos los campos de la tabla,
+                solo lo resumido: "Nº", "Título", "Fecha", etc. Los usuarios acceden a List pages para navegar, ordenar
+                y filtrar grandes bases de datos.</p>
+
             <ul>
-                <li><strong>RoleCenter:</strong> La página principal que hace de "Área de Trabajo" personal cuando
-                    alguien entra al programa, llena de mosaicos grandes, gráficos y alarmas directas.</li>
-                <li><strong>Worksheet:</strong> Muy similar a List, pero concebido para escritura de datos ultra rápica
-                    (tipo Diarios Contables) y ejecución rutinaria a finales de mes.</li>
+                <li>Usa un control <code>repeater</code> en el layout (repite las filas)</li>
+                <li>Suele tener <code>Editable = false</code> para evitar ediciones accidentales</li>
+                <li>Enlaza a la Card correspondiente mediante <code>CardPageId</code></li>
+                <li>Al hacer doble clic en una fila, abre la Card de ese registro</li>
             </ul>
 
             <div class="ide-code">
-                <pre><code><span class="cmd">page</span> <span class="var">50100</span> "Customer Mini List"
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">page</span> <span class="var">50300</span> <span class="string">"Socio List"</span>
 {
-    <span class="string">// Le dice a la plataforma entera: Dibuja esto como una tabla de Excel interactiva.</span>
-    PageType = List;
+    PageType        = List;
     ApplicationArea = All;
-    UsageCategory = Lists;
-    SourceTable = Customer;
-    ...
+    UsageCategory   = Lists;
+    SourceTable     = <span class="string">"Socio"</span>;
+    CardPageId      = <span class="string">"Socio Card"</span>;   <span class="comment">// al hacer clic abre este formulario</span>
+    Editable        = <span class="param">false</span>;          <span class="comment">// solo lectura desde la lista</span>
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(GroupName)       <span class="comment">// repite una fila por cada registro</span>
+            {
+                <span class="cmd">field</span>(<span class="string">"No."</span>;              Rec.<span class="string">"No."</span>)              { }
+                <span class="cmd">field</span>(Nombre;           Rec.Nombre)            { }
+                <span class="cmd">field</span>(Email;            Rec.Email)             { }
+                <span class="cmd">field</span>(<span class="string">"Fecha Alta"</span>;      Rec.<span class="string">"Fecha Alta"</span>)      { }
+                <span class="cmd">field</span>(<span class="string">"Total Prestamos"</span>; Rec.<span class="string">"Total Prestamos"</span>) { }  <span class="comment">// FlowField</span>
+            }
+        }
+    }
 }</code></pre>
+            </div>
+
+            <!-- CARD -->
+            <h2>Page Type: Card</h2>
+            <p>La vista de "Ficha de Detalle". Ocurre cuando el usuario hace clic en una línea de la List. La Card
+                <strong>solo muestra 1 único registro</strong>, pero con un nivel de profundidad masivo. Estructura la
+                pantalla en paneles llamados <code>FastTabs</code> (grupos como "General", "Facturación", "Envío") donde
+                acomoda decenas de campos para ese registro concreto.
+            </p>
+
+            <ul>
+                <li>Usa controles <code>group</code> para organizar los campos en secciones desplegables</li>
+                <li>Vinculada desde la List mediante <code>CardPageId</code></li>
+                <li><code>UsageCategory = Administration</code> por convención</li>
+            </ul>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">page</span> <span class="var">50301</span> <span class="string">"Socio Card"</span>
+{
+    PageType        = Card;
+    ApplicationArea = All;
+    UsageCategory   = Administration;
+    SourceTable     = <span class="string">"Socio"</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            group(General)
+            {
+                <span class="cmd">field</span>(<span class="string">"No."</span>;        Rec.<span class="string">"No."</span>)
+                {
+                    Importance = Promoted;   <span class="comment">// aparece destacado aunque el grupo esté cerrado</span>
+                }
+                <span class="cmd">field</span>(Nombre;     Rec.Nombre)   { Importance = Promoted; }
+                <span class="cmd">field</span>(Email;      Rec.Email)    { }
+                <span class="cmd">field</span>(<span class="string">"Fecha Alta"</span>; Rec.<span class="string">"Fecha Alta"</span>) { }
+            }
+            group(Direccion)
+            {
+                <span class="cmd">field</span>(Calle;             Rec.Calle)             { }
+                <span class="cmd">field</span>(<span class="string">"Codigo Postal"</span>;   Rec.<span class="string">"Codigo Postal"</span>)   { }
+                <span class="cmd">field</span>(Ciudad;            Rec.Ciudad)            { }
+            }
+            group(Estadisticas)
+            {
+                <span class="cmd">field</span>(<span class="string">"Total Prestamos"</span>; Rec.<span class="string">"Total Prestamos"</span>)
+                {
+                    Importance = Promoted;
+                    Editable   = <span class="param">false</span>;   <span class="comment">// es un FlowField, no se edita manualmente</span>
+                }
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <!-- OTROS PAGETYPES -->
+            <h2>Otros PageTypes</h2>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>PageType</th>
+                        <th>Descripción</th>
+                        <th>Control de grupo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>ListPlus</code></td>
+                        <td>Como List pero con espacio para información adicional debajo. Usado para documentos con
+                            cabecera y líneas.</td>
+                        <td><code>repeater</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>ListPart</code></td>
+                        <td>Lista embebida dentro de otra page, usada en FactBoxes o subformularios. No lleva
+                            <code>repeater</code>.
+                        </td>
+                        <td>sin repeater</td>
+                    </tr>
+                    <tr>
+                        <td><code>CardPart</code></td>
+                        <td>Ficha de un único registro embebida en otra page. Usada en FactBoxes para mostrar un
+                            resumen.</td>
+                        <td>sin group obligatorio</td>
+                    </tr>
+                    <tr>
+                        <td><code>RoleCenter</code></td>
+                        <td>Página principal tipo "Área de Trabajo" personal con mosaicos, gráficos y alarmas.</td>
+                        <td><code>cuegroup</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>Worksheet</code></td>
+                        <td>Similar a List pero concebido para escritura de datos ultra rápida (Diarios Contables).</td>
+                        <td><code>repeater</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- SOURCETABLEVIEW -->
+            <h2>SourceTableView — Pre-filtrar la tabla desde la page</h2>
+            <p>Normalmente una page muestra <strong>todos</strong> los registros de su <code>SourceTable</code>. Con
+                <code>SourceTableView</code> puedes aplicar un <strong>filtro permanente</strong> desde la definición de
+                la page, de modo que el usuario solo vea un subconjunto concreto de datos. Este filtro es transparente
+                para el usuario: no lo verá en la barra de filtros.
+            </p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="cmd">page</span> <span class="var">50340</span> <span class="string">"Prestamos Pendientes List"</span>
+{
+    PageType        = List;
+    ApplicationArea = All;
+    UsageCategory   = Lists;
+    SourceTable     = <span class="string">"Prestamo"</span>;
+    SourceTableView = <span class="cmd">where</span>(Devuelto = <span class="cmd">const</span>(<span class="param">false</span>));  <span class="comment">// solo préstamos no devueltos</span>
+    Editable        = <span class="param">false</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(GroupName)
+            {
+                <span class="cmd">field</span>(<span class="string">"No."</span>;               Rec.<span class="string">"No."</span>)               { }
+                <span class="cmd">field</span>(<span class="string">"No. Socio"</span>;        Rec.<span class="string">"No. Socio"</span>)        { }
+                <span class="cmd">field</span>(<span class="string">"No. Libro"</span>;        Rec.<span class="string">"No. Libro"</span>)        { }
+                <span class="cmd">field</span>(<span class="string">"Fecha Prestamo"</span>;   Rec.<span class="string">"Fecha Prestamo"</span>)   { }
+                <span class="cmd">field</span>(<span class="string">"Fecha Devolucion"</span>; Rec.<span class="string">"Fecha Devolucion"</span>) { }
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <p>También puedes combinar filtro y ordenación:</p>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="comment">// Orden predeterminado además del filtro</span>
+SourceTableView = <span class="cmd">sorting</span>(<span class="string">"Fecha Prestamo"</span>) <span class="cmd">order</span>(descending)
+                  <span class="cmd">where</span>(Devuelto = <span class="cmd">const</span>(<span class="param">false</span>));</code></pre>
+            </div>
+
+            <!-- TRIGGERS DE PAGE -->
+            <h2>Triggers de Page</h2>
+            <p>Las Pages también tienen triggers que se ejecutan en momentos concretos de la interacción del usuario:
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Trigger</th>
+                        <th>Cuándo se ejecuta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>OnOpenPage()</code></td>
+                        <td>Al abrir la page por primera vez</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnClosePage()</code></td>
+                        <td>Al cerrar la page</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnAfterGetRecord()</code></td>
+                        <td>Después de cargar cada registro (útil para cálculos visuales)</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnNewRecord()</code></td>
+                        <td>Al crear un nuevo registro desde la page</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnQueryClosePage()</code></td>
+                        <td>Antes de cerrar, permite preguntar al usuario si desea guardar</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <div class="ide-header"><span class="title">AL</span></div>
+                <pre><code><span class="comment">// Mostrar aviso en el título si el socio tiene préstamos pendientes</span>
+<span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+<span class="cmd">begin</span>
+    <span class="cmd">if</span> Rec.<span class="string">"Prestamos Activos"</span> > <span class="var">0</span> <span class="cmd">then</span>
+        CurrPage.Caption := Rec.Nombre + <span class="string">' — Préstamos pendientes'</span>
+    <span class="cmd">else</span>
+        CurrPage.Caption := Rec.Nombre;
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <!-- TABLA COMPARATIVA -->
+            <h2>Tabla comparativa</h2>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>List</th>
+                        <th>Card</th>
+                        <th>ListPart</th>
+                        <th>CardPart</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>¿Qué muestra?</strong></td>
+                        <td>Varios registros en tabla</td>
+                        <td>Un registro completo</td>
+                        <td>Varios registros (embebido)</td>
+                        <td>Un registro (embebido)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Control de grupo</strong></td>
+                        <td><code>repeater</code></td>
+                        <td><code>group</code></td>
+                        <td>sin repeater</td>
+                        <td>sin group obligatorio</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Uso habitual</strong></td>
+                        <td>Navegar y buscar registros</td>
+                        <td>Crear / editar registros</td>
+                        <td>Historial, sublistas</td>
+                        <td>Resumen de entidad relacionada</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CardPageId</strong></td>
+                        <td>Recomendado</td>
+                        <td>No aplica</td>
+                        <td>No aplica</td>
+                        <td>No aplica</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Puede tener FactBoxes</strong></td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                    </tr>
+                    <tr>
+                        <td><strong>UsageCategory</strong></td>
+                        <td><code>Lists</code></td>
+                        <td><code>Administration</code></td>
+                        <td>Sin categoría</td>
+                        <td>Sin categoría</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- TIPS -->
+            <div class="alert-info">
+                <h3>💡 Tips</h3>
+                <ul>
+                    <li>Usa siempre <code>Editable = false</code> en las List pages para evitar ediciones accidentales.
+                    </li>
+                    <li>Vincula siempre la List con su Card mediante <code>CardPageId</code> para que el doble clic
+                        funcione correctamente.</li>
+                    <li>En tablas maestras simples (solo código + descripción) puedes prescindir de la Card y editar
+                        directamente en la List.</li>
+                    <li><code>SourceTableView</code> es ideal para crear vistas especializadas sin duplicar pages:
+                        préstamos activos, facturas pendientes, etc.</li>
+                    <li>La propiedad <code>Importance = Promoted</code> en un campo hace que aparezca visible aunque el
+                        grupo esté contraído.</li>
+                </ul>
             </div>
 
             <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
