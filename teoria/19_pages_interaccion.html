@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Páginas: Interacción y Control - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+        .theory-content h3 {
+            color: var(--text-white);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit';
+        }
+        .theory-content p { margin-bottom: 1.5rem; }
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+        .theory-content li { margin-bottom: 0.5rem; }
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        .alert-info h3 { margin-top: 0; color: var(--primary-blue); }
+        .alert-info ul { margin-bottom: 0 !important; }
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        .alert-warning h3 { margin-top: 0; color: #eab308; }
+        .ide-code {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .ide-code pre { margin: 0; }
+        .ide-code code { color: #d4d4d4; }
+        .ide-code .cmd    { color: #569cd6; font-weight: bold; }
+        .ide-code .param  { color: #9cdcfe; }
+        .ide-code .string { color: #ce9178; }
+        .ide-code .comment{ color: #6a9955; font-style: italic; }
+        .ide-code .num    { color: #b5cea8; }
+        .section-divider {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            margin: 3rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-main">
+        <div class="theory-content">
+
+            <span class="diff-badge diff-hard" style="margin-bottom: 1rem; display: inline-block;">Dif. 7/10</span>
+            <h1>Páginas Avanzadas (II): Interacción y Control</h1>
+            <p>
+                Esta segunda parte cubre los mecanismos de interacción y control de las páginas de
+                Business Central: la función Navigate para conectar registros relacionados, los gráficos
+                integrados, el Diseñador en el cliente para personalizar sin código, los triggers de
+                control de campo y la diferencia esencial entre páginas encuadernadas y sin encuadernar.
+            </p>
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- 1. NAVIGATE                             -->
+            <!-- ═══════════════════════════════════════ -->
+            <h2>1. Navegar por la Página y Función Navigate</h2>
+
+            <p>
+                La función <strong>Navigate</strong> en Business Central permite al usuario ver
+                todos los documentos y movimientos contables relacionados con un registro concreto
+                desde una ventana unificada. Por ejemplo, desde una factura publicada puedes ver
+                los movimientos de cliente, las entradas de IVA y los apuntes de libro mayor
+                que se generaron al contabilizarla, todo en una sola pantalla.
+            </p>
+
+            <h3>¿Cómo funciona Navigate internamente?</h3>
+            <p>
+                BC mantiene un campo <code>"Document No."</code> y <code>"Posting Date"</code>
+                en la mayoría de sus tablas de movimientos. La función Navigate busca ese número
+                de documento en todas las tablas registradas y muestra un resumen con cuántos
+                registros encontró en cada una.
+            </p>
+
+            <h3>Añadir Navigate a tu propia página</h3>
+            <div class="ide-code">
+                <pre><code><span class="comment">// Acción Navigate en una página de documento publicado</span>
+<span class="cmd">page</span> <span class="num">50500</span> <span class="string">"Prestamo Publicado Card"</span>
+{
+    <span class="param">PageType</span>    = Card;
+    <span class="param">SourceTable</span> = <span class="string">"Prestamo Publicado"</span>;
+
+    actions
+    {
+        area(Navigation)
+        {
+            action(Navigate)
+            {
+                <span class="param">Caption</span>         = <span class="string">'&amp;Navegar'</span>;
+                <span class="param">ApplicationArea</span> = All;
+                <span class="param">Image</span>           = Navigate;
+
+                trigger <span class="param">OnAction</span>()
+                <span class="cmd">var</span>
+                    NavigatePage: <span class="param">Page</span> Navigate;
+                <span class="cmd">begin</span>
+                    <span class="comment">// Le pasamos el número de documento y la fecha de contabilización</span>
+                    NavigatePage.SetDoc(Rec.<span class="string">"Posting Date"</span>, Rec.<span class="string">"No."</span>);
+                    NavigatePage.Run();
+                <span class="cmd">end</span>;
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <h3>Registrar tu propia tabla en Navigate</h3>
+            <p>
+                Si has creado una tabla de movimientos propia y quieres que aparezca en los resultados
+                de Navigate, debes suscribirte al evento <code>OnAfterNavigate</code> del codeunit
+                de Navigate:
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">codeunit</span> <span class="num">50501</span> <span class="string">"Registro Navigate Prestamo"</span>
+{
+    [<span class="param">EventSubscriber</span>(ObjectType::Page, Page::Navigate,
+                     <span class="string">'OnAfterNavigate'</span>, <span class="string">''</span>, <span class="cmd">false</span>, <span class="cmd">false</span>)]
+    <span class="cmd">local procedure</span> <span class="param">RegistrarMovPrestamo</span>(
+        <span class="cmd">var</span> DocEntry: <span class="param">Record</span> <span class="string">"Document Entry"</span>;
+        DocNoFilter: <span class="param">Text</span>;
+        PostingDateFilter: <span class="param">Text</span>)
+    <span class="cmd">var</span>
+        MovPrestamo: <span class="param">Record</span> <span class="string">"Movimiento Prestamo"</span>;
+    <span class="cmd">begin</span>
+        MovPrestamo.SetFilter(<span class="string">"Document No."</span>, DocNoFilter);
+        MovPrestamo.SetFilter(<span class="string">"Posting Date"</span>, PostingDateFilter);
+
+        <span class="cmd">if</span> MovPrestamo.FindFirst() <span class="cmd">then</span> begin
+            DocEntry.Init();
+            DocEntry.<span class="string">"Table ID"</span>   := Database::<span class="string">"Movimiento Prestamo"</span>;
+            DocEntry.<span class="string">"Table Name"</span> := <span class="string">'Movimiento Prestamo'</span>;
+            DocEntry.<span class="string">"No. of Records"</span> := MovPrestamo.Count;
+            DocEntry.Insert();
+        <span class="cmd">end</span>;
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Claves de Navigate</h3>
+                <ul>
+                    <li><code>SetDoc(PostingDate, DocumentNo)</code> es la forma estándar de inicializar Navigate con los datos del registro actual.</li>
+                    <li>El usuario puede hacer doble clic en cualquier línea del resultado de Navigate para abrir directamente esa tabla filtrada.</li>
+                    <li>Registrar tu tabla en Navigate mediante el evento es la forma correcta: no modifica ningún objeto base de BC.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- 2. GRÁFICOS                             -->
+            <!-- ═══════════════════════════════════════ -->
+            <h2>2. Gráficos en Páginas de Business Central</h2>
+
+            <p>
+                Business Central permite incrustar gráficos dentro de páginas usando el control
+                <strong>BusinessChart</strong>. Este control renderiza datos de una query o de una
+                tabla en forma de gráfico de barras, líneas o circular directamente en la interfaz.
+            </p>
+
+            <h3>Componentes necesarios</h3>
+            <ul>
+                <li><strong>Una Query</strong> que agrupe y calcule los datos a mostrar.</li>
+                <li><strong>Un codeunit</strong> que construya el objeto <code>BusinessChartBuffer</code> con los datos.</li>
+                <li><strong>Una página</strong> con un control de tipo <code>BusinessChartPart</code> que muestre el gráfico.</li>
+            </ul>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Página con gráfico de préstamos por mes</span>
+<span class="cmd">page</span> <span class="num">50510</span> <span class="string">"Grafico Prestamos Part"</span>
+{
+    <span class="param">PageType</span>        = CardPart;
+    <span class="param">ApplicationArea</span> = All;
+
+    layout
+    {
+        area(Content)
+        {
+            <span class="comment">// Control nativo de BC para gráficos</span>
+            usercontrol(GraficoCtrl; <span class="string">"Microsoft.Dynamics.Nav.Client.BusinessChart"</span>)
+            {
+                <span class="param">ApplicationArea</span> = All;
+
+                trigger <span class="param">DataPointClicked</span>(Point: JsonObject)
+                <span class="cmd">begin</span>
+                    <span class="comment">// Reaccionar cuando el usuario hace clic en un punto del gráfico</span>
+                    Message(<span class="string">'Punto seleccionado en el gráfico.'</span>);
+                <span class="cmd">end</span>;
+
+                trigger <span class="param">AddInReady</span>()
+                <span class="cmd">begin</span>
+                    CargarDatosGrafico();
+                <span class="cmd">end</span>;
+            }
+        }
+    }
+
+    <span class="cmd">var</span>
+        ChartBuffer: <span class="param">Record</span> <span class="string">"Business Chart Buffer"</span>;
+
+    <span class="cmd">local procedure</span> <span class="param">CargarDatosGrafico</span>()
+    <span class="cmd">begin</span>
+        ChartBuffer.Initialize();
+        ChartBuffer.SetXAxis(<span class="string">'Mes'</span>, ChartBuffer.<span class="string">"Data Type"</span>::String);
+        ChartBuffer.AddDecimalMeasure(<span class="string">'Préstamos'</span>, <span class="num">1</span>, ChartBuffer.<span class="string">"Chart Type"</span>::Column);
+
+        <span class="comment">// Añadir datos manualmente o desde una query</span>
+        ChartBuffer.SetValueByIndex(<span class="num">0</span>, <span class="num">0</span>, <span class="string">'Enero'</span>);
+        ChartBuffer.SetValueByIndex(<span class="num">0</span>, <span class="num">1</span>, <span class="num">24</span>);
+        ChartBuffer.SetValueByIndex(<span class="num">1</span>, <span class="num">0</span>, <span class="string">'Febrero'</span>);
+        ChartBuffer.SetValueByIndex(<span class="num">1</span>, <span class="num">1</span>, <span class="num">31</span>);
+
+        ChartBuffer.Update(CurrPage.GraficoCtrl);
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <div class="alert-warning">
+                <h3>⚠️ Gráficos y compatibilidad</h3>
+                <ul>
+                    <li>El control <code>BusinessChart</code> solo funciona en el cliente web de BC. No se renderiza en entornos headless ni en exportaciones.</li>
+                    <li>Para dashboards más complejos, la alternativa recomendada por Microsoft es <strong>Power BI</strong> integrado directamente en el RoleCenter.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- 3. DISEÑADOR EN EL CLIENTE              -->
+            <!-- ═══════════════════════════════════════ -->
+            <h2>3. Diseñador en el Cliente</h2>
+
+            <p>
+                El <strong>Diseñador</strong> (Designer) de Business Central es una herramienta visual
+                integrada en el propio navegador que permite personalizar páginas <strong>sin escribir
+                código AL</strong>. Los cambios se guardan como una extensión de página implícita y
+                pueden exportarse como un fichero <code>.app</code>.
+            </p>
+
+            <h3>¿Cómo activarlo?</h3>
+            <ul>
+                <li>Navega a cualquier página de BC en el navegador.</li>
+                <li>Haz clic en el icono de <strong>Configuración</strong> (engranaje) en la esquina superior derecha.</li>
+                <li>Selecciona <strong>Diseño</strong> o pulsa <kbd>Shift</kbd> + <kbd>F7</kbd> en algunas versiones.</li>
+                <li>La página entrará en modo diseño: los campos tendrán bordes azules y aparecerá una barra de herramientas de diseño.</li>
+            </ul>
+
+            <h3>Qué puedes hacer con el Diseñador</h3>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Acción</th>
+                        <th>Cómo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mover campos</td>
+                        <td>Arrastra y suelta cualquier campo a otra posición</td>
+                    </tr>
+                    <tr>
+                        <td>Ocultar campos</td>
+                        <td>Clic derecho sobre el campo → Ocultar</td>
+                    </tr>
+                    <tr>
+                        <td>Añadir campos de la tabla</td>
+                        <td>Botón "+" → lista de campos disponibles en la tabla fuente</td>
+                    </tr>
+                    <tr>
+                        <td>Crear nuevos FastTabs</td>
+                        <td>Botón "Añadir grupo" en la barra de herramientas</td>
+                    </tr>
+                    <tr>
+                        <td>Añadir partes (FactBoxes)</td>
+                        <td>Botón "Añadir parte" → selecciona la página a incrustar</td>
+                    </tr>
+                    <tr>
+                        <td>Exportar como extensión</td>
+                        <td>Botón "Detener diseño" → opción de descargar el .app generado</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert-info">
+                <h3>💡 Diseñador vs. PageExtension en VS Code</h3>
+                <ul>
+                    <li>El Diseñador es perfecto para ajustes rápidos y personalizaciones visuales sencillas.</li>
+                    <li>Para lógica de negocio (triggers, validaciones, acciones) necesitas siempre VS Code.</li>
+                    <li>Puedes exportar lo que has hecho en el Diseñador como código AL y continuar refinándolo en VS Code.</li>
+                    <li>Los cambios del Diseñador se almacenan como una extensión de perfil, no modifican el objeto original.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- 4. TRIGGERS DE CONTROL DE PÁGINA        -->
+            <!-- ═══════════════════════════════════════ -->
+            <h2>4. Triggers de Control de Página</h2>
+
+            <p>
+                Además de los triggers de la propia página (<code>OnOpenPage</code>, <code>OnAfterGetRecord</code>…),
+                cada <strong>campo individual</strong> dentro de una página puede tener sus propios triggers
+                que responden a la interacción directa del usuario con ese control concreto.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Trigger</th>
+                        <th>Cuándo se dispara</th>
+                        <th>Uso típico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>OnValidate</code></td>
+                        <td>El usuario sale del campo después de modificarlo</td>
+                        <td>Validar el valor introducido y actualizar campos dependientes</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnLookup</code></td>
+                        <td>El usuario hace clic en el botón de búsqueda del campo</td>
+                        <td>Mostrar una lista filtrada personalizada en lugar de la estándar</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnDrillDown</code></td>
+                        <td>El usuario hace clic en el valor de un campo (generalmente FlowField)</td>
+                        <td>Abrir una lista con el detalle de los registros que forman el total</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnAssistEdit</code></td>
+                        <td>El usuario hace clic en el botón "…" junto al campo</td>
+                        <td>Abrir un asistente o diálogo auxiliar para rellenar el campo</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">page</span> <span class="num">50520</span> <span class="string">"Prestamo Card"</span>
+{
+    <span class="param">PageType</span>    = Card;
+    <span class="param">SourceTable</span> = Prestamo;
+
+    layout
+    {
+        area(Content)
+        {
+            group(General)
+            {
+                <span class="cmd">field</span>(<span class="string">"No. Socio"</span>; Rec.<span class="string">"No. Socio"</span>)
+                {
+                    <span class="param">ApplicationArea</span> = All;
+
+                    <span class="comment">// OnValidate: al cambiar el socio, actualizamos su nombre</span>
+                    trigger <span class="param">OnValidate</span>()
+                    <span class="cmd">var</span>
+                        Socio: <span class="param">Record</span> Socio;
+                    <span class="cmd">begin</span>
+                        <span class="cmd">if</span> Socio.Get(Rec.<span class="string">"No. Socio"</span>) <span class="cmd">then</span>
+                            Rec.<span class="string">"Nombre Socio"</span> := Socio.Nombre;
+                    <span class="cmd">end</span>;
+
+                    <span class="comment">// OnLookup: filtramos solo socios activos</span>
+                    trigger <span class="param">OnLookup</span>(<span class="cmd">var</span> Text: <span class="param">Text</span>): <span class="param">Boolean</span>
+                    <span class="cmd">var</span>
+                        Socio: <span class="param">Record</span> Socio;
+                        SocioList: <span class="param">Page</span> <span class="string">"Socio List"</span>;
+                    <span class="cmd">begin</span>
+                        Socio.SetRange(Activo, <span class="cmd">true</span>);
+                        SocioList.SetTableView(Socio);
+                        SocioList.LookupMode := <span class="cmd">true</span>;
+                        <span class="cmd">if</span> SocioList.RunModal() = Action::LookupOK <span class="cmd">then</span> begin
+                            SocioList.GetRecord(Socio);
+                            Rec.<span class="string">"No. Socio"</span> := Socio.<span class="string">"No."</span>;
+                            exit(<span class="cmd">true</span>);
+                        <span class="cmd">end</span>;
+                    <span class="cmd">end</span>;
+                }
+
+                <span class="cmd">field</span>(<span class="string">"Total Prestamos"</span>; Rec.<span class="string">"Total Prestamos"</span>)
+                {
+                    <span class="param">ApplicationArea</span> = All;
+
+                    <span class="comment">// OnDrillDown: al hacer clic en el total, mostramos el detalle</span>
+                    trigger <span class="param">OnDrillDown</span>()
+                    <span class="cmd">var</span>
+                        Prestamo: <span class="param">Record</span> Prestamo;
+                        PrestamoList: <span class="param">Page</span> <span class="string">"Prestamo List"</span>;
+                    <span class="cmd">begin</span>
+                        Prestamo.SetRange(<span class="string">"No. Socio"</span>, Rec.<span class="string">"No. Socio"</span>);
+                        PrestamoList.SetTableView(Prestamo);
+                        PrestamoList.Run();
+                    <span class="cmd">end</span>;
+                }
+
+                <span class="cmd">field</span>(<span class="string">"No. Libro"</span>; Rec.<span class="string">"No. Libro"</span>)
+                {
+                    <span class="param">ApplicationArea</span> = All;
+
+                    <span class="comment">// OnAssistEdit: abre un asistente para seleccionar el libro</span>
+                    trigger <span class="param">OnAssistEdit</span>()
+                    <span class="cmd">var</span>
+                        Libro: <span class="param">Record</span> Libro;
+                    <span class="cmd">begin</span>
+                        <span class="cmd">if</span> Libro.Get(Rec.<span class="string">"No. Libro"</span>) <span class="cmd">then</span>;
+                        <span class="cmd">if</span> PAGE.RunModal(PAGE::<span class="string">"Libro List"</span>, Libro) = Action::LookupOK <span class="cmd">then</span>
+                            Rec.<span class="string">"No. Libro"</span> := Libro.<span class="string">"No."</span>;
+                    <span class="cmd">end</span>;
+                }
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- 5. BOUND / UNBOUND                      -->
+            <!-- ═══════════════════════════════════════ -->
+            <h2>5. Páginas Encuadernadas y Sin Encuadernar</h2>
+
+            <p>
+                En Business Central, una página puede estar <strong>encuadernada</strong> (bound)
+                a una tabla o <strong>sin encuadernar</strong> (unbound). Esta diferencia determina
+                si la página lee y escribe datos de la base de datos directamente o si trabaja
+                exclusivamente con variables en memoria.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>Encuadernada (Bound)</th>
+                        <th>Sin encuadernar (Unbound)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>SourceTable</code></td>
+                        <td>Sí, apunta a una tabla</td>
+                        <td>No se declara</td>
+                    </tr>
+                    <tr>
+                        <td>Origen de los datos</td>
+                        <td>Base de datos SQL</td>
+                        <td>Variables AL en memoria</td>
+                    </tr>
+                    <tr>
+                        <td>Guardado automático</td>
+                        <td>Sí, BC gestiona Insert/Modify</td>
+                        <td>No, el desarrollador controla todo</td>
+                    </tr>
+                    <tr>
+                        <td>Usos típicos</td>
+                        <td>Cards, Lists, Documents, Worksheets</td>
+                        <td>Asistentes, diálogos de parámetros, formularios libres</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Ejemplo de página sin encuadernar (Unbound)</h3>
+            <p>
+                Una página sin encuadernar es perfecta para crear asistentes de configuración o
+                formularios donde el usuario introduce parámetros que después se usan en un proceso,
+                sin necesidad de guardar nada en ninguna tabla.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Página sin SourceTable — completamente unbound</span>
+<span class="cmd">page</span> <span class="num">50530</span> <span class="string">"Asistente Importacion"</span>
+{
+    <span class="param">PageType</span>        = NavigatePage; <span class="comment">// tipo para asistentes paso a paso</span>
+    <span class="param">Caption</span>         = <span class="string">'Asistente de Importación'</span>;
+    <span class="param">ApplicationArea</span> = All;
+    <span class="comment">// Sin SourceTable: la página no está ligada a ninguna tabla</span>
+
+    layout
+    {
+        area(Content)
+        {
+            group(Paso1)
+            {
+                <span class="param">Visible</span> = PasoActual = <span class="num">1</span>;
+                <span class="param">Caption</span> = <span class="string">'Paso 1: Configuración'</span>;
+
+                <span class="cmd">field</span>(RutaFichero; RutaFichero)
+                {
+                    <span class="param">Caption</span>         = <span class="string">'Ruta del fichero'</span>;
+                    <span class="param">ApplicationArea</span> = All;
+                }
+                <span class="cmd">field</span>(Separador; Separador)
+                {
+                    <span class="param">Caption</span>         = <span class="string">'Separador'</span>;
+                    <span class="param">ApplicationArea</span> = All;
+                }
+            }
+            group(Paso2)
+            {
+                <span class="param">Visible</span> = PasoActual = <span class="num">2</span>;
+                <span class="param">Caption</span> = <span class="string">'Paso 2: Confirmar'</span>;
+
+                <span class="cmd">field</span>(Resumen; GetResumen())
+                {
+                    <span class="param">Caption</span>         = <span class="string">'Resumen'</span>;
+                    <span class="param">ApplicationArea</span> = All;
+                    <span class="param">Editable</span>        = <span class="cmd">false</span>;
+                    <span class="param">MultiLine</span>       = <span class="cmd">true</span>;
+                }
+            }
+        }
+    }
+
+    actions
+    {
+        area(Processing)
+        {
+            action(Siguiente)
+            {
+                <span class="param">Caption</span>         = <span class="string">'Siguiente'</span>;
+                <span class="param">ApplicationArea</span> = All;
+                <span class="param">Visible</span>         = PasoActual &lt; 2;
+
+                trigger <span class="param">OnAction</span>()
+                <span class="cmd">begin</span>
+                    PasoActual += <span class="num">1</span>;
+                <span class="cmd">end</span>;
+            }
+            action(Finalizar)
+            {
+                <span class="param">Caption</span>         = <span class="string">'Importar'</span>;
+                <span class="param">ApplicationArea</span> = All;
+                <span class="param">Visible</span>         = PasoActual = <span class="num">2</span>;
+
+                trigger <span class="param">OnAction</span>()
+                <span class="cmd">begin</span>
+                    <span class="comment">// Ejecutar la importación con los parámetros recogidos</span>
+                    Message(<span class="string">'Importando desde: %1 con separador: %2'</span>, RutaFichero, Separador);
+                    CurrPage.Close();
+                <span class="cmd">end</span>;
+            }
+        }
+    }
+
+    <span class="comment">// Variables en memoria — no se guardan en ninguna tabla</span>
+    <span class="cmd">var</span>
+        PasoActual:  <span class="param">Integer</span>;
+        RutaFichero: <span class="param">Text</span>[<span class="num">250</span>];
+        Separador:   <span class="param">Text</span>[<span class="num">1</span>];
+
+    trigger <span class="param">OnOpenPage</span>()
+    <span class="cmd">begin</span>
+        PasoActual := <span class="num">1</span>;
+        Separador  := <span class="string">';'</span>;
+    <span class="cmd">end</span>;
+
+    <span class="cmd">local procedure</span> <span class="param">GetResumen</span>(): <span class="param">Text</span>
+    <span class="cmd">begin</span>
+        exit(<span class="string">'Fichero: '</span> + RutaFichero + <span class="string">' | Separador: '</span> + Separador);
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Cuándo usar cada tipo</h3>
+                <ul>
+                    <li>Usa páginas <strong>encuadernadas</strong> siempre que los datos deban persistir en la base de datos: maestros, documentos, movimientos.</li>
+                    <li>Usa páginas <strong>sin encuadernar</strong> para asistentes de configuración, diálogos de parámetros o cualquier flujo donde los datos sean temporales.</li>
+                    <li>En las páginas unbound, eres tú quien decide qué hacer con los datos que introduce el usuario: guardarlos, pasarlos a un codeunit o simplemente usarlos en el momento.</li>
+                </ul>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

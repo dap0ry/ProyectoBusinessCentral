@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipos de Tabla Avanzados - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+        .theory-content h3 {
+            color: var(--text-white);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit';
+        }
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+        .alert-info ul {
+            margin-bottom: 0 !important;
+        }
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        .alert-warning h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+        .ide-code {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .ide-code pre { margin: 0; }
+        .ide-code code { color: #d4d4d4; }
+        .ide-code .cmd    { color: #569cd6; font-weight: bold; }
+        .ide-code .param  { color: #9cdcfe; }
+        .ide-code .var    { color: #4fc1ff; }
+        .ide-code .string { color: #ce9178; }
+        .ide-code .comment{ color: #6a9955; font-style: italic; }
+        .ide-code .num    { color: #b5cea8; }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-main">
+        <div class="theory-content">
+
+            <span class="diff-badge diff-medium" style="margin-bottom: 1rem; display: inline-block;">Dif. 5/10</span>
+            <h1>Tipos de Tabla Avanzados</h1>
+            <p>
+                En Business Central, no todas las tablas tienen el mismo rol ni el mismo ciclo de vida.
+                Más allá de las tablas maestras o de configuración, existen categorías especializadas que
+                responden a necesidades concretas del sistema: tablas que capturan un proceso en curso,
+                tablas que guardan el resultado permanente de ese proceso y tablas cuyo acceso está controlado
+                por el propio sistema. Entender estas categorías es esencial para diseñar extensiones coherentes
+                con la arquitectura de BC.
+            </p>
+
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <!-- BLOQUE 1: REGISTRO / DOCUMENTO PUBLICADO               -->
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <h2>1. Tablas de Registro y Documento Publicado</h2>
+
+            <h3>¿Cuál es la diferencia?</h3>
+            <p>
+                Business Central separa el <strong>proceso de introducción de datos</strong> del
+                <strong>resultado contable definitivo</strong> en dos tablas distintas.
+                La tabla de <em>cabecera/línea de documento</em> actúa como borrador editable;
+                cuando el usuario contabiliza (<em>Post</em>), BC mueve y transforma esos datos
+                a una tabla de <em>documento publicado</em> que ya no se puede modificar.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Ejemplo real en BC</th>
+                        <th>¿Se puede editar?</th>
+                        <th>¿Se puede borrar?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Documento (borrador)</strong></td>
+                        <td><code>Sales Header</code> / <code>Sales Line</code></td>
+                        <td>Sí, hasta que se contabiliza</td>
+                        <td>Sí (con permisos)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Documento publicado</strong></td>
+                        <td><code>Sales Invoice Header</code> / <code>Sales Invoice Line</code></td>
+                        <td>No (solo lectura)</td>
+                        <td>No (registro contable)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Entrada de registro (Ledger)</strong></td>
+                        <td><code>Cust. Ledger Entry</code>, <code>G/L Entry</code></td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>El flujo de contabilización</h3>
+            <p>
+                El proceso siempre sigue la misma secuencia: el usuario crea y edita el documento borrador,
+                luego ejecuta la acción <strong>Post</strong> (contabilizar). En ese momento BC valida los datos,
+                genera los movimientos de libro mayor y crea el documento publicado. Los datos del borrador
+                se eliminan o archivan según la configuración.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Tabla de documento borrador (editable)</span>
+<span class="cmd">table</span> <span class="num">36</span> <span class="string">"Sales Header"</span>
+{
+    <span class="param">DataClassification</span> = CustomerContent;
+    <span class="param">Caption</span> = <span class="string">'Sales Header'</span>;
+
+    <span class="cmd">fields</span>
+    {
+        <span class="cmd">field</span>(<span class="num">1</span>; <span class="string">"Document Type"</span>; <span class="param">Enum</span> <span class="string">"Sales Document Type"</span>) { }
+        <span class="cmd">field</span>(<span class="num">3</span>; <span class="string">"No."</span>;            <span class="param">Code</span>[<span class="num">20</span>]) { }
+        <span class="cmd">field</span>(<span class="num">2</span>; <span class="string">"Sell-to Customer No."</span>; <span class="param">Code</span>[<span class="num">20</span>])
+        {
+            <span class="param">TableRelation</span> = Customer;
+        }
+    }
+
+    <span class="comment">// La tabla borrador PERMITE triggers de escritura</span>
+    <span class="cmd">trigger</span> <span class="param">OnInsert</span>()
+    <span class="cmd">begin</span>
+        <span class="comment">// Asignar número de serie, fecha, etc.</span>
+    <span class="cmd">end</span>;
+}
+
+<span class="comment">// Tabla de documento publicado (solo lectura en la práctica)</span>
+<span class="cmd">table</span> <span class="num">112</span> <span class="string">"Sales Invoice Header"</span>
+{
+    <span class="param">DataClassification</span> = CustomerContent;
+    <span class="param">Caption</span> = <span class="string">'Sales Invoice Header'</span>;
+
+    <span class="comment">// Mismos campos que Sales Header, pero ya no se editan</span>
+    <span class="cmd">fields</span>
+    {
+        <span class="cmd">field</span>(<span class="num">3</span>;  <span class="string">"No."</span>;                  <span class="param">Code</span>[<span class="num">20</span>]) { }
+        <span class="cmd">field</span>(<span class="num">2</span>;  <span class="string">"Sell-to Customer No."</span>; <span class="param">Code</span>[<span class="num">20</span>]) { }
+        <span class="cmd">field</span>(<span class="num">20</span>; <span class="string">"Posting Date"</span>;         <span class="param">Date</span>) { }
+    }
+}</code></pre>
+            </div>
+
+            <h3>¿Cómo lo aplico en mis extensiones?</h3>
+            <p>
+                Cuando amplíes un documento de BC con campos propios, debes añadir el campo
+                <strong>en ambas tablas</strong>: en el borrador y en el publicado. De lo contrario,
+                el dato desaparecerá tras la contabilización. El codeunit de posting se encarga de copiar
+                los valores del borrador al publicado.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// TableExtension sobre el borrador</span>
+<span class="cmd">tableextension</span> <span class="num">50100</span> <span class="string">"Sales Header Ext."</span> <span class="cmd">extends</span> <span class="string">"Sales Header"</span>
+{
+    <span class="cmd">fields</span>
+    {
+        <span class="cmd">field</span>(<span class="num">50100</span>; <span class="string">"Motivo Descuento"</span>; <span class="param">Text</span>[<span class="num">100</span>]) { }
+    }
+}
+
+<span class="comment">// TableExtension TAMBIÉN sobre el publicado</span>
+<span class="cmd">tableextension</span> <span class="num">50101</span> <span class="string">"Sales Inv. Header Ext."</span> <span class="cmd">extends</span> <span class="string">"Sales Invoice Header"</span>
+{
+    <span class="cmd">fields</span>
+    {
+        <span class="cmd">field</span>(<span class="num">50100</span>; <span class="string">"Motivo Descuento"</span>; <span class="param">Text</span>[<span class="num">100</span>]) { }
+    }
+}</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Regla práctica</h3>
+                <ul>
+                    <li>Si el campo que añades tiene valor de negocio (se necesita en facturas impresas, informes o auditoría), va en <strong>ambas tablas</strong>.</li>
+                    <li>Si solo sirve durante la edición del borrador (ej. un flag temporal de validación), solo va en el borrador.</li>
+                    <li>El número de campo (<code>50100</code>) debe coincidir en ambas extensiones para que el codeunit de posting lo copie sin código adicional.</li>
+                </ul>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <!-- BLOQUE 2: MODIFICABLE / SISTEMA / SOLO LECTURA         -->
+            <!-- ═══════════════════════════════════════════════════════ -->
+            <h2>2. Tablas por Nivel de Acceso: Modificable, Sistema y Solo Lectura</h2>
+
+            <p>
+                Business Central clasifica sus tablas internas según quién puede escribir en ellas
+                y bajo qué circunstancias. Esta clasificación no siempre aparece como una propiedad
+                explícita, sino que se deduce de la combinación de propiedades, permisos y diseño de la tabla.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Descripción</th>
+                        <th>Ejemplos</th>
+                        <th>¿Extensible?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Totalmente modificable</strong></td>
+                        <td>El usuario puede crear, editar y borrar registros libremente desde la UI.</td>
+                        <td><code>Customer</code>, <code>Item</code>, tablas maestras propias</td>
+                        <td>Sí</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Contenido modificable</strong></td>
+                        <td>Se puede editar desde la UI pero con restricciones (ej. no borrar si hay movimientos).</td>
+                        <td><code>Sales Header</code>, <code>Purchase Header</code></td>
+                        <td>Sí</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sistema / Virtual</strong></td>
+                        <td>Tablas internas de BC que no almacenan datos en SQL. Solo existen en memoria o las gestiona el runtime.</td>
+                        <td><code>Integer</code>, <code>Date</code>, <code>Session</code></td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Solo lectura</strong></td>
+                        <td>Se generan automáticamente por procesos de posting. El usuario nunca escribe en ellas directamente.</td>
+                        <td><code>G/L Entry</code>, <code>Cust. Ledger Entry</code>, <code>Sales Invoice Header</code></td>
+                        <td>Sí (TableExtension), pero no se insertan registros manualmente</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Tablas virtuales del sistema</h3>
+            <p>
+                Las tablas virtuales son un caso especial. BC las usa internamente para ciertas operaciones
+                y no corresponden a una tabla física en la base de datos SQL. La más usada en código AL es
+                <code>Integer</code>, que se emplea para generar bucles o listas de números sin necesidad
+                de una tabla real.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Uso de la tabla virtual "Integer" para iterar sin tabla real</span>
+<span class="cmd">var</span>
+    IntRec: <span class="param">Record</span> <span class="string">Integer</span>;
+<span class="cmd">begin</span>
+    IntRec.<span class="param">SetRange</span>(Number, <span class="num">1</span>, <span class="num">10</span>);
+    <span class="cmd">if</span> IntRec.<span class="param">FindSet</span>() <span class="cmd">then</span>
+        <span class="cmd">repeat</span>
+            Message(<span class="string">'Iteración número: %1'</span>, IntRec.Number);
+        <span class="cmd">until</span> IntRec.<span class="param">Next</span>() = <span class="num">0</span>;
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <h3>Propiedad TableType</h3>
+            <p>
+                En AL, la propiedad <code>TableType</code> de una tabla permite declarar explícitamente
+                su comportamiento especial. Si no se indica, el valor por defecto es <code>Normal</code>.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">table</span> <span class="num">50200</span> <span class="string">"Mi Tabla Temporal"</span>
+{
+    <span class="comment">// TableType = Temporary indica que esta tabla solo existe en memoria</span>
+    <span class="comment">// durante la ejecución. No persiste en la base de datos.</span>
+    <span class="param">TableType</span> = Temporary;
+
+    <span class="cmd">fields</span>
+    {
+        <span class="cmd">field</span>(<span class="num">1</span>; <span class="string">"Entry No."</span>; <span class="param">Integer</span>) { }
+        <span class="cmd">field</span>(<span class="num">2</span>; <span class="string">"Descripcion"</span>; <span class="param">Text</span>[<span class="num">100</span>]) { }
+    }
+
+    <span class="cmd">keys</span>
+    {
+        <span class="cmd">key</span>(PK; <span class="string">"Entry No."</span>) { <span class="param">Clustered</span> = <span class="cmd">true</span>; }
+    }
+}</code></pre>
+            </div>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Valor de TableType</th>
+                        <th>Significado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Normal</code></td>
+                        <td>Tabla estándar con persistencia en SQL (valor por defecto).</td>
+                    </tr>
+                    <tr>
+                        <td><code>Temporary</code></td>
+                        <td>Solo existe en memoria durante la sesión. Útil para buffers intermedios.</td>
+                    </tr>
+                    <tr>
+                        <td><code>CRM</code></td>
+                        <td>Tabla mapeada a Dynamics 365 CRM / Dataverse.</td>
+                    </tr>
+                    <tr>
+                        <td><code>ExternalSQL</code></td>
+                        <td>Tabla mapeada a una fuente SQL externa.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert-warning">
+                <h3>⚠️ Atención con las tablas de solo lectura</h3>
+                <ul>
+                    <li>Nunca intentes insertar registros directamente en tablas de tipo Ledger Entry o Invoice Header desde tu código. BC lo bloqueará o corromperá la integridad contable.</li>
+                    <li>Si necesitas añadir datos relacionados con una entrada contable, crea tu propia tabla auxiliar con una <code>TableRelation</code> a la entrada correspondiente.</li>
+                    <li>Las tablas virtuales (<code>Integer</code>, <code>Date</code>) no se pueden extender con <code>TableExtension</code>.</li>
+                </ul>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Resumen rápido</h3>
+                <ul>
+                    <li><strong>Borrador → Publicado:</strong> todo campo de negocio que añadas al borrador debe ir también en el publicado.</li>
+                    <li><strong>Tablas del sistema:</strong> se usan pero no se extienden ni se modifican.</li>
+                    <li><strong>Solo lectura:</strong> se extienden para añadir campos pero nunca se insertan registros manualmente.</li>
+                    <li><strong>TableType = Temporary:</strong> útil para manejar datos intermedios sin tocar la base de datos.</li>
+                </ul>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

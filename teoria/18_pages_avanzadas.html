@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Páginas Avanzadas - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+        .theory-content h3 {
+            color: var(--text-white);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit';
+        }
+        .theory-content p { margin-bottom: 1.5rem; }
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+        .theory-content li { margin-bottom: 0.5rem; }
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        .alert-info h3 { margin-top: 0; color: var(--primary-blue); }
+        .alert-info ul { margin-bottom: 0 !important; }
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        .alert-warning h3 { margin-top: 0; color: #eab308; }
+        .ide-code {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .ide-code pre { margin: 0; }
+        .ide-code code { color: #d4d4d4; }
+        .ide-code .cmd    { color: #569cd6; font-weight: bold; }
+        .ide-code .param  { color: #9cdcfe; }
+        .ide-code .string { color: #ce9178; }
+        .ide-code .comment{ color: #6a9955; font-style: italic; }
+        .ide-code .num    { color: #b5cea8; }
+        .section-divider {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            margin: 3rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-main">
+        <div class="theory-content">
+
+            <span class="diff-badge diff-hard" style="margin-bottom: 1rem; display: inline-block;">Dif. 7/10</span>
+            <h1>Páginas Avanzadas (I)</h1>
+            <p>
+                Esta sección profundiza en los tipos de página de Business Central que van más allá
+                de la List y la Card básicas: el RoleCenter como punto de entrada personalizado,
+                las páginas de Documento con su estructura de cabecera y líneas, las FastTabs como
+                herramienta de organización visual, y los tipos Worksheet y Dialog para casos de uso específicos.
+            </p>
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- 1. ROLECENTER                           -->
+            <!-- ═══════════════════════════════════════ -->
+            <h2>1. Page tipo: RoleCenter</h2>
+
+            <p>
+                El <strong>RoleCenter</strong> es la página de inicio personalizada que BC muestra a cada
+                usuario según su perfil. No es una lista ni una ficha: es un <em>panel de control</em>
+                compuesto por bloques informativos llamados <strong>cues</strong> (mosaicos con contadores),
+                <strong>activities</strong> (grupos de cues) y <strong>headlines</strong> (mensajes dinámicos en la parte superior).
+            </p>
+
+            <h3>Estructura de un RoleCenter</h3>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Componente</th>
+                        <th>Qué es</th>
+                        <th>Control AL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Headline</strong></td>
+                        <td>Mensaje dinámico en la cabecera de la página (ej: "Tienes 3 pedidos pendientes")</td>
+                        <td><code>HeadlinePart</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Activities</strong></td>
+                        <td>Grupo de mosaicos (cues) agrupados por categoría</td>
+                        <td><code>cuegroup</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cue</strong></td>
+                        <td>Mosaico individual con un número que al hacer clic abre una página filtrada</td>
+                        <td><code>field</code> sobre un FlowField</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Parts</strong></td>
+                        <td>Subpáginas incrustadas (listas, gráficos, FactBoxes)</td>
+                        <td><code>part</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Ejemplo: RoleCenter básico para un bibliotecario</h3>
+            <div class="ide-code">
+                <pre><code><span class="comment">// 1. Tabla de Cue Setup — guarda los contadores FlowField</span>
+<span class="cmd">table</span> <span class="num">50300</span> <span class="string">"Biblioteca Cue"</span>
+{
+    <span class="param">DataClassification</span> = CustomerContent;
+
+    <span class="cmd">fields</span>
+    {
+        <span class="cmd">field</span>(<span class="num">1</span>; <span class="string">"Primary Key"</span>; <span class="param">Code</span>[<span class="num">10</span>]) { }
+
+        <span class="cmd">field</span>(<span class="num">2</span>; <span class="string">"Prestamos Activos"</span>; <span class="param">Integer</span>)
+        {
+            <span class="param">FieldClass</span>   = FlowField;
+            <span class="param">CalcFormula</span>  = count(<span class="string">"Prestamo"</span> <span class="cmd">where</span>(Estado = <span class="cmd">const</span>(Activo)));
+            <span class="param">Editable</span>     = <span class="cmd">false</span>;
+        }
+        <span class="cmd">field</span>(<span class="num">3</span>; <span class="string">"Prestamos Vencidos"</span>; <span class="param">Integer</span>)
+        {
+            <span class="param">FieldClass</span>   = FlowField;
+            <span class="param">CalcFormula</span>  = count(<span class="string">"Prestamo"</span> <span class="cmd">where</span>(Estado = <span class="cmd">const</span>(Vencido)));
+            <span class="param">Editable</span>     = <span class="cmd">false</span>;
+        }
+    }
+    <span class="cmd">keys</span>
+    {
+        <span class="cmd">key</span>(PK; <span class="string">"Primary Key"</span>) { <span class="param">Clustered</span> = <span class="cmd">true</span>; }
+    }
+}
+
+<span class="comment">// 2. Página de actividades (los mosaicos)</span>
+<span class="cmd">page</span> <span class="num">50301</span> <span class="string">"Biblioteca Activities"</span>
+{
+    <span class="param">PageType</span>    = CardPart;
+    <span class="param">SourceTable</span> = <span class="string">"Biblioteca Cue"</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            cuegroup(Prestamos)
+            {
+                <span class="param">Caption</span> = <span class="string">'Préstamos'</span>;
+
+                <span class="cmd">field</span>(<span class="string">"Prestamos Activos"</span>; Rec.<span class="string">"Prestamos Activos"</span>)
+                {
+                    <span class="param">DrillDownPageId</span> = <span class="string">"Prestamo List"</span>;
+                    <span class="param">ApplicationArea</span> = All;
+                }
+                <span class="cmd">field</span>(<span class="string">"Prestamos Vencidos"</span>; Rec.<span class="string">"Prestamos Vencidos"</span>)
+                {
+                    <span class="param">DrillDownPageId</span> = <span class="string">"Prestamo List"</span>;
+                    <span class="param">ApplicationArea</span> = All;
+                    <span class="param">StyleExpr</span>       = <span class="string">'Unfavorable'</span>; <span class="comment">// lo pinta en rojo</span>
+                }
+            }
+        }
+    }
+
+    trigger <span class="param">OnOpenPage</span>()
+    <span class="cmd">begin</span>
+        <span class="comment">// Nos aseguramos de que siempre exista el único registro de cue</span>
+        <span class="cmd">if not</span> Rec.Get() <span class="cmd">then</span> begin
+            Rec.Init();
+            Rec.Insert();
+        end;
+        Rec.CalcFields(<span class="string">"Prestamos Activos"</span>, <span class="string">"Prestamos Vencidos"</span>);
+    <span class="cmd">end</span>;
+}
+
+<span class="comment">// 3. El RoleCenter propiamente dicho</span>
+<span class="cmd">page</span> <span class="num">50302</span> <span class="string">"Biblioteca Role Center"</span>
+{
+    <span class="param">PageType</span>      = RoleCenter;
+    <span class="param">Caption</span>       = <span class="string">'Área de Trabajo Biblioteca'</span>;
+    <span class="param">ApplicationArea</span> = All;
+
+    layout
+    {
+        area(RoleCenter)
+        {
+            <span class="comment">// Incrustamos la página de actividades como part</span>
+            part(Actividades; <span class="string">"Biblioteca Activities"</span>) { }
+        }
+    }
+
+    actions
+    {
+        area(Sections)
+        {
+            group(Catalogos)
+            {
+                <span class="param">Caption</span> = <span class="string">'Catálogos'</span>;
+                action(Libros)
+                {
+                    RunObject       = <span class="cmd">page</span> <span class="string">"Libro List"</span>;
+                    <span class="param">ApplicationArea</span> = All;
+                }
+                action(Socios)
+                {
+                    RunObject       = <span class="cmd">page</span> <span class="string">"Socio List"</span>;
+                    <span class="param">ApplicationArea</span> = All;
+                }
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Claves del RoleCenter</h3>
+                <ul>
+                    <li>La tabla de cues siempre tiene <strong>un único registro</strong> por usuario. Se crea en el <code>OnOpenPage</code> si no existe.</li>
+                    <li><code>DrillDownPageId</code> define a qué página se navega al hacer clic en el mosaico.</li>
+                    <li><code>StyleExpr = 'Unfavorable'</code> pinta el mosaico en rojo. Otros valores: <code>'Favorable'</code> (verde), <code>'Ambiguous'</code> (amarillo).</li>
+                    <li>Para asignar el RoleCenter a un perfil, ve a <strong>Perfiles</strong> en BC y selecciona tu página como ID de centro de roles.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- 2. HEADLINEPART                         -->
+            <!-- ═══════════════════════════════════════ -->
+            <h2>2. Page tipo: HeadlinePart</h2>
+
+            <p>
+                El <strong>HeadlinePart</strong> es la parte superior del RoleCenter que muestra
+                mensajes dinámicos y personalizados al usuario: bienvenidas, alertas del día,
+                métricas clave… Se define como una página independiente de tipo <code>HeadlinePart</code>
+                y se incrusta en el RoleCenter como un <code>part</code>.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">page</span> <span class="num">50310</span> <span class="string">"Biblioteca Headline"</span>
+{
+    <span class="param">PageType</span>        = HeadlinePart;
+    <span class="param">ApplicationArea</span> = All;
+
+    layout
+    {
+        area(Content)
+        {
+            <span class="comment">// Cada field es una línea de titular en la cabecera</span>
+            <span class="cmd">field</span>(Bienvenida; GetBienvenida())
+            {
+                <span class="param">ApplicationArea</span> = All;
+                <span class="param">ShowCaption</span>     = <span class="cmd">false</span>;
+            }
+            <span class="cmd">field</span>(AlertaVencidos; GetAlertaVencidos())
+            {
+                <span class="param">ApplicationArea</span> = All;
+                <span class="param">ShowCaption</span>     = <span class="cmd">false</span>;
+                <span class="param">Visible</span>         = HayVencidos; <span class="comment">// solo se muestra si hay préstamos vencidos</span>
+            }
+        }
+    }
+
+    <span class="cmd">var</span>
+        HayVencidos: <span class="param">Boolean</span>;
+
+    trigger <span class="param">OnOpenPage</span>()
+    <span class="cmd">var</span>
+        Prestamo: <span class="param">Record</span> <span class="string">"Prestamo"</span>;
+    <span class="cmd">begin</span>
+        Prestamo.SetRange(Estado, Prestamo.Estado::Vencido);
+        HayVencidos := <span class="cmd">not</span> Prestamo.IsEmpty();
+    <span class="cmd">end</span>;
+
+    <span class="comment">// Procedimientos que devuelven el texto de cada titular</span>
+    <span class="cmd">local procedure</span> <span class="param">GetBienvenida</span>(): <span class="param">Text</span>
+    <span class="cmd">begin</span>
+        exit(<span class="string">'Bienvenido, '</span> + UserId + <span class="string">'. Hoy es '</span> + Format(Today) + <span class="string">'.'</span>);
+    <span class="cmd">end</span>;
+
+    <span class="cmd">local procedure</span> <span class="param">GetAlertaVencidos</span>(): <span class="param">Text</span>
+    <span class="cmd">var</span>
+        Prestamo: <span class="param">Record</span> <span class="string">"Prestamo"</span>;
+    <span class="cmd">begin</span>
+        Prestamo.SetRange(Estado, Prestamo.Estado::Vencido);
+        exit(<span class="string">'Atención: tienes '</span> + Format(Prestamo.Count) + <span class="string">' préstamos vencidos.'</span>);
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Claves del HeadlinePart</h3>
+                <ul>
+                    <li>Cada <code>field</code> del HeadlinePart es un titular independiente. BC los muestra en rotación o apilados.</li>
+                    <li>Usa <code>Visible</code> con una variable booleana para mostrar u ocultar titulares según la situación.</li>
+                    <li>El texto lo genera un procedimiento AL, así que puede ser completamente dinámico.</li>
+                    <li>Para incrustarlo en el RoleCenter añade: <code>part(Cabecera; "Biblioteca Headline") { }</code> dentro del <code>area(RoleCenter)</code>.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- 3. PAGE DOCUMENTO                       -->
+            <!-- ═══════════════════════════════════════ -->
+            <h2>3. Page tipo: Documento</h2>
+
+            <p>
+                El tipo <strong>Document</strong> representa documentos con una <em>cabecera</em> y
+                sus <em>líneas</em> en la misma pantalla. La cabecera describe el documento completo
+                (cliente, fecha, número) y las líneas detallan cada elemento (artículos, cantidades, precios).
+                Es el tipo usado por los pedidos de venta, facturas o cualquier documento maestro-detalle.
+            </p>
+
+            <h3>Estructura: dos tablas, una página</h3>
+            <p>
+                La página de tipo Document tiene su <code>SourceTable</code> apuntando a la tabla de
+                cabecera. Las líneas se incrustan como una <strong>subpágina</strong> de tipo
+                <code>ListPart</code> ligada a la tabla de líneas.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Tabla de cabecera del pedido de préstamo</span>
+<span class="cmd">table</span> <span class="num">50400</span> <span class="string">"Cabecera Pedido Prestamo"</span>
+{
+    <span class="param">DataClassification</span> = CustomerContent;
+    <span class="cmd">fields</span>
+    {
+        <span class="cmd">field</span>(<span class="num">1</span>; <span class="string">"No."</span>;             <span class="param">Code</span>[<span class="num">20</span>]) { }
+        <span class="cmd">field</span>(<span class="num">2</span>; <span class="string">"No. Socio"</span>;       <span class="param">Code</span>[<span class="num">20</span>]) { <span class="param">TableRelation</span> = Socio; }
+        <span class="cmd">field</span>(<span class="num">3</span>; <span class="string">"Fecha Pedido"</span>;    <span class="param">Date</span>)       { }
+    }
+    <span class="cmd">keys</span>
+    {
+        <span class="cmd">key</span>(PK; <span class="string">"No."</span>) { <span class="param">Clustered</span> = <span class="cmd">true</span>; }
+    }
+}
+
+<span class="comment">// Tabla de líneas</span>
+<span class="cmd">table</span> <span class="num">50401</span> <span class="string">"Linea Pedido Prestamo"</span>
+{
+    <span class="param">DataClassification</span> = CustomerContent;
+    <span class="cmd">fields</span>
+    {
+        <span class="cmd">field</span>(<span class="num">1</span>; <span class="string">"No. Pedido"</span>;  <span class="param">Code</span>[<span class="num">20</span>]) { <span class="param">TableRelation</span> = <span class="string">"Cabecera Pedido Prestamo"</span>; }
+        <span class="cmd">field</span>(<span class="num">2</span>; <span class="string">"No. Linea"</span>;   <span class="param">Integer</span>)    { }
+        <span class="cmd">field</span>(<span class="num">3</span>; <span class="string">"No. Libro"</span>;   <span class="param">Code</span>[<span class="num">20</span>]) { <span class="param">TableRelation</span> = Libro; }
+        <span class="cmd">field</span>(<span class="num">4</span>; <span class="string">"Dias Prestamo"</span>; <span class="param">Integer</span>)  { }
+    }
+    <span class="cmd">keys</span>
+    {
+        <span class="cmd">key</span>(PK; <span class="string">"No. Pedido"</span>, <span class="string">"No. Linea"</span>) { <span class="param">Clustered</span> = <span class="cmd">true</span>; }
+    }
+}
+
+<span class="comment">// Subpágina de líneas (ListPart)</span>
+<span class="cmd">page</span> <span class="num">50402</span> <span class="string">"Lineas Pedido Prestamo Part"</span>
+{
+    <span class="param">PageType</span>    = ListPart;
+    <span class="param">SourceTable</span> = <span class="string">"Linea Pedido Prestamo"</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(Lineas)
+            {
+                <span class="cmd">field</span>(<span class="string">"No. Linea"</span>;    Rec.<span class="string">"No. Linea"</span>)   { }
+                <span class="cmd">field</span>(<span class="string">"No. Libro"</span>;    Rec.<span class="string">"No. Libro"</span>)   { }
+                <span class="cmd">field</span>(<span class="string">"Dias Prestamo"</span>; Rec.<span class="string">"Dias Prestamo"</span>) { }
+            }
+        }
+    }
+}
+
+<span class="comment">// Página de tipo Document (cabecera + líneas)</span>
+<span class="cmd">page</span> <span class="num">50403</span> <span class="string">"Pedido Prestamo"</span>
+{
+    <span class="param">PageType</span>        = Document;
+    <span class="param">SourceTable</span>     = <span class="string">"Cabecera Pedido Prestamo"</span>;
+    <span class="param">ApplicationArea</span> = All;
+    <span class="param">UsageCategory</span>   = Documents;
+    <span class="param">Caption</span>         = <span class="string">'Pedido de Préstamo'</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            <span class="comment">// Grupos de cabecera (FastTabs)</span>
+            group(General)
+            {
+                <span class="param">Caption</span> = <span class="string">'General'</span>;
+                <span class="cmd">field</span>(<span class="string">"No."</span>;          Rec.<span class="string">"No."</span>)          { }
+                <span class="cmd">field</span>(<span class="string">"No. Socio"</span>;     Rec.<span class="string">"No. Socio"</span>)     { }
+                <span class="cmd">field</span>(<span class="string">"Fecha Pedido"</span>;  Rec.<span class="string">"Fecha Pedido"</span>)  { }
+            }
+            <span class="comment">// Subpágina de líneas incrustada</span>
+            part(Lineas; <span class="string">"Lineas Pedido Prestamo Part"</span>)
+            {
+                <span class="param">SubPageLink</span>     = <span class="string">"No. Pedido"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>);
+                <span class="param">ApplicationArea</span> = All;
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Claves de la página Document</h3>
+                <ul>
+                    <li><code>SubPageLink</code> es el nexo entre cabecera y líneas: le dice a la subpágina qué campo de la línea debe coincidir con qué campo de la cabecera.</li>
+                    <li>La tabla de líneas <strong>siempre tiene una clave primaria compuesta</strong>: el número del documento padre + el número de línea.</li>
+                    <li>El tipo <code>Document</code> habilita automáticamente la navegación entre documentos con las flechas de la barra de herramientas.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- 4. FASTTABS                             -->
+            <!-- ═══════════════════════════════════════ -->
+            <h2>4. FastTabs — Organización visual en grupos</h2>
+
+            <p>
+                Las <strong>FastTabs</strong> son los paneles desplegables que organizan los campos
+                de una página Card o Document en secciones temáticas. En AL se definen simplemente
+                como controles <code>group</code> dentro del <code>area(Content)</code>.
+                Su nombre viene de que el usuario puede desplegarlos y colapsarlos con un solo clic.
+            </p>
+
+            <h3>Propiedades clave de un grupo FastTab</h3>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Propiedad</th>
+                        <th>Qué hace</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Caption</code></td>
+                        <td>Nombre visible del panel</td>
+                        <td><code>Caption = 'Datos de Facturación'</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>Importance = Additional</code></td>
+                        <td>El grupo aparece colapsado por defecto</td>
+                        <td>Útil para datos secundarios</td>
+                    </tr>
+                    <tr>
+                        <td><code>Visible</code></td>
+                        <td>Muestra u oculta el grupo según una condición</td>
+                        <td><code>Visible = EsEmpresa</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>Editable</code></td>
+                        <td>Hace el grupo completo de solo lectura</td>
+                        <td><code>Editable = false</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Propiedad Importance en campos individuales</h3>
+            <p>
+                Dentro de un FastTab, cada campo puede tener su propia propiedad <code>Importance</code>
+                que controla su visibilidad cuando el grupo está colapsado:
+            </p>
+            <ul>
+                <li><code>Importance = Promoted</code>: el campo es visible incluso cuando el FastTab está colapsado.</li>
+                <li><code>Importance = Standard</code>: visible solo cuando el FastTab está expandido (valor por defecto).</li>
+                <li><code>Importance = Additional</code>: oculto por defecto. El usuario debe hacer clic en "Mostrar más" para verlo.</li>
+            </ul>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">page</span> <span class="num">50410</span> <span class="string">"Socio Card Completa"</span>
+{
+    <span class="param">PageType</span>    = Card;
+    <span class="param">SourceTable</span> = Socio;
+
+    layout
+    {
+        area(Content)
+        {
+            <span class="comment">// FastTab 1: siempre visible con campos clave destacados</span>
+            group(General)
+            {
+                <span class="param">Caption</span> = <span class="string">'General'</span>;
+
+                <span class="cmd">field</span>(<span class="string">"No."</span>;    Rec.<span class="string">"No."</span>)    { <span class="param">Importance</span> = Promoted; }
+                <span class="cmd">field</span>(Nombre;  Rec.Nombre)  { <span class="param">Importance</span> = Promoted; }
+                <span class="cmd">field</span>(Email;   Rec.Email)   { }
+                <span class="cmd">field</span>(Telefono; Rec.Telefono) { <span class="param">Importance</span> = Additional; }
+            }
+
+            <span class="comment">// FastTab 2: colapsado por defecto (datos secundarios)</span>
+            group(Direccion)
+            {
+                <span class="param">Caption</span>    = <span class="string">'Dirección'</span>;
+                <span class="param">Importance</span> = Additional; <span class="comment">// el grupo entero empieza colapsado</span>
+
+                <span class="cmd">field</span>(Calle;           Rec.Calle)           { }
+                <span class="cmd">field</span>(<span class="string">"Codigo Postal"</span>;  Rec.<span class="string">"Codigo Postal"</span>)  { }
+                <span class="cmd">field</span>(Ciudad;          Rec.Ciudad)          { }
+            }
+
+            <span class="comment">// FastTab 3: visible solo si el socio es de tipo Empresa</span>
+            group(DatosEmpresa)
+            {
+                <span class="param">Caption</span> = <span class="string">'Datos Empresa'</span>;
+                <span class="param">Visible</span> = EsEmpresa;
+
+                <span class="cmd">field</span>(CIF;           Rec.CIF)           { }
+                <span class="cmd">field</span>(<span class="string">"Razon Social"</span>; Rec.<span class="string">"Razon Social"</span>) { }
+            }
+        }
+    }
+
+    <span class="cmd">var</span>
+        EsEmpresa: <span class="param">Boolean</span>;
+
+    trigger <span class="param">OnAfterGetRecord</span>()
+    <span class="cmd">begin</span>
+        EsEmpresa := (Rec.Tipo = Rec.Tipo::Empresa);
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- 5. WORKSHEET / JOURNAL                  -->
+            <!-- ═══════════════════════════════════════ -->
+            <h2>5. Page tipo: Worksheet y Journal</h2>
+
+            <p>
+                El tipo <strong>Worksheet</strong> es una página optimizada para la entrada rápida
+                y masiva de datos en formato de cuadrícula. A diferencia de una List normal, en un
+                Worksheet el usuario puede editar directamente <em>todas las filas a la vez</em>
+                sin necesidad de abrir una ficha. El caso más conocido en BC son los <strong>Diarios Contables</strong>.
+            </p>
+
+            <h3>Diferencias con List y Document</h3>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>List</th>
+                        <th>Document</th>
+                        <th>Worksheet</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Edición inline</td>
+                        <td>Limitada</td>
+                        <td>Solo en líneas</td>
+                        <td>Total — todas las columnas</td>
+                    </tr>
+                    <tr>
+                        <td>Estructura</td>
+                        <td>Solo registros</td>
+                        <td>Cabecera + líneas</td>
+                        <td>Solo líneas (sin cabecera)</td>
+                    </tr>
+                    <tr>
+                        <td>Uso típico</td>
+                        <td>Consulta y navegación</td>
+                        <td>Pedidos, facturas</td>
+                        <td>Diarios, hojas de trabajo</td>
+                    </tr>
+                    <tr>
+                        <td>Destino de los datos</td>
+                        <td>Tabla maestra</td>
+                        <td>Tablas cabecera/línea</td>
+                        <td>Tabla temporal → contabilización</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Tabla de líneas del diario (datos temporales antes de contabilizar)</span>
+<span class="cmd">table</span> <span class="num">50420</span> <span class="string">"Diario Prestamo Line"</span>
+{
+    <span class="param">DataClassification</span> = CustomerContent;
+
+    <span class="cmd">fields</span>
+    {
+        <span class="cmd">field</span>(<span class="num">1</span>; <span class="string">"Journal Batch Name"</span>; <span class="param">Code</span>[<span class="num">10</span>]) { }
+        <span class="cmd">field</span>(<span class="num">2</span>; <span class="string">"Line No."</span>;           <span class="param">Integer</span>)    { }
+        <span class="cmd">field</span>(<span class="num">3</span>; <span class="string">"No. Socio"</span>;          <span class="param">Code</span>[<span class="num">20</span>]) { <span class="param">TableRelation</span> = Socio; }
+        <span class="cmd">field</span>(<span class="num">4</span>; <span class="string">"No. Libro"</span>;          <span class="param">Code</span>[<span class="num">20</span>]) { <span class="param">TableRelation</span> = Libro; }
+        <span class="cmd">field</span>(<span class="num">5</span>; <span class="string">"Fecha"</span>;              <span class="param">Date</span>)       { }
+    }
+    <span class="cmd">keys</span>
+    {
+        <span class="cmd">key</span>(PK; <span class="string">"Journal Batch Name"</span>, <span class="string">"Line No."</span>) { <span class="param">Clustered</span> = <span class="cmd">true</span>; }
+    }
+}
+
+<span class="comment">// Página tipo Worksheet</span>
+<span class="cmd">page</span> <span class="num">50421</span> <span class="string">"Diario Prestamo"</span>
+{
+    <span class="param">PageType</span>        = Worksheet;
+    <span class="param">SourceTable</span>     = <span class="string">"Diario Prestamo Line"</span>;
+    <span class="param">ApplicationArea</span> = All;
+    <span class="param">UsageCategory</span>   = Tasks;
+    <span class="param">Caption</span>         = <span class="string">'Diario de Préstamos'</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(Lineas)
+            {
+                <span class="cmd">field</span>(<span class="string">"No. Socio"</span>; Rec.<span class="string">"No. Socio"</span>) { }
+                <span class="cmd">field</span>(<span class="string">"No. Libro"</span>; Rec.<span class="string">"No. Libro"</span>) { }
+                <span class="cmd">field</span>(<span class="string">"Fecha"</span>;     Rec.<span class="string">"Fecha"</span>)     { }
+            }
+        }
+    }
+
+    actions
+    {
+        area(Processing)
+        {
+            action(Contabilizar)
+            {
+                <span class="param">Caption</span>         = <span class="string">'Contabilizar'</span>;
+                <span class="param">ApplicationArea</span> = All;
+                <span class="param">Image</span>           = PostOrder;
+
+                trigger <span class="param">OnAction</span>()
+                <span class="cmd">begin</span>
+                    <span class="comment">// Aquí llamarías al codeunit de posting</span>
+                    Message(<span class="string">'Diario contabilizado correctamente.'</span>);
+                <span class="cmd">end</span>;
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- 6. DIALOGS                              -->
+            <!-- ═══════════════════════════════════════ -->
+            <h2>6. Diálogos: ConfirmationDialog y StandardDialog</h2>
+
+            <p>
+                BC dispone de dos tipos especiales de página para interacciones modales con el usuario.
+                No son páginas de datos al uso: su función es pedir confirmación o capturar
+                parámetros simples antes de ejecutar una acción.
+            </p>
+
+            <h3>ConfirmationDialog</h3>
+            <p>
+                Muestra una ventana emergente con un mensaje y los botones <strong>Sí / No</strong>.
+                Se usa para acciones destructivas o irreversibles donde necesitas confirmación explícita
+                del usuario.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Uso directo con la función Confirm() — sin necesidad de crear una página</span>
+<span class="cmd">trigger</span> <span class="param">OnAction</span>()
+<span class="cmd">begin</span>
+    <span class="cmd">if</span> Confirm(<span class="string">'¿Estás seguro de que quieres eliminar este préstamo?'</span>, <span class="cmd">false</span>) <span class="cmd">then</span>
+        Rec.Delete(<span class="cmd">true</span>);
+<span class="cmd">end</span>;
+
+<span class="comment">// Página de tipo ConfirmationDialog (para diálogos más elaborados)</span>
+<span class="cmd">page</span> <span class="num">50430</span> <span class="string">"Confirmar Baja Socio"</span>
+{
+    <span class="param">PageType</span>        = ConfirmationDialog;
+    <span class="param">Caption</span>         = <span class="string">'Confirmar Baja de Socio'</span>;
+    <span class="param">ApplicationArea</span> = All;
+
+    layout
+    {
+        area(Content)
+        {
+            group(Mensaje)
+            {
+                <span class="param">ShowCaption</span> = <span class="cmd">false</span>;
+                <span class="cmd">field</span>(TextoAviso; <span class="string">'Esta acción eliminará el socio y todos sus préstamos.'</span>)
+                {
+                    <span class="param">ApplicationArea</span> = All;
+                    <span class="param">ShowCaption</span>     = <span class="cmd">false</span>;
+                    <span class="param">Editable</span>        = <span class="cmd">false</span>;
+                }
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <h3>StandardDialog</h3>
+            <p>
+                Similar al ConfirmationDialog pero pensado para capturar información del usuario
+                (no solo un sí/no). Se abre de forma modal y devuelve los valores introducidos
+                cuando el usuario pulsa <strong>Aceptar</strong>.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Página tipo StandardDialog para capturar un rango de fechas</span>
+<span class="cmd">page</span> <span class="num">50431</span> <span class="string">"Filtro Fechas Dialog"</span>
+{
+    <span class="param">PageType</span>        = StandardDialog;
+    <span class="param">Caption</span>         = <span class="string">'Seleccionar Rango de Fechas'</span>;
+    <span class="param">ApplicationArea</span> = All;
+
+    layout
+    {
+        area(Content)
+        {
+            group(Fechas)
+            {
+                <span class="cmd">field</span>(FechaDesde; FechaDesde)
+                {
+                    <span class="param">Caption</span>         = <span class="string">'Fecha Desde'</span>;
+                    <span class="param">ApplicationArea</span> = All;
+                }
+                <span class="cmd">field</span>(FechaHasta; FechaHasta)
+                {
+                    <span class="param">Caption</span>         = <span class="string">'Fecha Hasta'</span>;
+                    <span class="param">ApplicationArea</span> = All;
+                }
+            }
+        }
+    }
+
+    <span class="cmd">var</span>
+        FechaDesde: <span class="param">Date</span>;
+        FechaHasta: <span class="param">Date</span>;
+
+    <span class="comment">// Procedimientos para leer los valores desde el código que abrió el diálogo</span>
+    <span class="cmd">procedure</span> <span class="param">GetFechas</span>(<span class="cmd">var</span> pDesde: <span class="param">Date</span>; <span class="cmd">var</span> pHasta: <span class="param">Date</span>)
+    <span class="cmd">begin</span>
+        pDesde := FechaDesde;
+        pHasta := FechaHasta;
+    <span class="cmd">end</span>;
+}
+
+<span class="comment">// Cómo abrir el dialog desde otra página y leer sus valores</span>
+<span class="cmd">var</span>
+    FiltroDialog: <span class="param">Page</span> <span class="string">"Filtro Fechas Dialog"</span>;
+    Desde, Hasta: <span class="param">Date</span>;
+<span class="cmd">begin</span>
+    <span class="cmd">if</span> FiltroDialog.RunModal() = Action::OK <span class="cmd">then</span> begin
+        FiltroDialog.GetFechas(Desde, Hasta);
+        Message(<span class="string">'Rango: %1 — %2'</span>, Desde, Hasta);
+    <span class="cmd">end</span>;
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Confirm() vs ConfirmationDialog</h3>
+                <ul>
+                    <li>Para confirmaciones simples usa directamente la función <code>Confirm()</code> de AL: es más sencillo y requiere menos código.</li>
+                    <li>Usa <code>PageType = ConfirmationDialog</code> cuando el diálogo necesite mostrar información adicional o campos.</li>
+                    <li><code>RunModal()</code> devuelve <code>Action::OK</code> o <code>Action::Cancel</code> según lo que pulse el usuario.</li>
+                </ul>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipos de Datos Avanzados - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+        .theory-content h3 {
+            color: var(--text-white);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit';
+        }
+        .theory-content p { margin-bottom: 1.5rem; }
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+        .theory-content li { margin-bottom: 0.5rem; }
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        .alert-info h3 { margin-top: 0; color: var(--primary-blue); }
+        .alert-info ul { margin-bottom: 0 !important; }
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        .alert-warning h3 { margin-top: 0; color: #eab308; }
+        .ide-code {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .ide-code pre { margin: 0; }
+        .ide-code code { color: #d4d4d4; }
+        .ide-code .cmd    { color: #569cd6; font-weight: bold; }
+        .ide-code .param  { color: #9cdcfe; }
+        .ide-code .string { color: #ce9178; }
+        .ide-code .comment{ color: #6a9955; font-style: italic; }
+        .ide-code .num    { color: #b5cea8; }
+        .section-divider {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            margin: 3rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-main">
+        <div class="theory-content">
+
+            <span class="diff-badge diff-medium" style="margin-bottom: 1rem; display: inline-block;">Dif. 6/10</span>
+            <h1>Tipos de Datos Avanzados</h1>
+            <p>
+                Esta sección cubre cuatro conceptos que amplían lo que ya sabes sobre campos y tipos de datos
+                en Business Central: cómo suscribirse a eventos de campo sin tocar la tabla original,
+                qué tipos de datos son compatibles con los servicios web, cómo usar referencias genéricas
+                con <code>RecordRef</code> y <code>FieldRef</code>, y cómo cargar datos masivamente
+                mediante Paquetes de Configuración.
+            </p>
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- 1. EVENTOS DE CAMPO                     -->
+            <!-- ═══════════════════════════════════════ -->
+            <h2>1. Eventos de Campo</h2>
+
+            <p>
+                Los <strong>triggers de campo</strong> (<code>OnValidate</code>, <code>OnLookup</code>…)
+                son código que escribes <em>dentro</em> de la propia tabla. Pero ¿qué pasa cuando quieres
+                reaccionar a la modificación de un campo de una tabla estándar de BC sin tocarla?
+                Para eso existen los <strong>eventos de campo</strong>, que funcionan con el modelo
+                publisher/subscriber de AL.
+            </p>
+
+            <h3>¿Cómo funciona el modelo publisher/subscriber?</h3>
+            <p>
+                BC publica eventos en momentos clave del ciclo de vida de un campo. Tu extensión se
+                <em>suscribe</em> a esos eventos con un <code>EventSubscriber</code>. Cuando el evento
+                se dispara, BC ejecuta tu código automáticamente, sin que hayas modificado ningún objeto base.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Evento de campo</th>
+                        <th>Cuándo se dispara</th>
+                        <th>Uso típico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>OnBeforeValidateEvent</code></td>
+                        <td>Justo antes de ejecutar el <code>OnValidate</code> del campo</td>
+                        <td>Interceptar y modificar el valor antes de que se valide</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnAfterValidateEvent</code></td>
+                        <td>Justo después de que el <code>OnValidate</code> del campo termina</td>
+                        <td>Reaccionar al nuevo valor ya validado (el más usado)</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnBeforeLookupEvent</code></td>
+                        <td>Antes de abrir la ventana de búsqueda del campo</td>
+                        <td>Filtrar la lista que se mostrará al usuario</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnAfterLookupEvent</code></td>
+                        <td>Después de que el usuario selecciona un valor en la búsqueda</td>
+                        <td>Procesar el valor seleccionado</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Ejemplo práctico</h3>
+            <p>
+                Queremos que, cada vez que alguien cambie el campo <code>"Sell-to Customer No."</code>
+                en una cabecera de venta, nuestra extensión registre un mensaje en un log propio.
+                Sin tocar la tabla <code>Sales Header</code>:
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">codeunit</span> <span class="num">50100</span> <span class="string">"Suscriptor Ventas"</span>
+{
+    <span class="comment">// Este codeunit no hace nada por sí solo.
+    // Solo reacciona cuando BC dispara el evento.</span>
+
+    [<span class="param">EventSubscriber</span>(ObjectType::Table,
+                     Database::<span class="string">"Sales Header"</span>,
+                     <span class="string">'OnAfterValidateEvent'</span>,
+                     <span class="string">'Sell-to Customer No.'</span>,
+                     <span class="cmd">false</span>, <span class="cmd">false</span>)]
+    <span class="cmd">local procedure</span> <span class="param">AlCambiarCliente</span>(<span class="cmd">var</span> Rec: Record <span class="string">"Sales Header"</span>)
+    <span class="cmd">var</span>
+        MiLog: Record <span class="string">"Mi Tabla Log"</span>;
+    <span class="cmd">begin</span>
+        MiLog.Init();
+        MiLog.<span class="string">"Fecha"</span>      := Today;
+        MiLog.<span class="string">"Descripcion"</span> := <span class="string">'Cliente cambiado a: '</span> + Rec.<span class="string">"Sell-to Customer No."</span>;
+        MiLog.Insert(<span class="cmd">true</span>);
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Claves del EventSubscriber</h3>
+                <ul>
+                    <li>Los dos últimos parámetros <code>false, false</code> indican: el primero si el suscriptor puede omitirse en caso de error, el segundo si se omite cuando el objeto está inactivo.</li>
+                    <li>El procedimiento debe ser <code>local</code> y su firma debe coincidir exactamente con la del evento.</li>
+                    <li>Puedes tener tantos suscriptores como necesites al mismo evento, en distintos codeunits.</li>
+                    <li>Esta es la forma <strong>correcta y recomendada</strong> de extender la lógica de tablas base sin crear dependencias frágiles.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- 2. SERVICIOS WEB — TIPOS DE DATOS       -->
+            <!-- ═══════════════════════════════════════ -->
+            <h2>2. Servicios Web — Compatibilidad de Tipos de Datos</h2>
+
+            <p>
+                Cuando expones una página o query de BC como servicio web (OData o SOAP), no todos los
+                tipos de datos AL se traducen de la misma forma al mundo externo. Es importante saber
+                qué tipos son compatibles, cuáles se transforman y cuáles no se pueden exponer directamente.
+            </p>
+
+            <h3>¿Qué es un servicio web en BC?</h3>
+            <p>
+                BC permite publicar objetos (páginas, queries, codeunits) como endpoints accesibles
+                desde el exterior. Hay dos protocolos principales:
+            </p>
+            <ul>
+                <li><strong>OData v4:</strong> el más moderno. Se usa para leer y escribir datos desde Power BI, Excel, aplicaciones externas o integraciones REST.</li>
+                <li><strong>SOAP:</strong> el clásico. Usado para integraciones legacy o sistemas más antiguos.</li>
+            </ul>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Tipo AL</th>
+                        <th>Compatible con OData</th>
+                        <th>Compatible con SOAP</th>
+                        <th>Observación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Integer</code>, <code>Decimal</code></td>
+                        <td>✅ Sí</td>
+                        <td>✅ Sí</td>
+                        <td>Se mapean a tipos numéricos estándar</td>
+                    </tr>
+                    <tr>
+                        <td><code>Text</code>, <code>Code</code></td>
+                        <td>✅ Sí</td>
+                        <td>✅ Sí</td>
+                        <td>Se exponen como <code>string</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>Boolean</code></td>
+                        <td>✅ Sí</td>
+                        <td>✅ Sí</td>
+                        <td>Se expone como <code>true</code>/<code>false</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>Date</code>, <code>DateTime</code></td>
+                        <td>✅ Sí</td>
+                        <td>✅ Sí</td>
+                        <td>Formato ISO 8601 en OData</td>
+                    </tr>
+                    <tr>
+                        <td><code>Enum</code></td>
+                        <td>✅ Sí</td>
+                        <td>⚠️ Parcial</td>
+                        <td>OData expone el valor entero y el nombre</td>
+                    </tr>
+                    <tr>
+                        <td><code>Blob</code></td>
+                        <td>⚠️ Parcial</td>
+                        <td>⚠️ Parcial</td>
+                        <td>Solo si se convierte a Base64 explícitamente</td>
+                    </tr>
+                    <tr>
+                        <td><code>RecordId</code></td>
+                        <td>❌ No directo</td>
+                        <td>❌ No directo</td>
+                        <td>Hay que convertirlo a texto antes de exponerlo</td>
+                    </tr>
+                    <tr>
+                        <td><code>Variant</code></td>
+                        <td>❌ No</td>
+                        <td>❌ No</td>
+                        <td>No se puede exponer en servicios web</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Cómo publicar un servicio web desde BC</h3>
+            <p>
+                En Business Central, ve a <strong>Servicios Web</strong> (búscalo en el menú de búsqueda).
+                Crea una nueva línea indicando el tipo de objeto (Page o Query), el número de objeto
+                y el nombre del servicio. Marca la casilla <strong>Publicado</strong> y BC generará
+                automáticamente la URL OData.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Ejemplo: URL OData generada por BC para una página publicada
+// Formato base:
+https://[servidor]/[instancia]/ODataV4/Company('[empresa]')/[NombreServicio]
+
+<span class="comment">// Ejemplo real con BC en la nube (SaaS):</span>
+https://api.businesscentral.dynamics.com/v2.0/[tenantId]/production/ODataV4/Company('CRONUS')/Clientes</span></code></pre>
+            </div>
+
+            <div class="alert-warning">
+                <h3>⚠️ FlowFields y servicios web</h3>
+                <ul>
+                    <li>Los campos <code>FlowField</code> <strong>no se calculan automáticamente</strong> al exponer datos por OData. Debes añadir <code>CalcFields</code> en el trigger de la página antes de que los datos salgan al servicio.</li>
+                    <li>Usa <code>SetAutoCalcFields</code> en el código de la página para forzar el cálculo antes de la exposición.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- 3. REFERENCIAS Y OTROS TIPOS            -->
+            <!-- ═══════════════════════════════════════ -->
+            <h2>3. Referencias y Otros Tipos de Datos</h2>
+
+            <p>
+                AL dispone de tipos de datos especiales que permiten escribir código genérico capaz de
+                trabajar con <em>cualquier</em> tabla o campo sin conocerlos en tiempo de compilación.
+                Son los tipos de referencia: <code>RecordRef</code>, <code>FieldRef</code>,
+                <code>KeyRef</code> y <code>Variant</code>.
+            </p>
+
+            <h3>RecordRef — Referencia genérica a cualquier tabla</h3>
+            <p>
+                Un <code>RecordRef</code> es una variable que puede apuntar a un registro de
+                <strong>cualquier tabla</strong> en tiempo de ejecución. Se usa cuando quieres crear
+                funciones reutilizables que operen sobre tablas distintas sin duplicar código.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Procedimiento genérico que cuenta registros de cualquier tabla</span>
+<span class="cmd">procedure</span> <span class="param">ContarRegistros</span>(NumTabla: <span class="param">Integer</span>): <span class="param">Integer</span>
+<span class="cmd">var</span>
+    RefRec: <span class="param">RecordRef</span>;
+<span class="cmd">begin</span>
+    RefRec.Open(NumTabla);        <span class="comment">// Abre la tabla por su número</span>
+    exit(RefRec.Count);           <span class="comment">// Devuelve el número de registros</span>
+    RefRec.Close();
+<span class="cmd">end</span>;
+
+<span class="comment">// Llamadas desde otro código:</span>
+<span class="comment">// ContarRegistros(18)  → cuenta clientes (tabla Customer = 18)</span>
+<span class="comment">// ContarRegistros(27)  → cuenta artículos (tabla Item = 27)</span></code></pre>
+            </div>
+
+            <h3>FieldRef — Referencia genérica a cualquier campo</h3>
+            <p>
+                Un <code>FieldRef</code> se obtiene a partir de un <code>RecordRef</code> y permite
+                leer o escribir el valor de un campo de forma genérica, sin conocer su nombre en
+                tiempo de compilación.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Leer el valor del campo número 2 de cualquier registro</span>
+<span class="cmd">procedure</span> <span class="param">LeerCampo</span>(RefRec: <span class="param">RecordRef</span>; NumeroCampo: <span class="param">Integer</span>): <span class="param">Text</span>
+<span class="cmd">var</span>
+    RefCampo: <span class="param">FieldRef</span>;
+<span class="cmd">begin</span>
+    RefCampo := RefRec.Field(NumeroCampo);   <span class="comment">// Obtiene el campo por número</span>
+    exit(Format(RefCampo.Value));             <span class="comment">// Devuelve su valor como texto</span>
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <h3>Variant — El tipo comodín</h3>
+            <p>
+                Una variable <code>Variant</code> puede contener un valor de <em>cualquier tipo</em>
+                en tiempo de ejecución: un entero, un texto, una fecha, un record… Se usa principalmente
+                en parámetros de procedimientos muy genéricos. Su contrapartida es que el compilador
+                no puede verificar el tipo en tiempo de compilación, lo que lo hace más propenso a errores.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">procedure</span> <span class="param">MostrarValor</span>(Valor: <span class="param">Variant</span>)
+<span class="cmd">begin</span>
+    <span class="comment">// Variant acepta cualquier tipo como argumento</span>
+    Message(<span class="string">'El valor es: %1'</span>, Valor);
+<span class="cmd">end</span>;
+
+<span class="comment">// Puede llamarse con cualquier tipo:</span>
+MostrarValor(<span class="num">42</span>);
+MostrarValor(<span class="string">'Hola'</span>);
+MostrarValor(Today);</code></pre>
+            </div>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Para qué sirve</th>
+                        <th>Cuándo usarlo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>RecordRef</code></td>
+                        <td>Referenciar cualquier tabla en tiempo de ejecución</td>
+                        <td>Utilidades genéricas, exportadores, validadores universales</td>
+                    </tr>
+                    <tr>
+                        <td><code>FieldRef</code></td>
+                        <td>Acceder a campos de un RecordRef por número</td>
+                        <td>Comparar, copiar o leer campos sin conocer la tabla concreta</td>
+                    </tr>
+                    <tr>
+                        <td><code>KeyRef</code></td>
+                        <td>Acceder a la clave de un RecordRef</td>
+                        <td>Recorrer registros por clave de forma genérica</td>
+                    </tr>
+                    <tr>
+                        <td><code>Variant</code></td>
+                        <td>Variable que acepta cualquier tipo</td>
+                        <td>Parámetros de procedimientos muy genéricos o interop con COM</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert-warning">
+                <h3>⚠️ Usa estos tipos con moderación</h3>
+                <ul>
+                    <li><code>RecordRef</code> y <code>FieldRef</code> tienen un coste de rendimiento mayor que trabajar con variables de tabla tipadas. Úsalos solo cuando la genericidad sea imprescindible.</li>
+                    <li><code>Variant</code> anula la seguridad de tipos del compilador. Prefiere siempre parámetros tipados cuando el tipo sea conocido.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- 4. PAQUETES DE CONFIGURACIÓN            -->
+            <!-- ═══════════════════════════════════════ -->
+            <h2>4. Carga de Datos con Paquetes de Configuración</h2>
+
+            <p>
+                Los <strong>Paquetes de Configuración</strong> (Configuration Packages) son la herramienta
+                nativa de Business Central para <strong>importar datos masivamente</strong> desde ficheros
+                Excel o CSV hacia las tablas de BC. No requieren código AL y son especialmente útiles
+                en migraciones de datos iniciales o en la carga de catálogos.
+            </p>
+
+            <h3>¿Cuándo usarlos?</h3>
+            <ul>
+                <li>Migración inicial de datos desde un sistema anterior (clientes, artículos, proveedores…).</li>
+                <li>Carga de tablas de configuración propias que has creado en tu extensión.</li>
+                <li>Actualización masiva de un campo en miles de registros sin código.</li>
+            </ul>
+
+            <h3>Flujo de trabajo</h3>
+            <p>
+                El proceso siempre sigue los mismos pasos: defines el paquete indicando qué tabla y
+                qué campos quieres cargar, exportas la plantilla a Excel, rellenas los datos y
+                la vuelves a importar para que BC valide e inserte los registros.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Paso</th>
+                        <th>Acción en BC</th>
+                        <th>Resultado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td>Ir a <em>Paquetes de Configuración</em> → Nuevo</td>
+                        <td>Se crea un paquete vacío con un código identificador</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td>Añadir tablas al paquete y seleccionar campos</td>
+                        <td>BC registra qué columnas formarán parte de la importación</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td>Acción: <em>Exportar a Excel</em></td>
+                        <td>Se descarga una plantilla .xlsx con las columnas definidas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td>Rellenar datos en Excel y guardar</td>
+                        <td>El fichero queda listo con los datos a importar</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5</strong></td>
+                        <td>Acción: <em>Importar desde Excel</em></td>
+                        <td>BC carga los datos en la tabla de staging del paquete</td>
+                    </tr>
+                    <tr>
+                        <td><strong>6</strong></td>
+                        <td>Acción: <em>Aplicar Paquete</em></td>
+                        <td>BC valida y aplica los datos a las tablas reales. Muestra errores si los hay.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Puntos clave a tener en cuenta</h3>
+            <ul>
+                <li><strong>Orden de las tablas:</strong> si la tabla A tiene una <code>TableRelation</code> a la tabla B, debes cargar primero la tabla B. Por ejemplo, primero cargas artículos y luego las líneas de pedido que los referencian.</li>
+                <li><strong>Validación de campos:</strong> por defecto BC aplica las validaciones de campo (<code>OnValidate</code>). Puedes desactivar esto por tabla en el paquete si los datos ya vienen limpios y quieres acelerar la carga.</li>
+                <li><strong>Errores:</strong> si un registro falla, BC lo marca en rojo en la vista del paquete y te indica el motivo. El resto de registros válidos se siguen aplicando.</li>
+                <li><strong>Reutilización:</strong> un paquete puede exportarse como fichero <code>.rapidstart</code> y compartirse entre entornos (útil para configurar una demo o un nuevo cliente).</li>
+            </ul>
+
+            <div class="alert-info">
+                <h3>💡 Paquetes de Configuración y tus tablas propias</h3>
+                <ul>
+                    <li>Las tablas que creas en tu extensión también aparecen disponibles en los Paquetes de Configuración. Es una forma cómoda de poblarlas sin escribir código de carga.</li>
+                    <li>Para que funcione bien, asegúrate de que los campos obligatorios (<code>NotBlank</code>) estén incluidos en el paquete.</li>
+                    <li>Si tu tabla tiene una clave primaria de tipo <code>Code</code> con numeración automática, desactiva la validación para ese campo en el paquete y proporciona el valor directamente en el Excel.</li>
+                </ul>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

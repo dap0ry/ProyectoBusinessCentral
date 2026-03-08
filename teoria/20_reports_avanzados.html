@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informes Avanzados - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+        .theory-content h3 {
+            color: var(--text-white);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit';
+        }
+        .theory-content p { margin-bottom: 1.5rem; }
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+        .theory-content li { margin-bottom: 0.5rem; }
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        .alert-info h3 { margin-top: 0; color: var(--primary-blue); }
+        .alert-info ul { margin-bottom: 0 !important; }
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        .alert-warning h3 { margin-top: 0; color: #eab308; }
+        .ide-code {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .ide-code pre { margin: 0; }
+        .ide-code code { color: #d4d4d4; }
+        .ide-code .cmd    { color: #569cd6; font-weight: bold; }
+        .ide-code .param  { color: #9cdcfe; }
+        .ide-code .string { color: #ce9178; }
+        .ide-code .comment{ color: #6a9955; font-style: italic; }
+        .ide-code .num    { color: #b5cea8; }
+        .section-divider {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            margin: 3rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-main">
+        <div class="theory-content">
+
+            <span class="diff-badge diff-hard" style="margin-bottom: 1rem; display: inline-block;">Dif. 8/10</span>
+            <h1>Informes Avanzados</h1>
+            <p>
+                Esta sección amplía lo que ya sabes sobre la arquitectura básica de los informes en BC.
+                Cubre los cuatro diseñadores disponibles y cuándo elegir cada uno, cómo estructurar
+                informes de resumen, las propiedades específicas del layout Word, el flujo para
+                modificar un informe existente y los informes de solo procesamiento que ejecutan
+                lógica AL sin generar ningún documento visual.
+            </p>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 1. LOS CUATRO DISEÑADORES                   -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>1. Los Cuatro Diseñadores de Informes de BC</h2>
+
+            <p>
+                Business Central soporta cuatro tipos de layout para sus informes. Cada uno responde
+                a una necesidad distinta y se gestiona con una herramienta diferente. Un mismo informe
+                puede tener <strong>varios layouts simultáneos</strong> y el usuario elige cuál usar
+                en el momento de ejecutarlo.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Tipo de Layout</th>
+                        <th>Herramienta de diseño</th>
+                        <th>Extensión</th>
+                        <th>Cuándo usarlo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>RDLC</strong></td>
+                        <td>SQL Server Report Builder / Visual Studio</td>
+                        <td><code>.rdlc</code></td>
+                        <td>Informes con layout preciso, maquetación compleja, subreports y gráficos incrustados</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Word</strong></td>
+                        <td>Microsoft Word</td>
+                        <td><code>.docx</code></td>
+                        <td>Documentos con texto enriquecido, cartas, facturas con formato corporativo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Excel</strong></td>
+                        <td>Microsoft Excel</td>
+                        <td><code>.xlsx</code></td>
+                        <td>Exportación de datos para análisis, tablas dinámicas, usuarios de negocio</td>
+                    </tr>
+                    <tr>
+                        <td><strong>External</strong></td>
+                        <td>Herramienta externa (ej. Crystal Reports, SSRS)</td>
+                        <td>Variable</td>
+                        <td>Integraciones con sistemas de reporting externos ya existentes</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>RDLC — El más potente para maquetación</h3>
+            <p>
+                RDLC (<em>Report Definition Language Client-side</em>) es el formato nativo de BC
+                para informes con maquetación precisa. Permite controlar píxel a píxel la posición
+                de cada elemento, incrustar gráficos, usar expresiones condicionales de formato y
+                crear subreports anidados. Su contrapartida es que requiere SQL Server Report Builder
+                o Visual Studio para editarlo, lo cual es menos accesible para usuarios no técnicos.
+            </p>
+
+            <h3>Word — El más accesible para documentos</h3>
+            <p>
+                El layout Word usa marcadores (<em>bookmarks</em>) dentro de un documento
+                <code>.docx</code> para indicar dónde BC debe insertar cada campo de datos.
+                Es ideal para facturas, albaranes y cualquier documento con texto libre y
+                formato corporativo, ya que cualquier usuario con Word puede editarlo sin
+                conocimientos técnicos.
+            </p>
+
+            <h3>Excel — Para análisis de datos</h3>
+            <p>
+                El layout Excel genera un fichero <code>.xlsx</code> donde BC vuelca los datos
+                del informe en formato tabular. El diseñador puede preconfigurar hojas, tablas
+                dinámicas y gráficos en el template, y BC los rellena con los datos reales
+                al ejecutar el informe.
+            </p>
+
+            <div class="alert-info">
+                <h3>💡 ¿Cuál elegir?</h3>
+                <ul>
+                    <li>Para <strong>documentos de negocio</strong> (facturas, pedidos, albaranes): Word.</li>
+                    <li>Para <strong>listados y análisis</strong> que el usuario exportará a Excel: Excel layout.</li>
+                    <li>Para <strong>informes internos complejos</strong> con gráficos y agrupaciones visuales precisas: RDLC.</li>
+                    <li>En un informe sin layout definido, BC genera automáticamente un layout RDLC básico.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 2. INFORMES DE RESUMEN                      -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>2. Tipos de Informes de Resumen</h2>
+
+            <p>
+                Un informe de resumen (<em>summary report</em>) es aquel que <strong>agrupa y totali­za</strong>
+                los datos en lugar de listarlos registro a registro. En lugar de mostrar cada préstamo
+                individual, muestra el total de préstamos por socio, por mes o por categoría de libro.
+                Son los más usados en reporting de negocio.
+            </p>
+
+            <h3>Informe de detalle vs. informe de resumen</h3>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Característica</th>
+                        <th>Detalle</th>
+                        <th>Resumen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nivel de datos</td>
+                        <td>Un registro por línea</td>
+                        <td>Un grupo por línea (varios registros agregados)</td>
+                    </tr>
+                    <tr>
+                        <td>Volumen de salida</td>
+                        <td>Alto (tantas filas como registros)</td>
+                        <td>Reducido (una fila por grupo)</td>
+                    </tr>
+                    <tr>
+                        <td>Uso típico</td>
+                        <td>Listados de movimientos, auditoría</td>
+                        <td>Totales por cliente, ventas por mes, ranking</td>
+                    </tr>
+                    <tr>
+                        <td>Mecanismo AL</td>
+                        <td><code>DataItem</code> sin agrupación</td>
+                        <td><code>DataItem</code> con <code>GroupBy</code> en Query, o acumuladores en triggers</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Técnica 1: Acumuladores en triggers del DataItem</h3>
+            <p>
+                La forma más directa de crear un resumen en AL es usar variables acumuladoras
+                en los triggers <code>OnAfterGetRecord</code> y <code>OnPostDataItem</code>:
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">report</span> <span class="num">50600</span> <span class="string">"Resumen Prestamos por Socio"</span>
+{
+    <span class="param">UsageCategory</span> = ReportsAndAnalysis;
+    <span class="param">ApplicationArea</span> = All;
+    <span class="param">DefaultRenderingLayout</span> = LayoutWord;
+
+    dataset
+    {
+        <span class="cmd">dataitem</span>(Socio; Socio)
+        {
+            <span class="comment">// Columnas del nivel padre (socio)</span>
+            column(NoSocio;    Socio.<span class="string">"No."</span>)    { }
+            column(NombreSocio; Socio.Nombre) { }
+            column(TotalPrestamos; TotalPrest) { } <span class="comment">// acumulador</span>
+
+            <span class="cmd">dataitem</span>(Prestamo; Prestamo)
+            {
+                <span class="param">DataItemLink</span> = <span class="string">"No. Socio"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>);
+
+                trigger <span class="param">OnAfterGetRecord</span>()
+                <span class="cmd">begin</span>
+                    TotalPrest += <span class="num">1</span>; <span class="comment">// contamos cada préstamo</span>
+                <span class="cmd">end</span>;
+            }
+
+            trigger <span class="param">OnPreDataItem</span>()
+            <span class="cmd">begin</span>
+                TotalPrest := <span class="num">0</span>; <span class="comment">// reiniciamos el contador por cada socio</span>
+            <span class="cmd">end</span>;
+        }
+    }
+
+    <span class="cmd">var</span>
+        TotalPrest: <span class="param">Integer</span>;
+
+    rendering
+    {
+        layout(LayoutWord)
+        {
+            <span class="param">Type</span>    = Word;
+            <span class="param">Caption</span> = <span class="string">'Layout Word'</span>;
+            <span class="param">LayoutFile</span> = <span class="string">'ResumenPrestamos.docx'</span>;
+        }
+    }
+}</code></pre>
+            </div>
+
+            <h3>Técnica 2: Usar una Query como DataItem</h3>
+            <p>
+                La alternativa más limpia para informes de resumen es basar el informe en una
+                <strong>Query con agrupación</strong>. La Query realiza el <code>GROUP BY</code>
+                directamente en SQL, lo que es mucho más eficiente que acumular en AL:
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Query que agrupa préstamos por socio</span>
+<span class="cmd">query</span> <span class="num">50601</span> <span class="string">"Prestamos por Socio"</span>
+{
+    <span class="param">QueryType</span> = Normal;
+
+    elements
+    {
+        <span class="cmd">dataitem</span>(Prestamo; Prestamo)
+        {
+            column(NoSocio; <span class="string">"No. Socio"</span>) { }
+            column(TotalPrestamos; <span class="string">"No."</span>)
+            {
+                <span class="param">Method</span> = Count; <span class="comment">// GROUP BY implícito</span>
+            }
+        }
+    }
+}
+
+<span class="comment">// Report usando la Query como fuente de datos</span>
+<span class="cmd">report</span> <span class="num">50602</span> <span class="string">"Resumen Desde Query"</span>
+{
+    <span class="param">UsageCategory</span> = ReportsAndAnalysis;
+    <span class="param">ApplicationArea</span> = All;
+
+    dataset
+    {
+        <span class="cmd">dataitem</span>(ResumenQ; <span class="string">"Prestamos por Socio"</span>)
+        {
+            column(NoSocio;        ResumenQ.NoSocio)        { }
+            column(TotalPrestamos; ResumenQ.TotalPrestamos) { }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Acumuladores vs. Query</h3>
+                <ul>
+                    <li>Usa <strong>acumuladores en triggers</strong> cuando necesites lógica de negocio compleja que no cabe en una query (condiciones, conversiones, cálculos sobre múltiples tablas).</li>
+                    <li>Usa una <strong>Query como DataItem</strong> cuando el resumen sea puramente agregaciones de datos. Es más rápido y el código es más limpio.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 3. WORD LAYOUT — PROPIEDADES                -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>3. Microsoft Word — Propiedades del Informe</h2>
+
+            <p>
+                Un informe con layout Word usa un fichero <code>.docx</code> como plantilla.
+                BC inyecta los datos en esa plantilla mediante <strong>marcadores</strong>
+                (<em>bookmarks</em>) de Word que corresponden exactamente con los nombres de las
+                columnas definidas en el <code>dataset</code> del informe.
+            </p>
+
+            <h3>Propiedades clave en AL para Word layout</h3>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Propiedad</th>
+                        <th>Dónde se pone</th>
+                        <th>Qué hace</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>DefaultRenderingLayout</code></td>
+                        <td>En el <code>report</code></td>
+                        <td>Indica qué layout se usa por defecto si el usuario no elige</td>
+                    </tr>
+                    <tr>
+                        <td><code>Type = Word</code></td>
+                        <td>Dentro del bloque <code>layout</code></td>
+                        <td>Declara que este layout es de tipo Word</td>
+                    </tr>
+                    <tr>
+                        <td><code>LayoutFile</code></td>
+                        <td>Dentro del bloque <code>layout</code></td>
+                        <td>Nombre del fichero <code>.docx</code> incluido en la extensión</td>
+                    </tr>
+                    <tr>
+                        <td><code>Caption</code></td>
+                        <td>Dentro del bloque <code>layout</code></td>
+                        <td>Nombre que verá el usuario al seleccionar el layout</td>
+                    </tr>
+                    <tr>
+                        <td><code>WordMergeDataItem</code></td>
+                        <td>En el <code>report</code></td>
+                        <td>Indica cuál es el DataItem raíz para la combinación de correspondencia</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Cómo funciona el sistema de marcadores</h3>
+            <p>
+                En el documento Word, cada dato del informe se representa con un marcador
+                cuyo nombre coincide <strong>exactamente</strong> (respetando mayúsculas) con el
+                nombre de la columna en el dataset. BC busca esos marcadores al renderizar
+                y sustituye su contenido por el valor real del campo.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// En AL: definición del informe con Word layout</span>
+<span class="cmd">report</span> <span class="num">50610</span> <span class="string">"Ficha Socio Word"</span>
+{
+    <span class="param">UsageCategory</span>          = ReportsAndAnalysis;
+    <span class="param">ApplicationArea</span>        = All;
+    <span class="param">DefaultRenderingLayout</span> = LayoutWord;
+    <span class="param">WordMergeDataItem</span>      = Socio; <span class="comment">// DataItem raíz para Word</span>
+
+    dataset
+    {
+        <span class="cmd">dataitem</span>(Socio; Socio)
+        {
+            <span class="comment">// Los nombres de columna deben coincidir con los bookmarks en el .docx</span>
+            column(NoSocio;     Socio.<span class="string">"No."</span>)         { }
+            column(NombreSocio; Socio.Nombre)       { }
+            column(EmailSocio;  Socio.Email)         { }
+            column(FechaHoy;    Today)               { }
+        }
+    }
+
+    rendering
+    {
+        layout(LayoutWord)
+        {
+            <span class="param">Type</span>       = Word;
+            <span class="param">Caption</span>    = <span class="string">'Ficha de Socio'</span>;
+            <span class="param">LayoutFile</span> = <span class="string">'FichaSocio.docx'</span>; <span class="comment">// fichero en la carpeta del proyecto</span>
+        }
+    }
+}
+
+<span class="comment">// En el fichero FichaSocio.docx deberás tener marcadores con estos nombres:
+// «NoSocio»    → se reemplaza por el valor del campo "No."
+// «NombreSocio» → se reemplaza por Nombre
+// «EmailSocio»  → se reemplaza por Email
+// «FechaHoy»    → se reemplaza por la fecha actual</span></code></pre>
+            </div>
+
+            <h3>Cómo crear los marcadores en Word</h3>
+            <ul>
+                <li>En Word: <strong>Insertar → Marcador</strong>. Escribe el nombre exacto del campo (sin espacios ni caracteres especiales) y haz clic en Agregar.</li>
+                <li>Para tablas repetidas (una fila por registro del DataItem), BC usa una tabla de Word donde la primera fila de datos contiene los marcadores. Al renderizar, BC duplica esa fila por cada registro.</li>
+                <li>Los marcadores de tabla siguen el patrón <code>NombreDataItem_NombreColumna</code>.</li>
+            </ul>
+
+            <div class="alert-warning">
+                <h3>⚠️ Errores comunes con Word layouts</h3>
+                <ul>
+                    <li>Si el nombre del marcador no coincide exactamente con la columna del dataset, BC simplemente lo deja vacío sin dar error.</li>
+                    <li>No uses espacios ni caracteres especiales (tildes, ñ) en los nombres de columna del dataset si van a usarse como marcadores Word.</li>
+                    <li>El fichero <code>.docx</code> debe estar en la misma carpeta que el fichero <code>.al</code> del informe dentro del proyecto.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 4. MODIFICAR UN INFORME                     -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>4. Modificar un Informe con el Diseñador o Word</h2>
+
+            <p>
+                Una vez que un informe está publicado en BC, puedes modificar su layout directamente
+                desde la interfaz sin tocar el código AL. BC permite exportar el layout actual,
+                editarlo con la herramienta correspondiente y volver a importarlo.
+            </p>
+
+            <h3>Flujo para modificar un layout Word</h3>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Paso</th>
+                        <th>Dónde</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td>BC → Gestión de layouts de informe</td>
+                        <td>Busca el informe por nombre o número y selecciona el layout Word</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td>BC → Acción "Exportar layout"</td>
+                        <td>Descarga el fichero <code>.docx</code> actual en tu equipo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td>Microsoft Word</td>
+                        <td>Modifica el diseño, añade el logo, cambia fuentes, reordena los marcadores</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td>BC → Acción "Importar layout"</td>
+                        <td>Sube el fichero modificado. BC lo valida y lo guarda</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5</strong></td>
+                        <td>BC → Ejecutar el informe</td>
+                        <td>Verifica el resultado con datos reales</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Flujo para modificar un layout RDLC</h3>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Paso</th>
+                        <th>Dónde</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td>BC → Gestión de layouts</td>
+                        <td>Selecciona el layout RDLC y usa "Exportar layout"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td>SQL Server Report Builder</td>
+                        <td>Abre el fichero <code>.rdlc</code>, modifica tablix, expresiones o gráficos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td>BC → Acción "Importar layout"</td>
+                        <td>Sube el RDLC modificado</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Crear un layout personalizado desde VS Code</h3>
+            <p>
+                Si el informe no tiene layout o quieres añadir uno nuevo desde cero directamente
+                en el proyecto de extensión, el flujo en VS Code es:
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// 1. En el fichero .al del informe, genera el dataset primero y despliega la extensión</span>
+<span class="comment">// 2. En BC, abre el informe y usa "Gestión de layouts"</span>
+<span class="comment">// 3. Acción "Crear layout" → elige Word o RDLC</span>
+<span class="comment">// 4. BC genera una plantilla base con todos los campos del dataset</span>
+<span class="comment">// 5. Exporta esa plantilla, edítala y vuelve a importarla</span>
+
+<span class="comment">// Alternativa desde VS Code: usar el comando AL:
+// Ctrl+Shift+P → "AL: Generate Report Layout"
+// Esto genera automáticamente el fichero .docx o .rdlc con los campos del dataset
+// y lo añade al proyecto como fichero linked en el bloque rendering</span>
+
+rendering
+{
+    layout(LayoutWord)
+    {
+        <span class="param">Type</span>       = Word;
+        <span class="param">Caption</span>    = <span class="string">'Layout Principal'</span>;
+        <span class="param">LayoutFile</span> = <span class="string">'MiInforme.docx'</span>; <span class="comment">// generado con AL: Generate Report Layout</span>
+    }
+}</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Layouts en producción vs. en desarrollo</h3>
+                <ul>
+                    <li>Los layouts que importas desde la UI de BC son <strong>layouts de usuario</strong>: se guardan en la base de datos y tienen prioridad sobre los layouts incluidos en la extensión.</li>
+                    <li>Los layouts del fichero <code>.al</code> son los de la extensión: son el punto de partida pero pueden ser sobreescritos por los de usuario.</li>
+                    <li>Para devolver un informe a su layout original de extensión, borra el layout de usuario desde "Gestión de layouts".</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 5. INFORMES DE SOLO PROCESAMIENTO           -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>5. Informes de Solo Procesamiento</h2>
+
+            <p>
+                Un informe de <strong>solo procesamiento</strong> (<em>processing-only report</em>)
+                es un informe que <strong>no genera ningún documento visible</strong>. Su función es
+                ejecutar lógica AL de forma masiva sobre un conjunto de registros: actualizar datos,
+                hacer cálculos, enviar emails, llamar a servicios externos… usando la misma
+                infraestructura de RequestPage y DataItem que un informe normal, pero sin producir
+                ninguna salida visual.
+            </p>
+
+            <h3>¿Por qué usar un informe en lugar de un codeunit?</h3>
+            <ul>
+                <li>El informe hereda automáticamente la <strong>RequestPage</strong> para que el usuario introduzca filtros antes de ejecutarlo.</li>
+                <li>El <strong>DataItem</strong> recorre los registros de forma optimizada, aplicando los filtros del usuario automáticamente.</li>
+                <li>Aparece en el menú de BC como cualquier otro informe y puede programarse con el <strong>programador de trabajos</strong>.</li>
+            </ul>
+
+            <h3>Cómo declararlo en AL</h3>
+            <p>
+                Basta con añadir la propiedad <code>ProcessingOnly = true</code> en el informe.
+                Con esto BC sabe que no debe buscar ni renderizar ningún layout.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">report</span> <span class="num">50620</span> <span class="string">"Actualizar Estado Prestamos"</span>
+{
+    <span class="param">UsageCategory</span>  = Tasks;
+    <span class="param">ApplicationArea</span> = All;
+    <span class="param">ProcessingOnly</span> = <span class="cmd">true</span>; <span class="comment">// sin layout, sin salida visual</span>
+    <span class="param">Caption</span>        = <span class="string">'Actualizar Estado de Préstamos Vencidos'</span>;
+
+    dataset
+    {
+        <span class="cmd">dataitem</span>(Prestamo; Prestamo)
+        {
+            <span class="comment">// El DataItem recorre los préstamos activos</span>
+            <span class="param">DataItemTableView</span> = <span class="cmd">where</span>(Estado = <span class="cmd">const</span>(Activo));
+
+            trigger <span class="param">OnAfterGetRecord</span>()
+            <span class="cmd">begin</span>
+                <span class="comment">// Si la fecha límite ha pasado, marcamos como vencido</span>
+                <span class="cmd">if</span> Prestamo.<span class="string">"Fecha Devolucion"</span> &lt; Today <span class="cmd">then</span> begin
+                    Prestamo.Estado := Prestamo.Estado::Vencido;
+                    Prestamo.Modify(<span class="cmd">true</span>);
+                    ContadorActualizados += <span class="num">1</span>;
+                <span class="cmd">end</span>;
+            <span class="cmd">end</span>;
+
+            trigger <span class="param">OnPostDataItem</span>()
+            <span class="cmd">begin</span>
+                Message(<span class="string">'Proceso completado. Préstamos actualizados: %1'</span>, ContadorActualizados);
+            <span class="cmd">end</span>;
+        }
+    }
+
+    <span class="comment">// RequestPage: el usuario puede filtrar por fechas antes de ejecutar</span>
+    requestpage
+    {
+        layout
+        {
+            area(Content)
+            {
+                group(Opciones)
+                {
+                    <span class="param">Caption</span> = <span class="string">'Opciones'</span>;
+                    <span class="cmd">field</span>(FechaCorte; FechaCorte)
+                    {
+                        <span class="param">Caption</span>         = <span class="string">'Fecha de Corte'</span>;
+                        <span class="param">ApplicationArea</span> = All;
+                        <span class="param">ToolTip</span>         = <span class="string">'Préstamos anteriores a esta fecha se marcarán como vencidos.'</span>;
+                    }
+                }
+            }
+        }
+    }
+
+    <span class="cmd">var</span>
+        ContadorActualizados: <span class="param">Integer</span>;
+        FechaCorte:           <span class="param">Date</span>;
+
+    trigger <span class="param">OnPreReport</span>()
+    <span class="cmd">begin</span>
+        <span class="comment">// Si no se especificó fecha de corte, usamos hoy</span>
+        <span class="cmd">if</span> FechaCorte = <span class="num">0D</span> <span class="cmd">then</span>
+            FechaCorte := Today;
+
+        ContadorActualizados := <span class="num">0</span>;
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <h3>Cuándo usar ProcessingOnly vs. Codeunit</h3>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Situación</th>
+                        <th>Mejor opción</th>
+                        <th>Motivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>El usuario necesita filtrar qué registros procesar</td>
+                        <td>ProcessingOnly Report</td>
+                        <td>La RequestPage da esa interfaz automáticamente</td>
+                    </tr>
+                    <tr>
+                        <td>El proceso se lanza desde un botón en una página</td>
+                        <td>Codeunit</td>
+                        <td>Más directo, sin pantalla de configuración extra</td>
+                    </tr>
+                    <tr>
+                        <td>Se programa para ejecutarse automáticamente por la noche</td>
+                        <td>ProcessingOnly Report o Codeunit</td>
+                        <td>Ambos son compatibles con el Job Queue de BC</td>
+                    </tr>
+                    <tr>
+                        <td>Proceso sobre miles de registros con filtros complejos</td>
+                        <td>ProcessingOnly Report</td>
+                        <td>El DataItem aplica filtros SQL de forma optimizada</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert-info">
+                <h3>💡 Buenas prácticas</h3>
+                <ul>
+                    <li>Siempre muestra un mensaje al final del proceso (<code>OnPostDataItem</code>) indicando cuántos registros se procesaron. El usuario necesita saber que algo ocurrió.</li>
+                    <li>Usa <code>Modify(true)</code> en lugar de <code>Modify(false)</code> para que se disparen los triggers de la tabla y se mantenga la integridad de los datos.</li>
+                    <li>Si el proceso puede ser largo, considera usar <code>Dialog</code> para mostrar una barra de progreso durante la ejecución.</li>
+                    <li>Un informe <code>ProcessingOnly</code> no necesita el bloque <code>rendering</code>. Si lo añades BC lo ignorará.</li>
+                </ul>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>
