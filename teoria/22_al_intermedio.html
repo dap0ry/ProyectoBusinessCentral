@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AL Intermedio - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content h3 {
+            color: var(--text-white);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+
+        .alert-info ul {
+            margin-bottom: 0 !important;
+        }
+
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warning h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+
+        .ide-code {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .ide-code pre {
+            margin: 0;
+        }
+
+        .ide-code code {
+            color: #d4d4d4;
+        }
+
+        .ide-code .cmd {
+            color: #569cd6;
+            font-weight: bold;
+        }
+
+        .ide-code .param {
+            color: #9cdcfe;
+        }
+
+        .ide-code .string {
+            color: #ce9178;
+        }
+
+        .ide-code .comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        .ide-code .num {
+            color: #b5cea8;
+        }
+
+        .section-divider {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin: 3rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-main">
+        <div class="theory-content">
+
+            <span class="diff-badge diff-hard" style="margin-bottom: 1rem; display: inline-block;">Dif. 7/10</span>
+            <h1>AL Intermedio</h1>
+            <p>
+                Esta sección profundiza en el lenguaje AL con herramientas de productividad (IntelliSense,
+                gestión de código fuente), funciones de conversión y formato, estructuras de control de flujo
+                avanzadas, operaciones CRUD sobre registros, el concepto de Rec/xRec, funciones MARK y la
+                comunicación entre objetos.
+            </p>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 1. INTELLISENSE                             -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>1. IntelliSense y Documentación Interna</h2>
+
+            <p>
+                VS Code con la extensión AL ofrece <strong>IntelliSense</strong>, que autocompleta nombres de
+                objetos, campos, funciones y propiedades mientras escribes. Es la herramienta más importante
+                para ser productivo en AL.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Atajo</th>
+                        <th>Función</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><kbd>Ctrl+Espacio</kbd></td>
+                        <td>Abre la lista de sugerencias de IntelliSense manualmente</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>Ctrl+Shift+Espacio</kbd></td>
+                        <td>Muestra los parámetros de la función actual (info de firma)</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>F12</kbd></td>
+                        <td><strong>Go to Definition</strong> — navega al código fuente de la función o tabla</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>Alt+F12</kbd></td>
+                        <td><strong>Peek Definition</strong> — muestra la definición en una ventana flotante</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>Shift+F12</kbd></td>
+                        <td>Busca todas las referencias de un símbolo en el proyecto</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>Ctrl+K Ctrl+I</kbd></td>
+                        <td>Muestra documentación rápida (hover info) del símbolo bajo el cursor</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Documentación XML en procedimientos</h3>
+            <p>
+                Puedes documentar tus procedimientos con comentarios XML. IntelliSense los mostrará
+                como tooltip cuando otro desarrollador pase el ratón sobre la función.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">/// &lt;summary&gt;
+/// Calcula la multa por retraso en la devolución de un libro.
+/// &lt;/summary&gt;
+/// &lt;param name="DiasRetraso"&gt;Número de días de retraso.&lt;/param&gt;
+/// &lt;returns&gt;Importe de la multa en euros.&lt;/returns&gt;</span>
+<span class="cmd">procedure</span> <span class="param">CalcularMulta</span>(DiasRetraso: <span class="param">Integer</span>): <span class="param">Decimal</span>
+<span class="cmd">begin</span>
+    <span class="cmd">exit</span>(DiasRetraso * <span class="num">0.50</span>);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 2. GESTIÓN DEL CÓDIGO FUENTE                -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>2. Gestión del Código Fuente</h2>
+
+            <p>
+                BC usa extensiones empaquetadas como ficheros <code>.app</code>. El código fuente se
+                gestiona en ficheros <code>.al</code> dentro de un proyecto de VS Code. Para trabajar
+                en equipo es imprescindible usar un sistema de control de versiones como <strong>Git</strong>.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Concepto</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Repositorio Git</strong></td>
+                        <td>Cada proyecto AL debe tener su propio repo. <code>git init</code> en la raíz del proyecto.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>.gitignore</strong></td>
+                        <td>Excluir <code>.app</code>, <code>.alpackages/</code>, <code>.alcache/</code> y
+                            <code>launch.json</code> (datos locales).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Branches</strong></td>
+                        <td>Usar ramas para cada funcionalidad nueva. Fusionar con <code>merge</code> o
+                            <code>pull request</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>app.json versionado</strong></td>
+                        <td>Incrementar la versión en <code>app.json</code> antes de cada despliegue a producción.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Azure DevOps / GitHub</strong></td>
+                        <td>BC se integra nativamente con Azure DevOps para CI/CD y validación automática de
+                            extensiones.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Ejemplo de .gitignore para un proyecto AL de Business Central</span>
+*.app
+.alpackages/
+.alcache/
+launch.json
+rad.json
+*.g.xlf</code></pre>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 3. FUNCIONES DE CONVERSIÓN Y FORMATO        -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>3. Funciones de Conversión y Formato: ROUND, FORMAT, EVALUATE</h2>
+
+            <p>
+                Estas funciones permiten transformar datos entre tipos, formatear valores para
+                presentación y redondear números.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Función</th>
+                        <th>Qué hace</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Round()</code></td>
+                        <td>Redondea un Decimal según precisión y dirección</td>
+                        <td><code>Round(15.456, 0.01) → 15.46</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>Format()</code></td>
+                        <td>Convierte cualquier valor a Text para mostrarlo</td>
+                        <td><code>Format(Today) → '08/03/2026'</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>Evaluate()</code></td>
+                        <td>Convierte un Text a otro tipo de dato</td>
+                        <td><code>Evaluate(MiFecha, '08/03/2026')</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>StrLen()</code></td>
+                        <td>Devuelve la longitud de una cadena</td>
+                        <td><code>StrLen('Hola') → 4</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>CopyStr()</code></td>
+                        <td>Extrae una subcadena</td>
+                        <td><code>CopyStr('ABCDE', 2, 3) → 'BCD'</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>UpperCase() / LowerCase()</code></td>
+                        <td>Convierte a mayúsculas/minúsculas</td>
+                        <td><code>UpperCase('hola') → 'HOLA'</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>Abs()</code></td>
+                        <td>Valor absoluto</td>
+                        <td><code>Abs(-15) → 15</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>Power()</code></td>
+                        <td>Potencia</td>
+                        <td><code>Power(2, 10) → 1024</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// ROUND — redondeo controlado</span>
+<span class="cmd">var</span>
+    Precio: <span class="param">Decimal</span>;
+<span class="cmd">begin</span>
+    Precio := <span class="num">19.999</span>;
+    Precio := Round(Precio, <span class="num">0.01</span>);           <span class="comment">// 20.00 (2 decimales)</span>
+    Precio := Round(Precio, <span class="num">0.01</span>, <span class="string">'&lt;'</span>);    <span class="comment">// Redondeo hacia abajo</span>
+    Precio := Round(Precio, <span class="num">0.01</span>, <span class="string">'&gt;'</span>);    <span class="comment">// Redondeo hacia arriba</span>
+<span class="cmd">end</span>;
+
+<span class="comment">// FORMAT — convertir a texto para mostrar</span>
+<span class="cmd">var</span>
+    FechaTexto: <span class="param">Text</span>;
+    ImporteTexto: <span class="param">Text</span>;
+<span class="cmd">begin</span>
+    FechaTexto   := Format(Today);            <span class="comment">// '08/03/2026'</span>
+    ImporteTexto := Format(<span class="num">1234.50</span>, <span class="num">0</span>, <span class="string">'&lt;Integer&gt;.&lt;Decimals,2&gt; €'</span>);
+    Message(<span class="string">'Fecha: %1 — Importe: %2'</span>, FechaTexto, ImporteTexto);
+<span class="cmd">end</span>;
+
+<span class="comment">// EVALUATE — convertir texto a otro tipo</span>
+<span class="cmd">var</span>
+    FechaDesdeTexto: <span class="param">Date</span>;
+    NumeroDesdeTexto: <span class="param">Integer</span>;
+<span class="cmd">begin</span>
+    Evaluate(FechaDesdeTexto, <span class="string">'08/03/2026'</span>);
+    Evaluate(NumeroDesdeTexto, <span class="string">'42'</span>);
+    Message(<span class="string">'Fecha: %1 — Número: %2'</span>, FechaDesdeTexto, NumeroDesdeTexto);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 4. CONTROL DE FLUJO                         -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>4. Funciones de Control de Flujo: REPEAT, WHILE, FOR, CASE</h2>
+
+            <p>
+                AL ofrece varias estructuras de bucle y selección múltiple para controlar el flujo
+                de ejecución del código.
+            </p>
+
+            <h3>REPEAT...UNTIL</h3>
+            <div class="ide-code">
+                <pre><code><span class="comment">// Ejecuta al menos una vez. El patrón más usado con FindSet().</span>
+<span class="cmd">var</span>
+    Prestamo: <span class="param">Record</span> Prestamo;
+<span class="cmd">begin</span>
+    Prestamo.SetRange(Estado, Prestamo.Estado::Activo);
+    <span class="cmd">if</span> Prestamo.FindSet() <span class="cmd">then</span>
+        <span class="cmd">repeat</span>
+            Message(<span class="string">'Préstamo: %1'</span>, Prestamo.<span class="string">"No."</span>);
+        <span class="cmd">until</span> Prestamo.Next() = <span class="num">0</span>;
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <h3>WHILE...DO</h3>
+            <div class="ide-code">
+                <pre><code><span class="comment">// Evalúa la condición ANTES de entrar. Puede no ejecutarse nunca.</span>
+<span class="cmd">var</span>
+    Intentos: <span class="param">Integer</span>;
+<span class="cmd">begin</span>
+    Intentos := <span class="num">0</span>;
+    <span class="cmd">while</span> Intentos < <span class="num">5</span> <span class="cmd">do</span> <span class="cmd">begin</span>
+        Intentos += <span class="num">1</span>;
+        Message(<span class="string">'Intento %1 de 5'</span>, Intentos);
+    <span class="cmd">end</span>;
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <h3>FOR...TO / FOR...DOWNTO</h3>
+            <div class="ide-code">
+                <pre><code><span class="comment">// Bucle con contador — número fijo de iteraciones</span>
+<span class="cmd">var</span>
+    i: <span class="param">Integer</span>;
+    Suma: <span class="param">Integer</span>;
+<span class="cmd">begin</span>
+    Suma := <span class="num">0</span>;
+    <span class="cmd">for</span> i := <span class="num">1</span> <span class="cmd">to</span> <span class="num">10</span> <span class="cmd">do</span>
+        Suma += i;
+    Message(<span class="string">'Suma de 1 a 10: %1'</span>, Suma); <span class="comment">// 55</span>
+
+    <span class="comment">// Cuenta atrás</span>
+    <span class="cmd">for</span> i := <span class="num">5</span> <span class="cmd">downto</span> <span class="num">1</span> <span class="cmd">do</span>
+        Message(<span class="string">'%1...'</span>, i);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <h3>CASE...OF</h3>
+            <div class="ide-code">
+                <pre><code><span class="comment">// Selección múltiple — alternativa limpia a IF-ELSE anidados</span>
+<span class="cmd">var</span>
+    DiaSemana: <span class="param">Integer</span>;
+<span class="cmd">begin</span>
+    DiaSemana := Date2DWY(Today, <span class="num">1</span>); <span class="comment">// 1=Lun, 7=Dom</span>
+    <span class="cmd">case</span> DiaSemana <span class="cmd">of</span>
+        <span class="num">1</span>: Message(<span class="string">'Lunes'</span>);
+        <span class="num">2</span>: Message(<span class="string">'Martes'</span>);
+        <span class="num">3</span>: Message(<span class="string">'Miércoles'</span>);
+        <span class="num">4</span>: Message(<span class="string">'Jueves'</span>);
+        <span class="num">5</span>: Message(<span class="string">'Viernes'</span>);
+        <span class="num">6</span>, <span class="num">7</span>: Message(<span class="string">'Fin de semana'</span>);
+        <span class="cmd">else</span>
+            Error(<span class="string">'Día inválido: %1'</span>, DiaSemana);
+    <span class="cmd">end</span>;
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 ¿Cuál elegir?</h3>
+                <ul>
+                    <li><code>repeat...until</code>: para iterar registros con <code>FindSet + Next</code>.</li>
+                    <li><code>while...do</code>: cuando no sabes cuántas iteraciones habrá y la condición puede ser
+                        false desde el inicio.</li>
+                    <li><code>for...to</code>: cuando conoces el número exacto de iteraciones.</li>
+                    <li><code>case...of</code>: cuando comparas una variable contra múltiples valores concretos
+                        (sustituye a if-else if-else if...).</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 5. EXIT, BREAK, QUIT, SKIP                  -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>5. Funciones EXIT, BREAK, QUIT, SKIP</h2>
+
+            <p>
+                Estas funciones permiten interrumpir el flujo normal de ejecución de formas diferentes.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Función</th>
+                        <th>Ámbito</th>
+                        <th>Qué hace</th>
+                        <th>¿Revierte datos?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>exit</code></td>
+                        <td>Procedimiento</td>
+                        <td>Sale del procedimiento actual. Puede devolver un valor: <code>exit(valor)</code>.</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><code>break</code></td>
+                        <td>Bucle (trigger de DataItem)</td>
+                        <td>Sale del bucle <code>repeat</code>/<code>while</code>/<code>for</code>. En informes,
+                            interrumpe el DataItem actual.</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><code>CurrReport.Quit()</code></td>
+                        <td>Informe completo</td>
+                        <td>Detiene el informe entero de forma inmediata.</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <td><code>CurrReport.Skip()</code></td>
+                        <td>Registro actual (informe)</td>
+                        <td>Salta el registro actual y pasa al siguiente sin incluirlo en la salida.</td>
+                        <td>No</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// EXIT — salir de una función con valor de retorno</span>
+<span class="cmd">procedure</span> <span class="param">EsSocioPremium</span>(NoSocio: <span class="param">Code</span>[<span class="num">20</span>]): <span class="param">Boolean</span>
+<span class="cmd">var</span>
+    Socio: <span class="param">Record</span> Socio;
+<span class="cmd">begin</span>
+    <span class="cmd">if</span> <span class="cmd">not</span> Socio.Get(NoSocio) <span class="cmd">then</span>
+        <span class="cmd">exit</span>(<span class="cmd">false</span>); <span class="comment">// no existe → no es premium</span>
+    <span class="cmd">exit</span>(Socio.Tipo = Socio.Tipo::Premium);
+<span class="cmd">end</span>;
+
+<span class="comment">// SKIP — en un informe, excluir registros sin préstamos</span>
+<span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+<span class="cmd">begin</span>
+    <span class="cmd">if</span> Socio.<span class="string">"Total Prestamos"</span> = <span class="num">0</span> <span class="cmd">then</span>
+        CurrReport.Skip(); <span class="comment">// no aparecerá en el informe</span>
+<span class="cmd">end</span>;
+
+<span class="comment">// BREAK — salir de un bucle anticipadamente</span>
+<span class="cmd">var</span>
+    Libro: <span class="param">Record</span> Libro;
+    Encontrado: <span class="param">Boolean</span>;
+<span class="cmd">begin</span>
+    Encontrado := <span class="cmd">false</span>;
+    <span class="cmd">if</span> Libro.FindSet() <span class="cmd">then</span>
+        <span class="cmd">repeat</span>
+            <span class="cmd">if</span> Libro.Titulo = <span class="string">'El Quijote'</span> <span class="cmd">then</span> <span class="cmd">begin</span>
+                Encontrado := <span class="cmd">true</span>;
+                <span class="cmd">break</span>; <span class="comment">// salimos del repeat</span>
+            <span class="cmd">end</span>;
+        <span class="cmd">until</span> Libro.Next() = <span class="num">0</span>;
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 6. FIND / FINDSET + NEXT                    -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>6. Funciones NEXT con FIND / FINDSET</h2>
+
+            <p>
+                El patrón <code>FindSet() + repeat...until Next() = 0</code> es la forma estándar de
+                recorrer un conjunto de registros en AL. Entender cuándo usar cada variante de
+                <code>Find</code> es clave para escribir código eficiente.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Patrón</th>
+                        <th>Cuándo usarlo</th>
+                        <th>Rendimiento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>FindSet(false) + Next</code></td>
+                        <td>Solo leer registros (no modificar)</td>
+                        <td>Óptimo — lectura secuencial rápida</td>
+                    </tr>
+                    <tr>
+                        <td><code>FindSet(true) + Next</code></td>
+                        <td>Leer y modificar registros dentro del bucle</td>
+                        <td>Bloquea los registros para actualización</td>
+                    </tr>
+                    <tr>
+                        <td><code>FindFirst()</code></td>
+                        <td>Solo necesitas un registro (el primero)</td>
+                        <td>Más rápido que FindSet si no iteras</td>
+                    </tr>
+                    <tr>
+                        <td><code>FindLast()</code></td>
+                        <td>Solo necesitas el último registro</td>
+                        <td>Eficiente para obtener el máximo</td>
+                    </tr>
+                    <tr>
+                        <td><code>Next(n)</code></td>
+                        <td>Avanzar n posiciones (n puede ser negativo)</td>
+                        <td>Normal</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Patrón COMPLETO: filtrar → buscar → iterar → modificar</span>
+<span class="cmd">var</span>
+    Prestamo: <span class="param">Record</span> Prestamo;
+    Contador: <span class="param">Integer</span>;
+<span class="cmd">begin</span>
+    Prestamo.SetRange(Estado, Prestamo.Estado::Activo);
+    Prestamo.SetFilter(<span class="string">"Fecha Devolucion"</span>, <span class="string">'..%1'</span>, Today - <span class="num">30</span>); <span class="comment">// vencidos hace 30+ días</span>
+
+    Contador := <span class="num">0</span>;
+    <span class="cmd">if</span> Prestamo.FindSet(<span class="cmd">true</span>) <span class="cmd">then</span> <span class="comment">// true = vamos a modificar</span>
+        <span class="cmd">repeat</span>
+            Prestamo.Estado := Prestamo.Estado::Vencido;
+            Prestamo.Modify(<span class="cmd">true</span>);
+            Contador += <span class="num">1</span>;
+        <span class="cmd">until</span> Prestamo.Next() = <span class="num">0</span>;
+
+    Message(<span class="string">'Se actualizaron %1 préstamos.'</span>, Contador);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <div class="alert-warning">
+                <h3>⚠️ Error frecuente con FindSet</h3>
+                <ul>
+                    <li>Si usas <code>FindSet(false)</code> y luego haces <code>Modify</code> dentro del bucle, puedes
+                        obtener errores de bloqueo. Usa <code>FindSet(true)</code> si vas a modificar.</li>
+                    <li>Nunca uses <code>Insert</code> o <code>Delete</code> dentro de un bucle
+                        <code>FindSet + Next</code> sobre la misma tabla. Puedes romper el cursor de iteración.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 7. INSERT, MODIFY, DELETE, etc.             -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>7. Funciones INSERT, MODIFY, DELETE, MODIFYALL, DELETEALL</h2>
+
+            <p>
+                Estas son las operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre registros
+                en AL. Cada una tiene un parámetro booleano que controla si se ejecutan los triggers de tabla.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Función</th>
+                        <th>Qué hace</th>
+                        <th>Parámetro <code>RunTrigger</code></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Insert(true/false)</code></td>
+                        <td>Inserta un nuevo registro en la tabla</td>
+                        <td><code>true</code> → ejecuta <code>OnInsert</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>Modify(true/false)</code></td>
+                        <td>Actualiza el registro actual en la tabla</td>
+                        <td><code>true</code> → ejecuta <code>OnModify</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>Delete(true/false)</code></td>
+                        <td>Elimina el registro actual de la tabla</td>
+                        <td><code>true</code> → ejecuta <code>OnDelete</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>ModifyAll(Campo, Valor, true/false)</code></td>
+                        <td>Actualiza un campo en todos los registros filtrados de una vez</td>
+                        <td>Operación masiva en SQL — muy eficiente</td>
+                    </tr>
+                    <tr>
+                        <td><code>DeleteAll(true/false)</code></td>
+                        <td>Elimina todos los registros filtrados de una vez</td>
+                        <td>Operación masiva</td>
+                    </tr>
+                    <tr>
+                        <td><code>Init()</code></td>
+                        <td>Inicializa los campos del registro con sus valores por defecto (<code>InitValue</code>)</td>
+                        <td>—</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// INSERT — crear un nuevo socio</span>
+<span class="cmd">var</span>
+    Socio: <span class="param">Record</span> Socio;
+<span class="cmd">begin</span>
+    Socio.Init();                        <span class="comment">// inicializa campos con valores por defecto</span>
+    Socio.<span class="string">"No."</span>   := <span class="string">'S-0100'</span>;
+    Socio.Nombre := <span class="string">'Ana García'</span>;
+    Socio.Email  := <span class="string">'ana@example.com'</span>;
+    Socio.Insert(<span class="cmd">true</span>);                  <span class="comment">// true = ejecutar trigger OnInsert</span>
+<span class="cmd">end</span>;
+
+<span class="comment">// MODIFY — actualizar un registro existente</span>
+<span class="cmd">var</span>
+    Socio: <span class="param">Record</span> Socio;
+<span class="cmd">begin</span>
+    <span class="cmd">if</span> Socio.Get(<span class="string">'S-0100'</span>) <span class="cmd">then</span> <span class="cmd">begin</span>
+        Socio.Email := <span class="string">'nuevo@example.com'</span>;
+        Socio.Modify(<span class="cmd">true</span>);
+    <span class="cmd">end</span>;
+<span class="cmd">end</span>;
+
+<span class="comment">// DELETE — eliminar un registro</span>
+<span class="cmd">var</span>
+    Socio: <span class="param">Record</span> Socio;
+<span class="cmd">begin</span>
+    <span class="cmd">if</span> Socio.Get(<span class="string">'S-0100'</span>) <span class="cmd">then</span>
+        Socio.Delete(<span class="cmd">true</span>);
+<span class="cmd">end</span>;
+
+<span class="comment">// MODIFYALL — actualización masiva</span>
+<span class="cmd">var</span>
+    Prestamo: <span class="param">Record</span> Prestamo;
+<span class="cmd">begin</span>
+    Prestamo.SetRange(Estado, Prestamo.Estado::Activo);
+    Prestamo.SetFilter(<span class="string">"Fecha Devolucion"</span>, <span class="string">'..%1'</span>, Today);
+    Prestamo.ModifyAll(Estado, Prestamo.Estado::Vencido, <span class="cmd">false</span>);
+    <span class="comment">// Actualiza TODOS los registros filtrados de golpe. Mucho más rápido que un bucle.</span>
+<span class="cmd">end</span>;
+
+<span class="comment">// DELETEALL — borrado masivo</span>
+<span class="cmd">var</span>
+    LogTemp: <span class="param">Record</span> <span class="string">"Log Temporal"</span>;
+<span class="cmd">begin</span>
+    LogTemp.SetFilter(<span class="string">"Fecha"</span>, <span class="string">'..%1'</span>, Today - <span class="num">90</span>);
+    LogTemp.DeleteAll(<span class="cmd">false</span>); <span class="comment">// borrar logs de más de 90 días</span>
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 ¿true o false en RunTrigger?</h3>
+                <ul>
+                    <li>Usa <code>true</code> cuando necesites que se ejecute la lógica de negocio definida en los
+                        triggers de la tabla (validaciones, campos calculados, numeraciones automáticas).</li>
+                    <li>Usa <code>false</code> en migraciones de datos masivas, procesos batch o cuando ya has validado
+                        los datos manualmente. Es más rápido.</li>
+                    <li>Regla general: en operaciones del usuario, <code>true</code>. En procesos internos del sistema,
+                        evalúa caso a caso.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 8. REC Y XREC                               -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>8. Rec y xRec</h2>
+
+            <p>
+                <code>Rec</code> y <code>xRec</code> son dos variables implícitas que BC crea
+                automáticamente en los triggers de tabla y de página. <code>Rec</code> contiene los
+                valores <strong>actuales</strong> del registro (después de la edición del usuario) y
+                <code>xRec</code> contiene los valores <strong>anteriores</strong> (antes de la edición).
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Contiene</th>
+                        <th>Uso típico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Rec</code></td>
+                        <td>Valores actuales (lo que el usuario acaba de escribir)</td>
+                        <td>Acceder al valor nuevo de un campo</td>
+                    </tr>
+                    <tr>
+                        <td><code>xRec</code></td>
+                        <td>Valores anteriores (lo que había antes de la edición)</td>
+                        <td>Comparar si un campo ha cambiado</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// En un trigger OnValidate de campo: comparar valor viejo y nuevo</span>
+<span class="cmd">field</span>(<span class="num">10</span>; Estado; <span class="param">Enum</span> <span class="string">"Estado Prestamo"</span>)
+{
+    <span class="cmd">trigger</span> <span class="param">OnValidate</span>()
+    <span class="cmd">begin</span>
+        <span class="comment">// Detectar si el estado ha cambiado</span>
+        <span class="cmd">if</span> Rec.Estado <> xRec.Estado <span class="cmd">then</span> <span class="cmd">begin</span>
+            Message(<span class="string">'Estado cambió de %1 a %2'</span>,
+                    xRec.Estado, Rec.Estado);
+
+            <span class="comment">// Impedir volver a estado Activo desde Vencido</span>
+            <span class="cmd">if</span> (xRec.Estado = xRec.Estado::Vencido) <span class="cmd">and</span>
+               (Rec.Estado = Rec.Estado::Activo) <span class="cmd">then</span>
+                Error(<span class="string">'No se puede reactivar un préstamo vencido.'</span>);
+        <span class="cmd">end</span>;
+    <span class="cmd">end</span>;
+}
+
+<span class="comment">// En un trigger OnModify de tabla: registrar cambios</span>
+<span class="cmd">trigger</span> <span class="param">OnModify</span>()
+<span class="cmd">begin</span>
+    <span class="cmd">if</span> Rec.Nombre <> xRec.Nombre <span class="cmd">then</span>
+        Message(<span class="string">'El nombre del socio cambió de "%1" a "%2"'</span>,
+                xRec.Nombre, Rec.Nombre);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Cuándo usar xRec</h3>
+                <ul>
+                    <li>Para <strong>validar cambios</strong>: impedir transiciones de estado no permitidas.</li>
+                    <li>Para <strong>auditoría</strong>: registrar qué cambió, quién y cuándo.</li>
+                    <li>Para <strong>recalcular</strong>: si un campo que afecta a otros cambia, recalcular los
+                        dependientes.</li>
+                    <li><code>xRec</code> no está disponible en <code>OnInsert</code> (no hay "valor anterior" al crear
+                        un registro).</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 9. MARK, CLEARMARKS, MARKEDONLY              -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>9. Funciones MARK, CLEARMARKS, MARKEDONLY, RESET</h2>
+
+            <p>
+                El sistema de <strong>marcado</strong> de AL permite "etiquetar" registros individuales
+                en memoria y luego filtrar para trabajar solo con los marcados. Es útil cuando necesitas
+                seleccionar registros con lógica compleja que no se puede expresar con <code>SetFilter</code>.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Función</th>
+                        <th>Qué hace</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Mark(true/false)</code></td>
+                        <td>Marca o desmarca el registro actual</td>
+                    </tr>
+                    <tr>
+                        <td><code>Mark()</code> (sin parámetro)</td>
+                        <td>Devuelve si el registro actual está marcado (Boolean)</td>
+                    </tr>
+                    <tr>
+                        <td><code>MarkedOnly(true/false)</code></td>
+                        <td>Activa/desactiva el filtro para mostrar solo registros marcados</td>
+                    </tr>
+                    <tr>
+                        <td><code>ClearMarks()</code></td>
+                        <td>Elimina todas las marcas de todos los registros</td>
+                    </tr>
+                    <tr>
+                        <td><code>Reset()</code></td>
+                        <td>Elimina todos los filtros (pero NO las marcas)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Ejemplo: marcar socios que tienen préstamos vencidos</span>
+<span class="cmd">var</span>
+    Socio: <span class="param">Record</span> Socio;
+    Prestamo: <span class="param">Record</span> Prestamo;
+<span class="cmd">begin</span>
+    <span class="comment">// Paso 1: recorrer todos los socios y marcar los que tengan vencidos</span>
+    <span class="cmd">if</span> Socio.FindSet() <span class="cmd">then</span>
+        <span class="cmd">repeat</span>
+            Prestamo.Reset();
+            Prestamo.SetRange(<span class="string">"No. Socio"</span>, Socio.<span class="string">"No."</span>);
+            Prestamo.SetRange(Estado, Prestamo.Estado::Vencido);
+            <span class="cmd">if</span> <span class="cmd">not</span> Prestamo.IsEmpty <span class="cmd">then</span>
+                Socio.Mark(<span class="cmd">true</span>); <span class="comment">// marcamos este socio</span>
+        <span class="cmd">until</span> Socio.Next() = <span class="num">0</span>;
+
+    <span class="comment">// Paso 2: filtrar para trabajar solo con los marcados</span>
+    Socio.MarkedOnly(<span class="cmd">true</span>);
+    Message(<span class="string">'Socios con préstamos vencidos: %1'</span>, Socio.Count);
+
+    <span class="comment">// Ya puedes recorrer solo los socios marcados</span>
+    <span class="cmd">if</span> Socio.FindSet() <span class="cmd">then</span>
+        <span class="cmd">repeat</span>
+            Message(<span class="string">'Socio moroso: %1'</span>, Socio.Nombre);
+        <span class="cmd">until</span> Socio.Next() = <span class="num">0</span>;
+
+    <span class="comment">// Limpiar</span>
+    Socio.ClearMarks();
+    Socio.MarkedOnly(<span class="cmd">false</span>);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 10. COMUNICACIÓN ENTRE OBJETOS              -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>10. Comunicación entre Objetos: Datos, Parámetros y Llamadas</h2>
+
+            <p>
+                En una extensión real, la lógica se reparte entre tablas, páginas, codeunits e informes.
+                Estos objetos necesitan comunicarse para compartir datos y ejecutar lógica de negocio.
+                Hay varias formas de hacerlo en AL.
+            </p>
+
+            <h3>Llamar a un procedimiento de un Codeunit</h3>
+            <div class="ide-code">
+                <pre><code><span class="comment">// Codeunit con lógica de negocio</span>
+<span class="cmd">codeunit</span> <span class="num">50100</span> <span class="string">"Gestion Prestamos"</span>
+{
+    <span class="cmd">procedure</span> <span class="param">RegistrarPrestamo</span>(NoSocio: <span class="param">Code</span>[<span class="num">20</span>]; NoLibro: <span class="param">Code</span>[<span class="num">20</span>])
+    <span class="cmd">var</span>
+        Prestamo: <span class="param">Record</span> Prestamo;
+    <span class="cmd">begin</span>
+        Prestamo.Init();
+        Prestamo.<span class="string">"No. Socio"</span> := NoSocio;
+        Prestamo.<span class="string">"No. Libro"</span> := NoLibro;
+        Prestamo.<span class="string">"Fecha Prestamo"</span> := Today;
+        Prestamo.Insert(<span class="cmd">true</span>);
+    <span class="cmd">end</span>;
+}
+
+<span class="comment">// Llamar desde una página</span>
+<span class="cmd">action</span>(NuevoPrestamo)
+{
+    <span class="param">Caption</span> = <span class="string">'Registrar Préstamo'</span>;
+    <span class="param">ApplicationArea</span> = All;
+
+    <span class="cmd">trigger</span> <span class="param">OnAction</span>()
+    <span class="cmd">var</span>
+        GestionPrestamos: <span class="param">Codeunit</span> <span class="string">"Gestion Prestamos"</span>;
+    <span class="cmd">begin</span>
+        GestionPrestamos.RegistrarPrestamo(Rec.<span class="string">"No."</span>, <span class="string">'L-0001'</span>);
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <h3>Pasar registros entre objetos</h3>
+            <div class="ide-code">
+                <pre><code><span class="comment">// Pasar un registro como parámetro por referencia</span>
+<span class="cmd">procedure</span> <span class="param">ValidarSocio</span>(<span class="cmd">var</span> Socio: <span class="param">Record</span> Socio): <span class="param">Boolean</span>
+<span class="cmd">begin</span>
+    <span class="cmd">if</span> Socio.Nombre = <span class="string">''</span> <span class="cmd">then</span> <span class="cmd">begin</span>
+        Error(<span class="string">'El nombre del socio es obligatorio.'</span>);
+        <span class="cmd">exit</span>(<span class="cmd">false</span>);
+    <span class="cmd">end</span>;
+    <span class="cmd">exit</span>(<span class="cmd">true</span>);
+<span class="cmd">end</span>;
+
+<span class="comment">// Abrir una página con filtros desde código</span>
+<span class="cmd">var</span>
+    PaginaSocios: <span class="param">Page</span> <span class="string">"Lista Socios"</span>;
+    Socio: <span class="param">Record</span> Socio;
+<span class="cmd">begin</span>
+    Socio.SetRange(Tipo, Socio.Tipo::Premium);
+    PaginaSocios.SetTableView(Socio);
+    PaginaSocios.RunModal(); <span class="comment">// abre la página filtrada por socios premium</span>
+<span class="cmd">end</span>;
+
+<span class="comment">// Obtener el registro seleccionado en un LookupMode</span>
+<span class="cmd">var</span>
+    PaginaSocios: <span class="param">Page</span> <span class="string">"Lista Socios"</span>;
+    SocioSeleccionado: <span class="param">Record</span> Socio;
+<span class="cmd">begin</span>
+    PaginaSocios.LookupMode(<span class="cmd">true</span>);
+    <span class="cmd">if</span> PaginaSocios.RunModal() = Action::LookupOK <span class="cmd">then</span> <span class="cmd">begin</span>
+        PaginaSocios.GetRecord(SocioSeleccionado);
+        Message(<span class="string">'Socio seleccionado: %1'</span>, SocioSeleccionado.Nombre);
+    <span class="cmd">end</span>;
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Principio de responsabilidad única</h3>
+                <ul>
+                    <li>Las <strong>tablas</strong> almacenan datos y validan campos (triggers).</li>
+                    <li>Las <strong>páginas</strong> muestran datos y gestionan la interacción con el usuario.</li>
+                    <li>Los <strong>codeunits</strong> contienen la lógica de negocio reutilizable.</li>
+                    <li>Los <strong>informes</strong> generan documentos y procesan datos masivos.</li>
+                    <li>Una página <strong>nunca</strong> debería contener lógica de negocio compleja. Delega siempre en
+                        un codeunit.</li>
+                </ul>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

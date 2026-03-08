@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AL Avanzado - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content h3 {
+            color: var(--text-white);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit';
+        }
+
+        .theory-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+
+        .theory-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-info h3 {
+            margin-top: 0;
+            color: var(--primary-blue);
+        }
+
+        .alert-info ul {
+            margin-bottom: 0 !important;
+        }
+
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-warning h3 {
+            margin-top: 0;
+            color: #eab308;
+        }
+
+        .ide-code {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .ide-code pre {
+            margin: 0;
+        }
+
+        .ide-code code {
+            color: #d4d4d4;
+        }
+
+        .ide-code .cmd {
+            color: #569cd6;
+            font-weight: bold;
+        }
+
+        .ide-code .param {
+            color: #9cdcfe;
+        }
+
+        .ide-code .string {
+            color: #ce9178;
+        }
+
+        .ide-code .comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        .ide-code .num {
+            color: #b5cea8;
+        }
+
+        .section-divider {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin: 3rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-main">
+        <div class="theory-content">
+
+            <span class="diff-badge diff-hard" style="margin-bottom: 1rem; display: inline-block;">Dif. 8/10</span>
+            <h1>Herramientas Avanzadas de AL</h1>
+            <p>
+                Esta sección cubre los elementos avanzados del desarrollo en Business Central: el flujo
+                de procesos del sistema, el diseño de páginas RoleCenter con cues y actividades, la
+                personalización de la cinta de acciones, y los XMLports para importar y exportar datos.
+            </p>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 1. FLUJO DE PROCESOS                        -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>1. Flujo de Procesos de Business Central</h2>
+
+            <p>
+                Business Central organiza su funcionamiento alrededor de <strong>procesos de negocio</strong>
+                que siguen un flujo estándar. Entender este flujo es fundamental para saber dónde encaja
+                cada objeto AL que desarrollamos.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Fase</th>
+                        <th>Descripción</th>
+                        <th>Objetos AL involucrados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. Configuración</strong></td>
+                        <td>Crear datos maestros (clientes, productos, socios, libros) y configurar el sistema.</td>
+                        <td>Tablas, Páginas Card/List</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. Entrada de datos</strong></td>
+                        <td>El usuario introduce documentos o transacciones (pedidos, préstamos, facturas).</td>
+                        <td>Páginas Document, Worksheet</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. Validación</strong></td>
+                        <td>El sistema valida los datos mediante triggers y lógica de negocio.</td>
+                        <td>Triggers de tabla, Codeunits</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4. Contabilización (Posting)</strong></td>
+                        <td>El documento borrador se convierte en un documento publicado y genera movimientos contables.
+                        </td>
+                        <td>Codeunits de posting, Reports ProcessingOnly</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5. Informes y análisis</strong></td>
+                        <td>El usuario consulta los datos mediante informes, queries y dashboards.</td>
+                        <td>Reports, Queries, RoleCenter</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Flujo típico de un proceso de préstamo en nuestra aplicación:</span>
+<span class="comment">//</span>
+<span class="comment">// 1. CONFIGURACIÓN → Crear Socios y Libros (tablas maestras)</span>
+<span class="comment">// 2. ENTRADA       → Crear un nuevo Préstamo (tabla de documento)</span>
+<span class="comment">// 3. VALIDACIÓN    → OnValidate verifica que el socio existe y el libro está disponible</span>
+<span class="comment">// 4. PROCESO       → Codeunit cambia el estado del libro a "Prestado"</span>
+<span class="comment">// 5. INFORMES      → Report muestra préstamos activos, vencidos, estadísticas</span>
+<span class="comment">//</span>
+<span class="comment">// Cada fase usa objetos AL diferentes, pero todos están conectados</span>
+<span class="comment">// a través de TableRelation, Codeunits y Events.</span></code></pre>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 2. ROLECENTER                               -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>2. Páginas del Centro de Roles (RoleCenter)</h2>
+
+            <p>
+                El <strong>RoleCenter</strong> es la página principal que ve el usuario al iniciar sesión
+                en Business Central. Cada rol de usuario (contable, gerente, bibliotecario) tiene su propio
+                RoleCenter personalizado con accesos directos, indicadores y actividades relevantes para
+                su trabajo diario.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Componente</th>
+                        <th>Qué es</th>
+                        <th>Tipo de Part</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Headline</strong></td>
+                        <td>Título dinámico en la parte superior con información contextual o saludos</td>
+                        <td><code>HeadlinePart</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Activities (Cues)</strong></td>
+                        <td>Contadores visuales que muestran el número de elementos pendientes</td>
+                        <td><code>CardPart</code> con CueGroup</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Acciones</strong></td>
+                        <td>Enlaces rápidos a las páginas y funciones más usadas del rol</td>
+                        <td>Actions en el RoleCenter</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Página RoleCenter básica para un bibliotecario</span>
+<span class="cmd">page</span> <span class="num">50500</span> <span class="string">"RC Bibliotecario"</span>
+{
+    <span class="param">PageType</span>  = RoleCenter;
+    <span class="param">Caption</span>   = <span class="string">'Centro de Roles — Bibliotecario'</span>;
+
+    layout
+    {
+        area(RoleCenter)
+        {
+            <span class="comment">// Headline dinámico</span>
+            <span class="cmd">part</span>(Titular; <span class="string">"Headline Biblioteca"</span>)
+            {
+                <span class="param">ApplicationArea</span> = All;
+            }
+
+            <span class="comment">// Cues — indicadores numéricos</span>
+            <span class="cmd">part</span>(Actividades; <span class="string">"Actividades Biblioteca"</span>)
+            {
+                <span class="param">ApplicationArea</span> = All;
+            }
+        }
+    }
+
+    actions
+    {
+        area(Embedding)
+        {
+            <span class="cmd">action</span>(Socios)
+            {
+                <span class="param">Caption</span>         = <span class="string">'Socios'</span>;
+                <span class="param">ApplicationArea</span> = All;
+                <span class="param">RunObject</span>       = <span class="cmd">page</span> <span class="string">"Lista Socios"</span>;
+                <span class="param">Image</span>           = CustomerList;
+            }
+            <span class="cmd">action</span>(Libros)
+            {
+                <span class="param">Caption</span>         = <span class="string">'Catálogo de Libros'</span>;
+                <span class="param">ApplicationArea</span> = All;
+                <span class="param">RunObject</span>       = <span class="cmd">page</span> <span class="string">"Lista Libros"</span>;
+                <span class="param">Image</span>           = ItemList;
+            }
+            <span class="cmd">action</span>(Prestamos)
+            {
+                <span class="param">Caption</span>         = <span class="string">'Préstamos'</span>;
+                <span class="param">ApplicationArea</span> = All;
+                <span class="param">RunObject</span>       = <span class="cmd">page</span> <span class="string">"Lista Prestamos"</span>;
+                <span class="param">Image</span>           = Documents;
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 3. CUES Y ACTIVIDADES                       -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>3. Estructura: Titulares, Actividades y Cues</h2>
+
+            <h3>HeadlinePart — El titular dinámico</h3>
+            <p>
+                Una HeadlinePart es una página especial que muestra un "titular de periódico" en la
+                parte superior del RoleCenter. Es ideal para dar la bienvenida, mostrar datos
+                clave del día o destacar alertas.
+            </p>
+
+            <div class="ide-code">
+                <pre><code><span class="cmd">page</span> <span class="num">50501</span> <span class="string">"Headline Biblioteca"</span>
+{
+    <span class="param">PageType</span> = HeadlinePart;
+    <span class="param">Caption</span>  = <span class="string">'Titulares'</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            <span class="cmd">field</span>(Bienvenida; BienvenidaTxt)
+            {
+                <span class="param">ApplicationArea</span> = All;
+            }
+            <span class="cmd">field</span>(PrestamosHoy; PrestamosHoyTxt)
+            {
+                <span class="param">ApplicationArea</span> = All;
+            }
+        }
+    }
+
+    <span class="cmd">trigger</span> <span class="param">OnOpenPage</span>()
+    <span class="cmd">var</span>
+        Prestamo: <span class="param">Record</span> Prestamo;
+    <span class="cmd">begin</span>
+        BienvenidaTxt := <span class="string">'Buenos días, '</span> + UserId;
+
+        Prestamo.SetRange(<span class="string">"Fecha Prestamo"</span>, Today);
+        PrestamosHoyTxt := StrSubstNo(<span class="string">'Hoy se han registrado %1 préstamos nuevos'</span>,
+                                       Prestamo.Count);
+    <span class="cmd">end</span>;
+
+    <span class="cmd">var</span>
+        BienvenidaTxt: <span class="param">Text</span>[<span class="num">100</span>];
+        PrestamosHoyTxt: <span class="param">Text</span>[<span class="num">100</span>];
+}</code></pre>
+            </div>
+
+            <h3>Cues — Los indicadores numéricos</h3>
+            <p>
+                Los <strong>Cues</strong> son contadores visuales que aparecen como tarjetas de colores
+                en el RoleCenter. Cada cue muestra un número (ej. "5 préstamos vencidos") y al hacer
+                clic abre la página filtrada con esos registros.
+            </p>
+
+            <p>
+                Para implementar cues necesitas:
+            </p>
+            <ul>
+                <li>Una <strong>tabla de cues</strong> con campos FlowField que calculan los contadores.</li>
+                <li>Una <strong>página CardPart</strong> que muestra esos campos dentro de un <code>cuegroup</code>.
+                </li>
+            </ul>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// 1. Tabla de Cues — los FlowFields calculan los contadores</span>
+<span class="cmd">table</span> <span class="num">50501</span> <span class="string">"Cues Biblioteca"</span>
+{
+    <span class="param">Caption</span> = <span class="string">'Cues Biblioteca'</span>;
+
+    <span class="cmd">fields</span>
+    {
+        <span class="cmd">field</span>(<span class="num">1</span>; <span class="string">"Clave"</span>; <span class="param">Code</span>[<span class="num">10</span>]) { }
+
+        <span class="cmd">field</span>(<span class="num">10</span>; <span class="string">"Prestamos Activos"</span>; <span class="param">Integer</span>)
+        {
+            <span class="param">FieldClass</span> = FlowField;
+            <span class="param">CalcFormula</span> = count(Prestamo <span class="cmd">where</span>(Estado = <span class="cmd">const</span>(Activo)));
+            <span class="param">Caption</span> = <span class="string">'Préstamos Activos'</span>;
+        }
+        <span class="cmd">field</span>(<span class="num">20</span>; <span class="string">"Prestamos Vencidos"</span>; <span class="param">Integer</span>)
+        {
+            <span class="param">FieldClass</span> = FlowField;
+            <span class="param">CalcFormula</span> = count(Prestamo <span class="cmd">where</span>(Estado = <span class="cmd">const</span>(Vencido)));
+            <span class="param">Caption</span> = <span class="string">'Préstamos Vencidos'</span>;
+        }
+        <span class="cmd">field</span>(<span class="num">30</span>; <span class="string">"Total Socios"</span>; <span class="param">Integer</span>)
+        {
+            <span class="param">FieldClass</span> = FlowField;
+            <span class="param">CalcFormula</span> = count(Socio);
+            <span class="param">Caption</span> = <span class="string">'Total Socios'</span>;
+        }
+    }
+
+    <span class="cmd">keys</span>
+    {
+        <span class="cmd">key</span>(PK; <span class="string">"Clave"</span>) { <span class="param">Clustered</span> = <span class="cmd">true</span>; }
+    }
+}
+
+<span class="comment">// 2. Página CardPart con CueGroup</span>
+<span class="cmd">page</span> <span class="num">50502</span> <span class="string">"Actividades Biblioteca"</span>
+{
+    <span class="param">PageType</span>    = CardPart;
+    <span class="param">Caption</span>     = <span class="string">'Actividades'</span>;
+    <span class="param">SourceTable</span> = <span class="string">"Cues Biblioteca"</span>;
+
+    layout
+    {
+        area(Content)
+        {
+            <span class="cmd">cuegroup</span>(Prestamos)
+            {
+                <span class="param">Caption</span> = <span class="string">'Préstamos'</span>;
+
+                <span class="cmd">field</span>(PrestActivos; Rec.<span class="string">"Prestamos Activos"</span>)
+                {
+                    <span class="param">ApplicationArea</span> = All;
+                    <span class="param">DrillDownPageId</span> = <span class="string">"Lista Prestamos"</span>;
+                    <span class="param">Caption</span> = <span class="string">'Activos'</span>;
+                }
+                <span class="cmd">field</span>(PrestVencidos; Rec.<span class="string">"Prestamos Vencidos"</span>)
+                {
+                    <span class="param">ApplicationArea</span> = All;
+                    <span class="param">DrillDownPageId</span> = <span class="string">"Lista Prestamos"</span>;
+                    <span class="param">Caption</span> = <span class="string">'Vencidos'</span>;
+
+                    <span class="comment">// Cambia de color según el valor</span>
+                    <span class="param">Style</span> = Unfavorable;
+                    <span class="param">StyleExpr</span> = Rec.<span class="string">"Prestamos Vencidos"</span> > <span class="num">0</span>;
+                }
+            }
+            <span class="cmd">cuegroup</span>(General)
+            {
+                <span class="param">Caption</span> = <span class="string">'General'</span>;
+                <span class="cmd">field</span>(Socios; Rec.<span class="string">"Total Socios"</span>)
+                {
+                    <span class="param">ApplicationArea</span> = All;
+                    <span class="param">DrillDownPageId</span> = <span class="string">"Lista Socios"</span>;
+                    <span class="param">Caption</span> = <span class="string">'Total Socios'</span>;
+                }
+            }
+        }
+    }
+
+    <span class="cmd">trigger</span> <span class="param">OnOpenPage</span>()
+    <span class="cmd">begin</span>
+        Rec.Reset();
+        <span class="cmd">if</span> <span class="cmd">not</span> Rec.Get() <span class="cmd">then</span> <span class="cmd">begin</span>
+            Rec.Init();
+            Rec.Insert();
+        <span class="cmd">end</span>;
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Cómo funcionan los Cues</h3>
+                <ul>
+                    <li>La tabla de cues solo tiene <strong>un registro</strong> (singleton). Por eso el
+                        <code>OnOpenPage</code> hace <code>Get()</code> sin parámetros.</li>
+                    <li>Los campos <code>FlowField</code> calculan los contadores automáticamente con SQL.</li>
+                    <li><code>DrillDownPageId</code> define qué página se abre al hacer clic en el cue.</li>
+                    <li>Usa <code>Style = Unfavorable</code> para que el número aparezca en rojo cuando hay problemas.
+                    </li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 4. ACCIONES Y CINTA DE OPCIONES             -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>4. Diseñador de Acciones y Cinta de Opciones</h2>
+
+            <p>
+                Las <strong>acciones</strong> en Business Central son los botones y enlaces que el usuario
+                ve en la barra superior de cada página. Se organizan en áreas y grupos, y cada una
+                puede ejecutar código AL, abrir otra página o lanzar un informe.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Área de acción</th>
+                        <th>Dónde aparece</th>
+                        <th>Uso típico</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>area(Processing)</code></td>
+                        <td>Barra de acciones principal</td>
+                        <td>Acciones que modifican datos (Registrar, Aprobar, Enviar)</td>
+                    </tr>
+                    <tr>
+                        <td><code>area(Navigation)</code></td>
+                        <td>Menú "Navegar" / "Relacionado"</td>
+                        <td>Abrir páginas relacionadas (Historial, Movimientos)</td>
+                    </tr>
+                    <tr>
+                        <td><code>area(Reporting)</code></td>
+                        <td>Menú "Informes"</td>
+                        <td>Lanzar informes y documentos</td>
+                    </tr>
+                    <tr>
+                        <td><code>area(Creation)</code></td>
+                        <td>Menú "Nuevo" (en listas)</td>
+                        <td>Crear nuevos registros o documentos</td>
+                    </tr>
+                    <tr>
+                        <td><code>area(Promoted)</code></td>
+                        <td>Barra principal (destacado)</td>
+                        <td>Acciones frecuentes que se quieren hacer muy visibles</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Acciones en una página de tarjeta de socio</span>
+<span class="cmd">page</span> <span class="num">50110</span> <span class="string">"Tarjeta Socio"</span>
+{
+    <span class="param">PageType</span>    = Card;
+    <span class="param">SourceTable</span> = Socio;
+
+    <span class="comment">// ... layout omitido ...</span>
+
+    actions
+    {
+        <span class="comment">// Acciones principales (barra superior)</span>
+        area(Processing)
+        {
+            <span class="cmd">action</span>(RegistrarPrestamo)
+            {
+                <span class="param">Caption</span>         = <span class="string">'Nuevo Préstamo'</span>;
+                <span class="param">ApplicationArea</span> = All;
+                <span class="param">Image</span>           = NewDocument;
+                <span class="param">Promoted</span>        = <span class="cmd">true</span>;
+                <span class="param">PromotedCategory</span> = Process;
+                <span class="param">PromotedIsBig</span>   = <span class="cmd">true</span>;
+
+                <span class="cmd">trigger</span> <span class="param">OnAction</span>()
+                <span class="cmd">var</span>
+                    GestPrest: <span class="param">Codeunit</span> <span class="string">"Gestion Prestamos"</span>;
+                <span class="cmd">begin</span>
+                    GestPrest.RegistrarPrestamo(Rec.<span class="string">"No."</span>, <span class="string">''</span>);
+                <span class="cmd">end</span>;
+            }
+        }
+
+        <span class="comment">// Acciones de navegación</span>
+        area(Navigation)
+        {
+            <span class="cmd">group</span>(Historial)
+            {
+                <span class="param">Caption</span> = <span class="string">'Historial'</span>;
+
+                <span class="cmd">action</span>(VerPrestamos)
+                {
+                    <span class="param">Caption</span>         = <span class="string">'Préstamos del Socio'</span>;
+                    <span class="param">ApplicationArea</span> = All;
+                    <span class="param">Image</span>           = Documents;
+                    <span class="param">RunObject</span>       = <span class="cmd">page</span> <span class="string">"Lista Prestamos"</span>;
+                    <span class="param">RunPageLink</span>     = <span class="string">"No. Socio"</span> = <span class="cmd">field</span>(<span class="string">"No."</span>);
+                    <span class="comment">// Abre la lista filtrada por este socio</span>
+                }
+            }
+        }
+
+        <span class="comment">// Acciones de informes</span>
+        area(Reporting)
+        {
+            <span class="cmd">action</span>(ImprimirFicha)
+            {
+                <span class="param">Caption</span>         = <span class="string">'Ficha del Socio'</span>;
+                <span class="param">ApplicationArea</span> = All;
+                <span class="param">Image</span>           = Report;
+                <span class="param">RunObject</span>       = <span class="cmd">report</span> <span class="string">"Ficha Socio Word"</span>;
+            }
+        }
+    }
+}</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Promoted actions (acciones destacadas)</h3>
+                <ul>
+                    <li>Usa <code>Promoted = true</code> para que la acción aparezca directamente en la barra superior
+                        de la página.</li>
+                    <li><code>PromotedIsBig = true</code> hace que el botón sea más grande y visible.</li>
+                    <li><code>PromotedCategory</code> agrupa las acciones destacadas: <code>Process</code>,
+                        <code>Report</code>, <code>Category4</code> a <code>Category10</code>.</li>
+                    <li>No abuses de las acciones destacadas. Solo pon las que el usuario usa a diario.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 5. XMLPORTS                                  -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>5. XMLports: Componentes, Propiedades y Triggers</h2>
+
+            <p>
+                Un <strong>XMLport</strong> es un objeto AL diseñado para importar y exportar datos
+                entre Business Central y archivos externos (XML, CSV, texto plano). Es la herramienta
+                estándar para migraciones de datos, integraciones con otros sistemas y cargas masivas.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Componente</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>schema</code></td>
+                        <td>Define la estructura del fichero: qué elementos y atributos tendrá el XML/CSV de salida.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>requestpage</code></td>
+                        <td>Igual que en reports: pantalla previa para que el usuario configure opciones antes de
+                            ejecutar.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Direction</code></td>
+                        <td>Define si el XMLport es de <code>Import</code>, <code>Export</code> o <code>Both</code>.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>Format</code></td>
+                        <td>Formato del fichero: <code>Xml</code>, <code>VariableText</code> (CSV) o
+                            <code>FixedText</code>.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Propiedades principales</h3>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Propiedad</th>
+                        <th>Dónde</th>
+                        <th>Qué hace</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Direction</code></td>
+                        <td>XMLport</td>
+                        <td>Import, Export o Both</td>
+                    </tr>
+                    <tr>
+                        <td><code>Format</code></td>
+                        <td>XMLport</td>
+                        <td>Xml, VariableText (CSV), FixedText</td>
+                    </tr>
+                    <tr>
+                        <td><code>FieldSeparator</code></td>
+                        <td>XMLport (CSV)</td>
+                        <td>Carácter separador de campos (ej. <code>;</code> o <code>,</code>)</td>
+                    </tr>
+                    <tr>
+                        <td><code>TextEncoding</code></td>
+                        <td>XMLport</td>
+                        <td>UTF8, UTF16, MSDos, Windows</td>
+                    </tr>
+                    <tr>
+                        <td><code>TableElementName</code></td>
+                        <td>tableelement</td>
+                        <td>Nombre del nodo XML para cada registro</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Triggers del XMLport</h3>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Trigger</th>
+                        <th>Cuándo se ejecuta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>OnPreXmlPort</code></td>
+                        <td>Antes de procesar cualquier dato (inicialización)</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnPostXmlPort</code></td>
+                        <td>Después de procesar todos los datos (resumen, mensaje final)</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnBeforeInsertRecord</code></td>
+                        <td>Antes de insertar cada registro (validación, transformación)</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnAfterInsertRecord</code></td>
+                        <td>Después de insertar cada registro (acciones post-inserción)</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnBeforeModifyRecord</code></td>
+                        <td>Antes de modificar un registro existente</td>
+                    </tr>
+                    <tr>
+                        <td><code>OnAfterGetRecord</code></td>
+                        <td>Después de leer cada registro (en exportación)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// XMLport para exportar socios a CSV</span>
+<span class="cmd">xmlport</span> <span class="num">50500</span> <span class="string">"Exportar Socios CSV"</span>
+{
+    <span class="param">Direction</span>      = Export;
+    <span class="param">Format</span>         = VariableText;  <span class="comment">// CSV</span>
+    <span class="param">FieldSeparator</span> = <span class="string">';'</span>;
+    <span class="param">TextEncoding</span>   = UTF8;
+    <span class="param">Caption</span>        = <span class="string">'Exportar Socios a CSV'</span>;
+
+    schema
+    {
+        <span class="cmd">textelement</span>(Root)
+        {
+            <span class="cmd">tableelement</span>(SocioElement; Socio)
+            {
+                <span class="cmd">fieldelement</span>(No; Socio.<span class="string">"No."</span>) { }
+                <span class="cmd">fieldelement</span>(Nombre; Socio.Nombre) { }
+                <span class="cmd">fieldelement</span>(Email; Socio.Email) { }
+                <span class="cmd">fieldelement</span>(Tipo; Socio.Tipo) { }
+            }
+        }
+    }
+
+    <span class="cmd">trigger</span> <span class="param">OnPostXmlPort</span>()
+    <span class="cmd">begin</span>
+        Message(<span class="string">'Exportación completada.'</span>);
+    <span class="cmd">end</span>;
+}</code></pre>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 6. XMLPORT SOURCETYPE                       -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>6. XMLport SourceType: Texto, Tabla y Campo</h2>
+
+            <p>
+                Los elementos del schema de un XMLport pueden tener diferentes <strong>SourceType</strong>
+                que determinan de dónde vienen los datos.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>SourceType</th>
+                        <th>Elemento</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Table</strong></td>
+                        <td><code>tableelement</code></td>
+                        <td>Representa una tabla de BC. Se itera sobre cada registro. Es el contenedor principal.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Field</strong></td>
+                        <td><code>fieldelement</code> / <code>fieldattribute</code></td>
+                        <td>Representa un campo de la tabla del <code>tableelement</code> padre.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Text</strong></td>
+                        <td><code>textelement</code> / <code>textattribute</code></td>
+                        <td>Texto fijo o variable no vinculado a ninguna tabla. Se gestiona con código AL.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// XMLport para importar socios desde CSV</span>
+<span class="cmd">xmlport</span> <span class="num">50501</span> <span class="string">"Importar Socios CSV"</span>
+{
+    <span class="param">Direction</span>      = Import;
+    <span class="param">Format</span>         = VariableText;
+    <span class="param">FieldSeparator</span> = <span class="string">';'</span>;
+    <span class="param">TextEncoding</span>   = UTF8;
+    <span class="param">Caption</span>        = <span class="string">'Importar Socios desde CSV'</span>;
+
+    schema
+    {
+        <span class="cmd">textelement</span>(Root) <span class="comment">// textelement = nodo raíz sin tabla</span>
+        {
+            <span class="cmd">tableelement</span>(SocioImport; Socio) <span class="comment">// tableelement = vinculado a tabla Socio</span>
+            {
+                <span class="comment">// fieldelement = vinculados a campos de la tabla</span>
+                <span class="cmd">fieldelement</span>(No; Socio.<span class="string">"No."</span>) { }
+                <span class="cmd">fieldelement</span>(Nombre; Socio.Nombre) { }
+                <span class="cmd">fieldelement</span>(Email; Socio.Email) { }
+
+                <span class="comment">// textelement dentro de tableelement = dato del CSV
+                // que no corresponde directamente a un campo
+                // (lo procesamos manualmente en un trigger)</span>
+                <span class="cmd">textelement</span>(TipoTexto) { }
+
+                <span class="cmd">trigger</span> <span class="param">OnBeforeInsertRecord</span>()
+                <span class="cmd">begin</span>
+                    <span class="comment">// Convertir el texto del CSV al enum de tipo de socio</span>
+                    <span class="cmd">case</span> UpperCase(TipoTexto) <span class="cmd">of</span>
+                        <span class="string">'NORMAL'</span>:  Socio.Tipo := Socio.Tipo::Normal;
+                        <span class="string">'PREMIUM'</span>: Socio.Tipo := Socio.Tipo::Premium;
+                        <span class="cmd">else</span>
+                            Socio.Tipo := Socio.Tipo::Normal;
+                    <span class="cmd">end</span>;
+
+                    ContadorImportados += <span class="num">1</span>;
+                <span class="cmd">end</span>;
+            }
+        }
+    }
+
+    <span class="cmd">trigger</span> <span class="param">OnPostXmlPort</span>()
+    <span class="cmd">begin</span>
+        Message(<span class="string">'Importación completada. Socios importados: %1'</span>, ContadorImportados);
+    <span class="cmd">end</span>;
+
+    <span class="cmd">var</span>
+        ContadorImportados: <span class="param">Integer</span>;
+}</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Element vs. Attribute (XML)</h3>
+                <ul>
+                    <li>En formato XML, un <code>fieldelement</code> genera un <strong>nodo hijo</strong>:
+                        <code>&lt;Nombre&gt;Ana&lt;/Nombre&gt;</code></li>
+                    <li>Un <code>fieldattribute</code> genera un <strong>atributo</strong> en el nodo padre:
+                        <code>&lt;Socio Nombre="Ana"/&gt;</code></li>
+                    <li>En formato CSV (<code>VariableText</code>), esta distinción no aplica — todo se serializa como
+                        columnas separadas.</li>
+                </ul>
+            </div>
+
+            <div class="alert-warning">
+                <h3>⚠️ Buenas prácticas con XMLports</h3>
+                <ul>
+                    <li>Siempre valida los datos en <code>OnBeforeInsertRecord</code> antes de insertarlos. Un CSV mal
+                        formado puede insertar basura.</li>
+                    <li>Usa <code>TextEncoding = UTF8</code> para evitar problemas con acentos y caracteres especiales
+                        en castellano.</li>
+                    <li>Muestra un mensaje con el contador de registros procesados en <code>OnPostXmlPort</code> para
+                        que el usuario sepa el resultado.</li>
+                    <li>Si el XMLport es <code>Direction = Both</code>, asegúrate de que la estructura sea coherente
+                        para importación y exportación.</li>
+                </ul>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>

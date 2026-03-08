@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción a AL - Business Central</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../teoria.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        .theory-content {
+            max-width: 900px;
+            margin: 0 auto;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .theory-content h2 {
+            color: var(--text-white);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: 'Outfit';
+        }
+        .theory-content h3 {
+            color: var(--text-white);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-family: 'Outfit';
+        }
+        .theory-content p { margin-bottom: 1.5rem; }
+        .theory-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+            list-style-type: square;
+        }
+        .theory-content li { margin-bottom: 0.5rem; }
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+        }
+        .theory-table th,
+        .theory-table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            text-align: left;
+        }
+        .theory-table th {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--text-white);
+            font-family: 'Outfit';
+        }
+        .alert-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-blue);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        .alert-info h3 { margin-top: 0; color: var(--primary-blue); }
+        .alert-info ul { margin-bottom: 0 !important; }
+        .alert-warning {
+            background-color: rgba(234, 179, 8, 0.1);
+            border-left: 4px solid #eab308;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+        .alert-warning h3 { margin-top: 0; color: #eab308; }
+        .ide-code {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Cascadia Code', 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .ide-code pre { margin: 0; }
+        .ide-code code { color: #d4d4d4; }
+        .ide-code .cmd    { color: #569cd6; font-weight: bold; }
+        .ide-code .param  { color: #9cdcfe; }
+        .ide-code .string { color: #ce9178; }
+        .ide-code .comment{ color: #6a9955; font-style: italic; }
+        .ide-code .num    { color: #b5cea8; }
+        .section-divider {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            margin: 3rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">BC Guide</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Inicio</a></li>
+                <li><a href="../instalacion.html">Instalación</a></li>
+                <li><a href="../teoria.html" class="active">Teoría</a></li>
+                <li><a href="../ejercicios.html">Ejercicios</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="theory-main">
+        <div class="theory-content">
+
+            <span class="diff-badge diff-medium" style="margin-bottom: 1rem; display: inline-block;">Dif. 5/10</span>
+            <h1>Introducción a la Programación AL</h1>
+            <p>
+                Esta sección cubre los fundamentos del lenguaje AL: desde las variables y los procedimientos
+                hasta la sintaxis básica, los operadores y las estructuras condicionales. Dominar estos conceptos
+                es imprescindible antes de avanzar hacia temas intermedios y avanzados.
+            </p>
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 1. VARIABLES ESPECIALES                     -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>1. Variables Especiales de Almacenamiento de Trabajo</h2>
+
+            <p>
+                Además de las variables que tú declaras, AL proporciona variables especiales que el sistema
+                crea automáticamente y que están siempre disponibles dentro de ciertos contextos. Estas
+                variables facilitan el acceso a datos del registro actual, la sesión, el usuario y otros
+                elementos del entorno de ejecución.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Rec</code></td>
+                        <td>Record</td>
+                        <td>Referencia al registro actual que se está procesando. Disponible en triggers de tabla y página.</td>
+                    </tr>
+                    <tr>
+                        <td><code>xRec</code></td>
+                        <td>Record</td>
+                        <td>Copia del registro <strong>antes</strong> de la modificación. Permite comparar valores antiguos y nuevos.</td>
+                    </tr>
+                    <tr>
+                        <td><code>CurrPage</code></td>
+                        <td>Page</td>
+                        <td>Referencia a la página actual en ejecución. Permite cerrarla, actualizarla o modificar controles.</td>
+                    </tr>
+                    <tr>
+                        <td><code>CurrReport</code></td>
+                        <td>Report</td>
+                        <td>Referencia al informe actual. Permite saltar registros (<code>Skip</code>), cancelar, etc.</td>
+                    </tr>
+                    <tr>
+                        <td><code>UserId</code></td>
+                        <td>Función</td>
+                        <td>Devuelve el identificador del usuario que ha iniciado sesión en BC.</td>
+                    </tr>
+                    <tr>
+                        <td><code>CompanyName</code></td>
+                        <td>Función</td>
+                        <td>Devuelve el nombre de la empresa activa en la sesión de BC.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Today</code></td>
+                        <td>Date</td>
+                        <td>Devuelve la fecha actual del sistema.</td>
+                    </tr>
+                    <tr>
+                        <td><code>Time</code></td>
+                        <td>Time</td>
+                        <td>Devuelve la hora actual del sistema.</td>
+                    </tr>
+                    <tr>
+                        <td><code>WorkDate</code></td>
+                        <td>Date</td>
+                        <td>Devuelve la fecha de trabajo configurada por el usuario (puede diferir de <code>Today</code>).</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Ejemplo: usar variables especiales en un trigger de tabla</span>
+<span class="cmd">trigger</span> <span class="param">OnInsert</span>()
+<span class="cmd">begin</span>
+    <span class="comment">// Registrar quién y cuándo creó el registro</span>
+    Rec.<span class="string">"Creado Por"</span>     := UserId;
+    Rec.<span class="string">"Fecha Creacion"</span> := Today;
+
+    <span class="comment">// Mostrar un mensaje con info del entorno</span>
+    Message(<span class="string">'Usuario: %1, Empresa: %2, Fecha trabajo: %3'</span>,
+            UserId, CompanyName, WorkDate);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Ejemplo: CurrPage y CurrReport</span>
+
+<span class="comment">// En una página: cerrar la página tras guardar</span>
+<span class="cmd">trigger</span> <span class="param">OnAfterValidate</span>()
+<span class="cmd">begin</span>
+    CurrPage.Update(<span class="cmd">false</span>); <span class="comment">// refresca la página sin guardar</span>
+<span class="cmd">end</span>;
+
+<span class="comment">// En un informe: saltar registros que no cumplan condición</span>
+<span class="cmd">trigger</span> <span class="param">OnAfterGetRecord</span>()
+<span class="cmd">begin</span>
+    <span class="cmd">if</span> Rec.Cantidad = <span class="num">0</span> <span class="cmd">then</span>
+        CurrReport.Skip(); <span class="comment">// no incluir este registro en el informe</span>
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 2. PROCEDIMIENTOS                           -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>2. Procedimientos No Modificables y Modificables</h2>
+
+            <p>
+                En AL, los procedimientos (funciones) se clasifican según si el código que ejecutan puede
+                ser reemplazado por otra extensión o no. Esta distinción es fundamental en un ecosistema
+                donde múltiples extensiones conviven en el mismo entorno.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Palabra clave</th>
+                        <th>¿Se puede sobrescribir?</th>
+                        <th>¿Cuándo usarlo?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>No modificable (sealed)</strong></td>
+                        <td><code>procedure</code> (por defecto)</td>
+                        <td>No. Otras extensiones no pueden alterar su comportamiento.</td>
+                        <td>Lógica interna que no debe ser interceptada.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Modificable (integrable)</strong></td>
+                        <td><code>[IntegrationEvent]</code> / <code>[BusinessEvent]</code></td>
+                        <td>Sí. Otras extensiones pueden suscribirse y ejecutar código adicional.</td>
+                        <td>Puntos de extensión para que otros desarrolladores puedan personalizar el flujo.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Procedimiento NO modificable — nadie puede interceptarlo</span>
+<span class="cmd">local procedure</span> <span class="param">CalcularMulta</span>(DiasRetraso: <span class="param">Integer</span>): <span class="param">Decimal</span>
+<span class="cmd">begin</span>
+    <span class="cmd">exit</span>(DiasRetraso * <span class="num">0.50</span>); <span class="comment">// 0,50 € por día de retraso</span>
+<span class="cmd">end</span>;
+
+<span class="comment">// Procedimiento con evento de integración — otras extensiones
+// pueden suscribirse para añadir lógica antes o después</span>
+[<span class="param">IntegrationEvent</span>(<span class="cmd">false</span>, <span class="cmd">false</span>)]
+<span class="cmd">local procedure</span> <span class="param">OnBeforeRegistrarPrestamo</span>(<span class="cmd">var</span> Prestamo: <span class="param">Record</span> Prestamo)
+<span class="cmd">begin</span>
+    <span class="comment">// Vacío: el evento solo define el punto de extensión</span>
+<span class="cmd">end</span>;
+
+<span class="comment">// Suscripción desde otra extensión</span>
+[<span class="param">EventSubscriber</span>(ObjectType::Codeunit, Codeunit::<span class="string">"Gestion Prestamos"</span>,
+                  <span class="string">'OnBeforeRegistrarPrestamo'</span>, <span class="string">''</span>, <span class="cmd">false</span>, <span class="cmd">false</span>)]
+<span class="cmd">local procedure</span> <span class="param">MiLogicaExtra</span>(<span class="cmd">var</span> Prestamo: <span class="param">Record</span> Prestamo)
+<span class="cmd">begin</span>
+    <span class="comment">// Añadir validación personalizada</span>
+    Prestamo.TestField(<span class="string">"No. Socio"</span>);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 3. PROCEDIMIENTOS PERSONALIZADOS            -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>3. Procedimientos Personalizados y su Creación</h2>
+
+            <p>
+                En AL puedes crear tus propias funciones (procedimientos) que encapsulan lógica de negocio
+                reutilizable. Un procedimiento puede ser <strong>local</strong> (solo accesible dentro del
+                objeto) o <strong>público</strong> (accesible desde otros objetos).
+            </p>
+
+            <h3>Sintaxis de un procedimiento</h3>
+            <div class="ide-code">
+                <pre><code><span class="comment">// Procedimiento local sin retorno</span>
+<span class="cmd">local procedure</span> <span class="param">MostrarSaludo</span>(NombreUsuario: <span class="param">Text</span>[<span class="num">50</span>])
+<span class="cmd">begin</span>
+    Message(<span class="string">'¡Bienvenido, %1!'</span>, NombreUsuario);
+<span class="cmd">end</span>;
+
+<span class="comment">// Procedimiento público con valor de retorno</span>
+<span class="cmd">procedure</span> <span class="param">ObtenerEdad</span>(FechaNacimiento: <span class="param">Date</span>): <span class="param">Integer</span>
+<span class="cmd">var</span>
+    Edad: <span class="param">Integer</span>;
+<span class="cmd">begin</span>
+    Edad := Date2DMY(Today, <span class="num">3</span>) - Date2DMY(FechaNacimiento, <span class="num">3</span>);
+    <span class="cmd">exit</span>(Edad);
+<span class="cmd">end</span>;
+
+<span class="comment">// Procedimiento con parámetro por referencia (var)</span>
+<span class="cmd">local procedure</span> <span class="param">AplicarDescuento</span>(<span class="cmd">var</span> Precio: <span class="param">Decimal</span>; PctDescuento: <span class="param">Decimal</span>)
+<span class="cmd">begin</span>
+    Precio := Precio * (<span class="num">1</span> - PctDescuento / <span class="num">100</span>);
+    <span class="comment">// Al usar 'var', el cambio se refleja en la variable original</span>
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 local vs. público</h3>
+                <ul>
+                    <li>Usa <code>local procedure</code> por defecto. Solo expón un procedimiento como público si otros objetos necesitan invocarlo.</li>
+                    <li>Usa <code>var</code> en los parámetros cuando necesites que el procedimiento modifique la variable original del llamador.</li>
+                    <li>Un procedimiento sin valor de retorno simplemente no tiene la parte <code>: TipoRetorno</code> después de los paréntesis.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 4. SINTAXIS AL                              -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>4. Sintaxis AL: Asignación, Puntuación y Expresiones</h2>
+
+            <p>
+                AL tiene una sintaxis inspirada en Pascal. Conocer sus convenciones de puntuación y asignación
+                evita errores de compilación y facilita la lectura del código.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Elemento</th>
+                        <th>Símbolo</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Asignación</td>
+                        <td><code>:=</code></td>
+                        <td><code>Precio := 29.99;</code></td>
+                    </tr>
+                    <tr>
+                        <td>Comparación de igualdad</td>
+                        <td><code>=</code></td>
+                        <td><code>if Estado = Estado::Activo then</code></td>
+                    </tr>
+                    <tr>
+                        <td>Fin de sentencia</td>
+                        <td><code>;</code> (punto y coma)</td>
+                        <td>Obligatorio al final de cada instrucción</td>
+                    </tr>
+                    <tr>
+                        <td>Cadena de texto</td>
+                        <td><code>' '</code> (comillas simples)</td>
+                        <td><code>Nombre := 'Juan Pérez';</code></td>
+                    </tr>
+                    <tr>
+                        <td>Nombre de campo con espacios</td>
+                        <td><code>" "</code> (comillas dobles)</td>
+                        <td><code>Rec."Fecha Creacion"</code></td>
+                    </tr>
+                    <tr>
+                        <td>Comentario de línea</td>
+                        <td><code>//</code></td>
+                        <td><code>// Esto es un comentario</code></td>
+                    </tr>
+                    <tr>
+                        <td>Bloque de código</td>
+                        <td><code>begin ... end</code></td>
+                        <td>Agrupa varias sentencias en un solo bloque</td>
+                    </tr>
+                    <tr>
+                        <td>Concatenación</td>
+                        <td><code>+</code></td>
+                        <td><code>NombreCompleto := Nombre + ' ' + Apellido;</code></td>
+                    </tr>
+                    <tr>
+                        <td>Acceso a miembro de enum</td>
+                        <td><code>::</code></td>
+                        <td><code>Estado::Activo</code></td>
+                    </tr>
+                    <tr>
+                        <td>Acceso a campo</td>
+                        <td><code>.</code> (punto)</td>
+                        <td><code>Socio.Nombre</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// Ejemplos de sintaxis AL — asignación y expresiones</span>
+<span class="cmd">var</span>
+    Nombre: <span class="param">Text</span>[<span class="num">50</span>];
+    Precio: <span class="param">Decimal</span>;
+    Cantidad: <span class="param">Integer</span>;
+    Total: <span class="param">Decimal</span>;
+    Activo: <span class="param">Boolean</span>;
+<span class="cmd">begin</span>
+    <span class="comment">// Asignación simple</span>
+    Nombre   := <span class="string">'Biblioteca Municipal'</span>;
+    Precio   := <span class="num">15.50</span>;
+    Cantidad := <span class="num">3</span>;
+
+    <span class="comment">// Expresión aritmética</span>
+    Total := Precio * Cantidad;
+
+    <span class="comment">// Concatenación de cadenas</span>
+    Message(<span class="string">'Total para '</span> + Nombre + <span class="string">': %1 €'</span>, Total);
+
+    <span class="comment">// Asignación booleana</span>
+    Activo := (Cantidad > <span class="num">0</span>);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <div class="alert-warning">
+                <h3>⚠️ Errores comunes de sintaxis</h3>
+                <ul>
+                    <li>Usar <code>=</code> para asignar en vez de <code>:=</code>. En AL, <code>=</code> es solo para comparación.</li>
+                    <li>Olvidar el <code>;</code> al final de una instrucción. El compilador dará error en la línea siguiente.</li>
+                    <li>Usar comillas dobles para cadenas de texto. Las cadenas van entre comillas simples (<code>' '</code>). Las comillas dobles son solo para nombres de campo con espacios.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 5. OPERADORES                               -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>5. Operadores: Aritméticos, Booleanos y Relacionales</h2>
+
+            <h3>Operadores aritméticos</h3>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Operador</th>
+                        <th>Operación</th>
+                        <th>Ejemplo</th>
+                        <th>Resultado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>+</code></td>
+                        <td>Suma / Concatenación</td>
+                        <td><code>5 + 3</code></td>
+                        <td>8</td>
+                    </tr>
+                    <tr>
+                        <td><code>-</code></td>
+                        <td>Resta</td>
+                        <td><code>10 - 4</code></td>
+                        <td>6</td>
+                    </tr>
+                    <tr>
+                        <td><code>*</code></td>
+                        <td>Multiplicación</td>
+                        <td><code>6 * 7</code></td>
+                        <td>42</td>
+                    </tr>
+                    <tr>
+                        <td><code>/</code></td>
+                        <td>División</td>
+                        <td><code>15 / 4</code></td>
+                        <td>3.75</td>
+                    </tr>
+                    <tr>
+                        <td><code>div</code></td>
+                        <td>División entera</td>
+                        <td><code>15 div 4</code></td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td><code>mod</code></td>
+                        <td>Módulo (resto)</td>
+                        <td><code>15 mod 4</code></td>
+                        <td>3</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Operadores relacionales (de comparación)</h3>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Operador</th>
+                        <th>Significado</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>=</code></td>
+                        <td>Igual a</td>
+                        <td><code>if A = B then</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;&gt;</code></td>
+                        <td>Distinto de</td>
+                        <td><code>if A &lt;&gt; B then</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;</code></td>
+                        <td>Menor que</td>
+                        <td><code>if Precio &lt; 100 then</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>&gt;</code></td>
+                        <td>Mayor que</td>
+                        <td><code>if Cantidad &gt; 0 then</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;=</code></td>
+                        <td>Menor o igual</td>
+                        <td><code>if Edad &lt;= 18 then</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>&gt;=</code></td>
+                        <td>Mayor o igual</td>
+                        <td><code>if Saldo &gt;= 0 then</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>in</code></td>
+                        <td>Contenido en conjunto</td>
+                        <td><code>if Estado in [Estado::Activo, Estado::Pendiente] then</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Operadores booleanos (lógicos)</h3>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Operador</th>
+                        <th>Significado</th>
+                        <th>Ejemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>and</code></td>
+                        <td>Y lógico — ambas deben ser true</td>
+                        <td><code>if (A > 0) and (B > 0) then</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>or</code></td>
+                        <td>O lógico — al menos una true</td>
+                        <td><code>if (A = 0) or (B = 0) then</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>not</code></td>
+                        <td>Negación</td>
+                        <td><code>if not Activo then</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>xor</code></td>
+                        <td>O exclusivo — solo una true</td>
+                        <td><code>if A xor B then</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 6. PRECEDENCIA                              -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>6. Precedencia de Operadores</h2>
+
+            <p>
+                Cuando una expresión combina varios operadores, AL los evalúa siguiendo un orden de
+                prioridad (de mayor a menor). Usar paréntesis siempre es recomendable para evitar
+                ambigüedades.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Prioridad</th>
+                        <th>Operadores</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1 (más alta)</strong></td>
+                        <td><code>not</code>, <code>-</code> (unario)</td>
+                        <td>Negación lógica y cambio de signo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td><code>*</code>, <code>/</code>, <code>div</code>, <code>mod</code>, <code>and</code></td>
+                        <td>Multiplicación, división y AND lógico</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td><code>+</code>, <code>-</code>, <code>or</code></td>
+                        <td>Suma, resta, concatenación y OR lógico</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4 (más baja)</strong></td>
+                        <td><code>=</code>, <code>&lt;&gt;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>in</code></td>
+                        <td>Comparaciones</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// ¡Cuidado con la precedencia!</span>
+
+<span class="comment">// INCORRECTO — da error de compilación: and se evalúa antes que ></span>
+<span class="cmd">if</span> Cantidad > <span class="num">0</span> <span class="cmd">and</span> Precio > <span class="num">10</span> <span class="cmd">then</span>  <span class="comment">// ERROR</span>
+
+<span class="comment">// CORRECTO — los paréntesis fuerzan el orden deseado</span>
+<span class="cmd">if</span> (Cantidad > <span class="num">0</span>) <span class="cmd">and</span> (Precio > <span class="num">10</span>) <span class="cmd">then</span>
+    Message(<span class="string">'Condición cumplida'</span>);</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Regla de oro</h3>
+                <ul>
+                    <li>Siempre usa paréntesis en condiciones compuestas con <code>and</code>, <code>or</code>, <code>not</code>. En AL, <code>and</code> tiene mayor precedencia que las comparaciones, así que <code>A > 0 and B > 0</code> se interpreta como <code>A > (0 and B) > 0</code>, lo cual da error.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 7. PROCEDIMIENTOS FRECUENTES                -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>7. Procedimientos AL de Uso Frecuente</h2>
+
+            <p>
+                AL incluye una serie de funciones integradas para interactuar con el usuario, mostrar
+                mensajes, lanzar errores y pedir confirmación. Son las herramientas básicas de comunicación
+                entre el código y el usuario.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Función</th>
+                        <th>Qué hace</th>
+                        <th>¿Detiene la ejecución?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Message()</code></td>
+                        <td>Muestra un mensaje informativo al usuario</td>
+                        <td>No (el código sigue ejecutándose)</td>
+                    </tr>
+                    <tr>
+                        <td><code>Error()</code></td>
+                        <td>Muestra un error y revierte la transacción actual</td>
+                        <td><strong>Sí</strong> — detiene todo y hace rollback</td>
+                    </tr>
+                    <tr>
+                        <td><code>Confirm()</code></td>
+                        <td>Muestra un diálogo Sí/No y devuelve un booleano</td>
+                        <td>Espera la respuesta del usuario</td>
+                    </tr>
+                    <tr>
+                        <td><code>StrMenu()</code></td>
+                        <td>Muestra un menú de opciones y devuelve el número elegido</td>
+                        <td>Espera la respuesta del usuario</td>
+                    </tr>
+                    <tr>
+                        <td><code>Dialog.Open()</code></td>
+                        <td>Abre una ventana de progreso (ej. barra de progreso)</td>
+                        <td>No (se actualiza manualmente)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// MESSAGE — información al usuario</span>
+Message(<span class="string">'El préstamo %1 ha sido registrado.'</span>, Prestamo.<span class="string">"No."</span>);
+
+<span class="comment">// ERROR — detiene la ejecución y revierte</span>
+<span class="cmd">if</span> Socio.<span class="string">"No."</span> = <span class="string">''</span> <span class="cmd">then</span>
+    Error(<span class="string">'Debe seleccionar un socio antes de continuar.'</span>);
+
+<span class="comment">// CONFIRM — pregunta Sí/No</span>
+<span class="cmd">if</span> <span class="cmd">not</span> Confirm(<span class="string">'¿Desea eliminar el préstamo %1?'</span>, <span class="cmd">false</span>, Prestamo.<span class="string">"No."</span>) <span class="cmd">then</span>
+    <span class="cmd">exit</span>; <span class="comment">// El usuario dijo No, salimos</span>
+
+<span class="comment">// STRMENU — menú de opciones</span>
+<span class="cmd">var</span>
+    Opcion: <span class="param">Integer</span>;
+<span class="cmd">begin</span>
+    Opcion := StrMenu(<span class="string">'Renovar,Devolver,Cancelar'</span>, <span class="num">1</span>, <span class="string">'Acción sobre el préstamo:'</span>);
+    <span class="cmd">case</span> Opcion <span class="cmd">of</span>
+        <span class="num">1</span>: Message(<span class="string">'Renovando...'</span>);
+        <span class="num">2</span>: Message(<span class="string">'Devolviendo...'</span>);
+        <span class="num">3</span>: Message(<span class="string">'Operación cancelada.'</span>);
+    <span class="cmd">end</span>;
+<span class="cmd">end</span>;
+
+<span class="comment">// DIALOG — barra de progreso</span>
+<span class="cmd">var</span>
+    Ventana: <span class="param">Dialog</span>;
+    i: <span class="param">Integer</span>;
+<span class="cmd">begin</span>
+    Ventana.Open(<span class="string">'Procesando registro #1##########'</span>);
+    <span class="cmd">for</span> i := <span class="num">1</span> <span class="cmd">to</span> <span class="num">100</span> <span class="cmd">do</span> <span class="cmd">begin</span>
+        Ventana.Update(<span class="num">1</span>, i);
+        Sleep(<span class="num">50</span>);
+    <span class="cmd">end</span>;
+    Ventana.Close();
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 8. PROCEDIMIENTOS DE REGISTRO                -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>8. Procedimientos de Registro</h2>
+
+            <p>
+                Estas funciones permiten buscar, filtrar y navegar registros en una tabla. Son la base
+                de cualquier operación de lectura de datos en AL.
+            </p>
+
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Función</th>
+                        <th>Qué hace</th>
+                        <th>Devuelve</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Get()</code></td>
+                        <td>Busca un registro por su clave primaria</td>
+                        <td>Boolean (true si lo encuentra)</td>
+                    </tr>
+                    <tr>
+                        <td><code>Find('-')</code></td>
+                        <td>Busca el primer registro según los filtros y el orden actual</td>
+                        <td>Boolean</td>
+                    </tr>
+                    <tr>
+                        <td><code>Find('+')</code></td>
+                        <td>Busca el último registro</td>
+                        <td>Boolean</td>
+                    </tr>
+                    <tr>
+                        <td><code>FindSet()</code></td>
+                        <td>Busca el primer registro y prepara el cursor para iterar con <code>Next</code></td>
+                        <td>Boolean</td>
+                    </tr>
+                    <tr>
+                        <td><code>FindFirst()</code></td>
+                        <td>Busca el primer registro (optimizado, sin preparar cursor)</td>
+                        <td>Boolean</td>
+                    </tr>
+                    <tr>
+                        <td><code>FindLast()</code></td>
+                        <td>Busca el último registro</td>
+                        <td>Boolean</td>
+                    </tr>
+                    <tr>
+                        <td><code>Next()</code></td>
+                        <td>Avanza al siguiente registro del conjunto</td>
+                        <td>Integer (0 si no hay más)</td>
+                    </tr>
+                    <tr>
+                        <td><code>SetRange()</code></td>
+                        <td>Establece un filtro de rango en un campo</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><code>SetFilter()</code></td>
+                        <td>Establece un filtro con expresión (más flexible que SetRange)</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><code>Reset()</code></td>
+                        <td>Elimina todos los filtros del registro</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><code>Count</code></td>
+                        <td>Devuelve el número de registros que cumplen los filtros</td>
+                        <td>Integer</td>
+                    </tr>
+                    <tr>
+                        <td><code>IsEmpty</code></td>
+                        <td>Comprueba si hay registros (más eficiente que <code>Count = 0</code>)</td>
+                        <td>Boolean</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="ide-code">
+                <pre><code><span class="comment">// GET — buscar por clave primaria</span>
+<span class="cmd">var</span>
+    Socio: <span class="param">Record</span> Socio;
+<span class="cmd">begin</span>
+    <span class="cmd">if</span> Socio.Get(<span class="string">'S-0001'</span>) <span class="cmd">then</span>
+        Message(<span class="string">'Socio encontrado: %1'</span>, Socio.Nombre)
+    <span class="cmd">else</span>
+        Error(<span class="string">'No existe el socio S-0001'</span>);
+<span class="cmd">end</span>;
+
+<span class="comment">// SETRANGE + FINDSET — iterar sobre registros filtrados</span>
+<span class="cmd">var</span>
+    Prestamo: <span class="param">Record</span> Prestamo;
+<span class="cmd">begin</span>
+    Prestamo.SetRange(Estado, Prestamo.Estado::Activo);
+    <span class="cmd">if</span> Prestamo.FindSet() <span class="cmd">then</span>
+        <span class="cmd">repeat</span>
+            Message(<span class="string">'Préstamo: %1 - Socio: %2'</span>,
+                    Prestamo.<span class="string">"No."</span>, Prestamo.<span class="string">"No. Socio"</span>);
+        <span class="cmd">until</span> Prestamo.Next() = <span class="num">0</span>;
+<span class="cmd">end</span>;
+
+<span class="comment">// SETFILTER — filtro con expresión flexible</span>
+<span class="cmd">var</span>
+    Libro: <span class="param">Record</span> Libro;
+<span class="cmd">begin</span>
+    Libro.SetFilter(Titulo, <span class="string">'@*central*'</span>); <span class="comment">// @ = case-insensitive, * = comodín</span>
+    Message(<span class="string">'Libros encontrados: %1'</span>, Libro.Count);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 FindSet vs. Find('-') vs. FindFirst</h3>
+                <ul>
+                    <li><code>FindSet()</code>: usar cuando vas a iterar con <code>repeat...until Next() = 0</code>. Es el más eficiente para bucles.</li>
+                    <li><code>FindFirst()</code> / <code>FindLast()</code>: cuando solo necesitas un registro y no vas a iterar.</li>
+                    <li><code>Find('-')</code> / <code>Find('+')</code>: forma antigua, equivalente a FindFirst/FindLast. Preferir las versiones First/Last.</li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 9. CONDICIONALES                            -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>9. Declaraciones Condicionales: BEGIN-END, IF-THEN-ELSE</h2>
+
+            <p>
+                Las estructuras condicionales permiten ejecutar código de forma selectiva según se
+                cumplan o no ciertas condiciones. AL usa <code>if...then...else</code> y bloques
+                <code>begin...end</code> para agrupar múltiples sentencias.
+            </p>
+
+            <h3>IF-THEN simple</h3>
+            <div class="ide-code">
+                <pre><code><span class="comment">// Una sola sentencia — no necesita begin...end</span>
+<span class="cmd">if</span> Prestamo.Estado = Prestamo.Estado::Vencido <span class="cmd">then</span>
+    Message(<span class="string">'Este préstamo está vencido.'</span>);</code></pre>
+            </div>
+
+            <h3>IF-THEN-ELSE</h3>
+            <div class="ide-code">
+                <pre><code><span class="comment">// Con rama alternativa</span>
+<span class="cmd">if</span> Socio.<span class="string">"No."</span> <> <span class="string">''</span> <span class="cmd">then</span>
+    Message(<span class="string">'Socio seleccionado: %1'</span>, Socio.Nombre)
+<span class="cmd">else</span>
+    Error(<span class="string">'Debe seleccionar un socio.'</span>);
+
+<span class="comment">// NOTA: NO hay punto y coma antes de 'else'. Esto es un error muy común.</span></code></pre>
+            </div>
+
+            <h3>BEGIN-END para múltiples sentencias</h3>
+            <div class="ide-code">
+                <pre><code><span class="comment">// Cuando hay más de una sentencia, se necesita begin...end</span>
+<span class="cmd">if</span> (Prestamo.<span class="string">"Fecha Devolucion"</span> < Today) <span class="cmd">and</span>
+   (Prestamo.Estado = Prestamo.Estado::Activo) <span class="cmd">then</span>
+<span class="cmd">begin</span>
+    Prestamo.Estado := Prestamo.Estado::Vencido;
+    Prestamo.Modify(<span class="cmd">true</span>);
+    Message(<span class="string">'Préstamo %1 marcado como vencido.'</span>, Prestamo.<span class="string">"No."</span>);
+<span class="cmd">end</span> <span class="cmd">else</span> <span class="cmd">begin</span>
+    Message(<span class="string">'Préstamo %1 sigue activo.'</span>, Prestamo.<span class="string">"No."</span>);
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <h3>IF anidados</h3>
+            <div class="ide-code">
+                <pre><code><span class="comment">// IFs anidados — se evalúan en cascada</span>
+<span class="cmd">if</span> DiasRetraso = <span class="num">0</span> <span class="cmd">then</span>
+    Message(<span class="string">'Devuelto a tiempo.'</span>)
+<span class="cmd">else</span> <span class="cmd">if</span> DiasRetraso <= <span class="num">7</span> <span class="cmd">then</span>
+    Message(<span class="string">'Retraso leve: %1 días.'</span>, DiasRetraso)
+<span class="cmd">else</span> <span class="cmd">if</span> DiasRetraso <= <span class="num">30</span> <span class="cmd">then</span>
+    Message(<span class="string">'Retraso moderado: %1 días.'</span>, DiasRetraso)
+<span class="cmd">else</span>
+    Error(<span class="string">'Retraso grave: %1 días. Se bloqueará la cuenta.'</span>, DiasRetraso);</code></pre>
+            </div>
+
+            <div class="alert-warning">
+                <h3>⚠️ El error del punto y coma antes de ELSE</h3>
+                <ul>
+                    <li>En AL <strong>nunca</strong> debe haber <code>;</code> justo antes de <code>else</code>. Si lo pones, el compilador interpreta que la sentencia IF terminó ahí y que <code>else</code> está suelto.</li>
+                    <li><strong>Incorrecto:</strong> <code>if A then B; else C;</code></li>
+                    <li><strong>Correcto:</strong> <code>if A then B else C;</code></li>
+                </ul>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- ═══════════════════════════════════════════ -->
+            <!-- 10. PROBANDO EL INFORME                     -->
+            <!-- ═══════════════════════════════════════════ -->
+            <h2>10. Probando el Informe Completo</h2>
+
+            <p>
+                Después de crear un informe en AL, es fundamental probarlo para verificar que los datos,
+                el diseño y la lógica funcionan correctamente. Business Central ofrece varias formas de
+                ejecutar y depurar un informe.
+            </p>
+
+            <h3>Pasos para probar un informe</h3>
+            <table class="theory-table">
+                <thead>
+                    <tr>
+                        <th>Paso</th>
+                        <th>Acción</th>
+                        <th>Qué verificar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td>Compilar y desplegar la extensión (<kbd>Ctrl+Shift+B</kbd> → <kbd>F5</kbd>)</td>
+                        <td>Sin errores de compilación</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td>En BC, buscar el informe por nombre en la barra de búsqueda</td>
+                        <td>El informe aparece si <code>UsageCategory</code> y <code>ApplicationArea</code> están definidos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td>Configurar los filtros en la RequestPage</td>
+                        <td>Los filtros reducen adecuadamente los datos mostrados</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td>Seleccionar "Vista previa" o "Imprimir"</td>
+                        <td>Los datos son correctos y el layout tiene el formato esperado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5</strong></td>
+                        <td>Probar con datos vacíos (sin registros)</td>
+                        <td>El informe no genera error; idealmente muestra un mensaje o un layout vacío</td>
+                    </tr>
+                    <tr>
+                        <td><strong>6</strong></td>
+                        <td>Probar con muchos registros</td>
+                        <td>Rendimiento aceptable y paginación correcta</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Ejecutar un informe desde código AL</h3>
+            <div class="ide-code">
+                <pre><code><span class="comment">// Ejecutar un informe desde un botón de acción en una página</span>
+<span class="cmd">action</span>(ImprimirInforme)
+{
+    <span class="param">Caption</span> = <span class="string">'Imprimir Informe de Socios'</span>;
+    <span class="param">ApplicationArea</span> = All;
+    <span class="param">Image</span> = Report;
+
+    <span class="cmd">trigger</span> <span class="param">OnAction</span>()
+    <span class="cmd">var</span>
+        InformeSocios: <span class="param">Report</span> <span class="string">"Listado de Socios"</span>;
+    <span class="cmd">begin</span>
+        InformeSocios.Run(); <span class="comment">// abre la RequestPage y ejecuta el informe</span>
+    <span class="cmd">end</span>;
+}
+
+<span class="comment">// Ejecutar con filtros predefinidos (sin RequestPage)</span>
+<span class="cmd">trigger</span> <span class="param">OnAction</span>()
+<span class="cmd">var</span>
+    Socio: <span class="param">Record</span> Socio;
+    InformeSocios: <span class="param">Report</span> <span class="string">"Listado de Socios"</span>;
+<span class="cmd">begin</span>
+    Socio.SetRange(<span class="string">"No."</span>, <span class="string">'S-0001'</span>, <span class="string">'S-0050'</span>);
+    InformeSocios.SetTableView(Socio); <span class="comment">// aplica el filtro al informe</span>
+    InformeSocios.RunModal(); <span class="comment">// RunModal = espera a que el usuario cierre</span>
+<span class="cmd">end</span>;</code></pre>
+            </div>
+
+            <div class="alert-info">
+                <h3>💡 Consejos para depurar informes</h3>
+                <ul>
+                    <li>Usa <code>Message()</code> en los triggers <code>OnPreReport</code>, <code>OnAfterGetRecord</code> y <code>OnPostReport</code> para inspeccionar valores mientras desarrollas.</li>
+                    <li>Si el informe aparece en blanco, comprueba que los nombres de las columnas del dataset coinciden con los marcadores del layout.</li>
+                    <li>Recuerda que <code>Run()</code> es no modal (el código sigue) y <code>RunModal()</code> es modal (el código espera).</li>
+                    <li>Si el informe no aparece en la búsqueda de BC, verifica que <code>UsageCategory</code> no esté vacío.</li>
+                </ul>
+            </div>
+
+            <a href="../teoria.html" class="btn btn-secondary" style="margin-top: 40px; display: inline-block;">&larr;
+                Volver a Teoría</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Guía Business Central.</p>
+    </footer>
+</body>
+
+</html>
